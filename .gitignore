@@ -1,0 +1,7 @@
+# Large test cases and dataset files
+TestCases/*
+!TestCases/.gitkeep
+
+# Operating system files
+.DS_Store
+Thumbs.db
