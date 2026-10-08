@@ -1,0 +1,65 @@
+evaluation,cutoff,horizon_years,mode,method,mean_phase_increment_NRMSE,mean_phase_cumulative_NRMSE,review_required_over_020
+train_OOF,2003-01-01,3,History-conditioned,Constant,0.2646163765191192,0.07551521394542875,True
+train_OOF,2003-01-01,3,History-conditioned,Liquid-WC-time,0.2805993636654895,0.13268973287186994,True
+train_OOF,2003-01-01,3,History-conditioned,Liquid-WC-volume,0.28462581010773147,0.13427818570592345,True
+train_OOF,2003-01-01,3,History-conditioned,Separate,0.209326058806258,0.0714887722466912,True
+train_OOF,2003-01-01,3,Input-only PolyRidge,Constant,0.2633513516152531,0.07485998139688632,True
+train_OOF,2003-01-01,3,Input-only PolyRidge,Liquid-WC-time,0.2785719260537982,0.1319811170498897,True
+train_OOF,2003-01-01,3,Input-only PolyRidge,Liquid-WC-volume,0.2827928904474632,0.13365336319298152,True
+train_OOF,2003-01-01,3,Input-only PolyRidge,Separate,0.2053033697149792,0.06905890522170582,True
+train_OOF,2003-01-01,5,History-conditioned,Constant,0.4047136507199273,0.14495512945906713,True
+train_OOF,2003-01-01,5,History-conditioned,Liquid-WC-time,0.439973287473102,0.24162205891630503,True
+train_OOF,2003-01-01,5,History-conditioned,Liquid-WC-volume,0.4454165043608745,0.24410005389086675,True
+train_OOF,2003-01-01,5,History-conditioned,Separate,0.29839053994544956,0.12817437566756243,True
+train_OOF,2003-01-01,5,Input-only PolyRidge,Constant,0.4036783237893837,0.14437936557428105,True
+train_OOF,2003-01-01,5,Input-only PolyRidge,Liquid-WC-time,0.43923174459019193,0.24138695533257623,True
+train_OOF,2003-01-01,5,Input-only PolyRidge,Liquid-WC-volume,0.4448305976985832,0.24394146107347978,True
+train_OOF,2003-01-01,5,Input-only PolyRidge,Separate,0.2934940192884025,0.12492725189365687,True
+train_OOF,2004-01-01,3,History-conditioned,Constant,0.2242144372223687,0.04836184685521916,True
+train_OOF,2004-01-01,3,History-conditioned,Liquid-WC-time,0.0982648546884604,0.03176463307237515,False
+train_OOF,2004-01-01,3,History-conditioned,Liquid-WC-volume,0.06684103283965759,0.022768219259793557,False
+train_OOF,2004-01-01,3,History-conditioned,Separate,0.05291850486591878,0.014149102789584547,False
+train_OOF,2004-01-01,3,Input-only PolyRidge,Constant,0.22403586623314234,0.04840594955974011,True
+train_OOF,2004-01-01,3,Input-only PolyRidge,Liquid-WC-time,0.09843745086762641,0.032048835801552406,False
+train_OOF,2004-01-01,3,Input-only PolyRidge,Liquid-WC-volume,0.0671349528818393,0.023229797186570103,False
+train_OOF,2004-01-01,3,Input-only PolyRidge,Separate,0.06404633464744651,0.02005833489716088,False
+train_OOF,2005-01-01,3,History-conditioned,Constant,0.21110770848720617,0.035059715499649806,True
+train_OOF,2005-01-01,3,History-conditioned,Liquid-WC-time,0.06608097389033583,0.012637970609290073,False
+train_OOF,2005-01-01,3,History-conditioned,Liquid-WC-volume,0.04968391029049563,0.01025649294890888,False
+train_OOF,2005-01-01,3,History-conditioned,Separate,0.0441945976027626,0.01166664782891942,False
+train_OOF,2005-01-01,3,Input-only PolyRidge,Constant,0.21119645208957025,0.03540124540292849,True
+train_OOF,2005-01-01,3,Input-only PolyRidge,Liquid-WC-time,0.06790697077959236,0.01443090852703486,False
+train_OOF,2005-01-01,3,Input-only PolyRidge,Liquid-WC-volume,0.05196382964552293,0.012342079099893849,False
+train_OOF,2005-01-01,3,Input-only PolyRidge,Separate,0.056419849378463234,0.01734234541722117,False
+validation,2003-01-01,3,History-conditioned,Constant,0.26679570981119866,0.07909304674249328,True
+validation,2003-01-01,3,History-conditioned,Liquid-WC-time,0.284757537130419,0.13757219087238684,True
+validation,2003-01-01,3,History-conditioned,Liquid-WC-volume,0.28923867867142994,0.13939256387743826,True
+validation,2003-01-01,3,History-conditioned,Separate,0.21056185388742057,0.07111115072028973,True
+validation,2003-01-01,3,Input-only PolyRidge,Constant,0.26588226734671705,0.07888189885806961,True
+validation,2003-01-01,3,Input-only PolyRidge,Liquid-WC-time,0.27865556281362,0.13496699782285895,True
+validation,2003-01-01,3,Input-only PolyRidge,Liquid-WC-volume,0.2823414730172055,0.13646402671333474,True
+validation,2003-01-01,3,Input-only PolyRidge,Separate,0.20339391922051883,0.0670717166701213,True
+validation,2003-01-01,5,History-conditioned,Constant,0.40650120093615244,0.15054083529126636,True
+validation,2003-01-01,5,History-conditioned,Liquid-WC-time,0.4514290630042288,0.2525963151554615,True
+validation,2003-01-01,5,History-conditioned,Liquid-WC-volume,0.4574579373605318,0.2554164646145661,True
+validation,2003-01-01,5,History-conditioned,Separate,0.3028462395703881,0.12861082412043198,True
+validation,2003-01-01,5,Input-only PolyRidge,Constant,0.4054988271976412,0.15038881866602483,True
+validation,2003-01-01,5,Input-only PolyRidge,Liquid-WC-time,0.44543460934348883,0.2494411652168358,True
+validation,2003-01-01,5,Input-only PolyRidge,Liquid-WC-volume,0.4503464308062399,0.251741361014211,True
+validation,2003-01-01,5,Input-only PolyRidge,Separate,0.29353440116011537,0.1228336350444491,True
+validation,2004-01-01,3,History-conditioned,Constant,0.22898479628917393,0.05147470321498099,True
+validation,2004-01-01,3,History-conditioned,Liquid-WC-time,0.09105700506355137,0.030973920030216207,False
+validation,2004-01-01,3,History-conditioned,Liquid-WC-volume,0.06084036829634335,0.021961568127515037,False
+validation,2004-01-01,3,History-conditioned,Separate,0.059780506187687286,0.015654904097803117,False
+validation,2004-01-01,3,Input-only PolyRidge,Constant,0.22252525704272527,0.04966553253045952,True
+validation,2004-01-01,3,Input-only PolyRidge,Liquid-WC-time,0.09647716129486268,0.032729691373137894,False
+validation,2004-01-01,3,Input-only PolyRidge,Liquid-WC-volume,0.06417548621844,0.02339135151902388,False
+validation,2004-01-01,3,Input-only PolyRidge,Separate,0.055443542026212565,0.015971615324759447,False
+validation,2005-01-01,3,History-conditioned,Constant,0.20558091737482828,0.03512856333334936,True
+validation,2005-01-01,3,History-conditioned,Liquid-WC-time,0.07104997397858732,0.013958702897425011,False
+validation,2005-01-01,3,History-conditioned,Liquid-WC-volume,0.0511913099197609,0.010445005562742518,False
+validation,2005-01-01,3,History-conditioned,Separate,0.042164899538238786,0.01136397232337222,False
+validation,2005-01-01,3,Input-only PolyRidge,Constant,0.20278206033190257,0.03443769560144123,True
+validation,2005-01-01,3,Input-only PolyRidge,Liquid-WC-time,0.07250372787792732,0.016037156169576804,False
+validation,2005-01-01,3,Input-only PolyRidge,Liquid-WC-volume,0.052923135686744026,0.012923871565811264,False
+validation,2005-01-01,3,Input-only PolyRidge,Separate,0.048853428491022866,0.016110308231357184,False

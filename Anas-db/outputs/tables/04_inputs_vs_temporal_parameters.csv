@@ -1,0 +1,81 @@
+cutoff,input,target,Spearman_rho
+2003-01-01,Fault Transmissibility,q_oil,0.1970256320531887
+2003-01-01,Fault Transmissibility,q_liquid,0.1778555323996479
+2003-01-01,Fault Transmissibility,water_cut,-0.20885311871227363
+2003-01-01,Fault Transmissibility,gor,0.04421310471524801
+2003-01-01,Fault Transmissibility,D_oil,-0.19146181436444756
+2003-01-01,Fault Transmissibility,D_liquid,-0.1389435554818601
+2003-01-01,Fault Transmissibility,water_ratio,0.09528403374182476
+2003-01-01,Fault Transmissibility,water_k,0.08361473186947774
+2003-01-01,Fault Transmissibility,beta_time,0.1927915317994926
+2003-01-01,Fault Transmissibility,beta_volume,0.19982503717959935
+2003-01-01,Porosity Multiplier,q_oil,0.991566792056688
+2003-01-01,Porosity Multiplier,q_liquid,0.6880200858617959
+2003-01-01,Porosity Multiplier,water_cut,-0.9962907882075059
+2003-01-01,Porosity Multiplier,gor,0.5569241536173564
+2003-01-01,Porosity Multiplier,D_oil,-0.9867728107777097
+2003-01-01,Porosity Multiplier,D_liquid,-0.2631561842699628
+2003-01-01,Porosity Multiplier,water_ratio,-0.005750678066027762
+2003-01-01,Porosity Multiplier,water_k,0.5623130084856968
+2003-01-01,Porosity Multiplier,beta_time,0.9387280202956871
+2003-01-01,Porosity Multiplier,beta_volume,0.9276003849182048
+2003-01-01,Permeability Multiplier,q_oil,0.00488146268917855
+2003-01-01,Permeability Multiplier,q_liquid,0.3293948042952764
+2003-01-01,Permeability Multiplier,water_cut,0.0483422272767037
+2003-01-01,Permeability Multiplier,gor,0.3946286414136996
+2003-01-01,Permeability Multiplier,D_oil,-0.034275216516490244
+2003-01-01,Permeability Multiplier,D_liquid,-0.2717643801156976
+2003-01-01,Permeability Multiplier,water_ratio,0.2034980511855673
+2003-01-01,Permeability Multiplier,water_k,-0.2614469425247135
+2003-01-01,Permeability Multiplier,beta_time,-0.1972355874376695
+2003-01-01,Permeability Multiplier,beta_volume,-0.22722421485434346
+2003-01-01,Aquifer Pore Volume,q_oil,-0.2046890035867378
+2003-01-01,Aquifer Pore Volume,q_liquid,0.1727159137374535
+2003-01-01,Aquifer Pore Volume,water_cut,0.251054150992914
+2003-01-01,Aquifer Pore Volume,gor,0.0992914005773773
+2003-01-01,Aquifer Pore Volume,D_oil,0.19069197795468462
+2003-01-01,Aquifer Pore Volume,D_liquid,-0.06892618786338348
+2003-01-01,Aquifer Pore Volume,water_ratio,-0.13731100174637983
+2003-01-01,Aquifer Pore Volume,water_k,-0.14040766337153354
+2003-01-01,Aquifer Pore Volume,beta_time,-0.20962295512203657
+2003-01-01,Aquifer Pore Volume,beta_volume,-0.21907094742367247
+2008-01-01,Fault Transmissibility,q_oil,0.1963957658997463
+2008-01-01,Fault Transmissibility,q_liquid,0.10180592399643806
+2008-01-01,Fault Transmissibility,water_cut,-0.20293937538273116
+2008-01-01,Fault Transmissibility,gor,0.04263843933164203
+2008-01-01,Fault Transmissibility,D_oil,-0.18855743154579652
+2008-01-01,Fault Transmissibility,D_liquid,0.10128597672994488
+2008-01-01,Fault Transmissibility,water_ratio,0.02615717047751633
+2008-01-01,Fault Transmissibility,water_k,0.03791444318082408
+2008-01-01,Fault Transmissibility,beta_time,-0.1488408713148456
+2008-01-01,Fault Transmissibility,beta_volume,-0.13232438106902283
+2008-01-01,Porosity Multiplier,q_oil,0.9893272679555595
+2008-01-01,Porosity Multiplier,q_liquid,0.7767102029935717
+2008-01-01,Porosity Multiplier,water_cut,-0.9939812789782171
+2008-01-01,Porosity Multiplier,gor,-0.21462689178549557
+2008-01-01,Porosity Multiplier,D_oil,-0.9603884174612894
+2008-01-01,Porosity Multiplier,D_liquid,0.28219753302423234
+2008-01-01,Porosity Multiplier,water_ratio,0.22654384170092404
+2008-01-01,Porosity Multiplier,water_k,0.015309246785058175
+2008-01-01,Porosity Multiplier,beta_time,-0.9168926603096842
+2008-01-01,Porosity Multiplier,beta_volume,-0.9436269792669058
+2008-01-01,Permeability Multiplier,q_oil,0.02818651036654711
+2008-01-01,Permeability Multiplier,q_liquid,0.4275179958418887
+2008-01-01,Permeability Multiplier,water_cut,0.01691890473274429
+2008-01-01,Permeability Multiplier,gor,-0.1707112238649287
+2008-01-01,Permeability Multiplier,D_oil,0.010620243198320356
+2008-01-01,Permeability Multiplier,D_liquid,-0.023217566267168227
+2008-01-01,Permeability Multiplier,water_ratio,0.03655005292811479
+2008-01-01,Permeability Multiplier,water_k,-0.09411250109351763
+2008-01-01,Permeability Multiplier,beta_time,0.03668970343801942
+2008-01-01,Permeability Multiplier,beta_volume,-0.08823375032805529
+2008-01-01,Aquifer Pore Volume,q_oil,-0.21732131921966583
+2008-01-01,Aquifer Pore Volume,q_liquid,0.10743834026180117
+2008-01-01,Aquifer Pore Volume,water_cut,0.24619018458577552
+2008-01-01,Aquifer Pore Volume,gor,-0.0385793018983466
+2008-01-01,Aquifer Pore Volume,D_oil,0.2095529699938763
+2008-01-01,Aquifer Pore Volume,D_liquid,-0.03207068497944187
+2008-01-01,Aquifer Pore Volume,water_ratio,-0.09460322459660923
+2008-01-01,Aquifer Pore Volume,water_k,0.03763450266818301
+2008-01-01,Aquifer Pore Volume,beta_time,0.2548683404776485
+2008-01-01,Aquifer Pore Volume,beta_volume,0.1714460677106115

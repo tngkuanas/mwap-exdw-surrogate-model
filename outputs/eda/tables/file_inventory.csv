@@ -1,0 +1,4 @@
+file,rows,columns,size_MB
+uncertainty_params.parquet,100,7,0.010113
+production_timeseries.parquet,6724340,6,10.759555
+grid_properties.parquet,4251200,25,158.958176
