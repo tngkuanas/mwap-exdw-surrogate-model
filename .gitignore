@@ -2,6 +2,15 @@
 TestCases/*
 !TestCases/.gitkeep
 
+# Processed data folder
+data/
+
+# Python virtual environment & cache
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
 # Operating system files
 .DS_Store
 Thumbs.db
