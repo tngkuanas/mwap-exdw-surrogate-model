@@ -1,7 +1,17 @@
-# Large test cases and dataset files
-TestCases/*
-!TestCases/.gitkeep
+# Large binary data files
+*.xlsx
+*.xls
+*.parquet
+*.pptx
 
-# Operating system files
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS
 .DS_Store
 Thumbs.db
+
+# Brain history
+.brain_history.json

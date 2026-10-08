@@ -1,0 +1,60 @@
+{
+  "shared_data": "/Workspace/Users/tengkuanas.zainalabi@petronas.com.my/MWAP/data",
+  "development_cases": [
+    1,
+    85
+  ],
+  "training_cases": [
+    1,
+    70
+  ],
+  "validation_cases": [
+    71,
+    85
+  ],
+  "test_production_loaded": false,
+  "origins": [
+    "2003-01-01",
+    "2004-01-01",
+    "2005-01-01",
+    "2008-01-01"
+  ],
+  "windows": [
+    "3y",
+    "5y",
+    "all"
+  ],
+  "default_window": "3y",
+  "experiments": [
+    {
+      "cutoff": "2003-01-01",
+      "horizon_years": 3
+    },
+    {
+      "cutoff": "2003-01-01",
+      "horizon_years": 5
+    },
+    {
+      "cutoff": "2004-01-01",
+      "horizon_years": 3
+    },
+    {
+      "cutoff": "2005-01-01",
+      "horizon_years": 3
+    }
+  ],
+  "methods": [
+    "Constant",
+    "Separate",
+    "Liquid-WC-time",
+    "Liquid-WC-volume"
+  ],
+  "cutoff_policy": "Restrict native observations to <= cutoff before interpolation; carry the last available native value to cutoff and record its age.",
+  "model_assumptions": {
+    "liquid": "Nonincreasing exponential total-liquid rate.",
+    "water_cut": "Nondecreasing logistic progression in time or liquid volume.",
+    "separate": "Exponential oil decline plus anchored water relaxation.",
+    "gas": "Cutoff-history estimated produced GOR remains constant."
+  },
+  "warning": "No future simulator labels beyond 2008; 2028 outputs are conditional scenarios, not validated confidence intervals."
+}

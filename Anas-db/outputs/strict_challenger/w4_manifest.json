@@ -1,0 +1,53 @@
+{
+  "workstream": "W4 \u2014 Alternative Temporal Structure & Validation",
+  "owner": "Anas",
+  "model_id": "Strict_b0_Anas",
+  "temporal_utils_hash": "3ba3b98c",
+  "backtest_engine_hash": "13d59280",
+  "challenger_definition": {
+    "oil": "Strict b=0 exponential decline",
+    "gas": "Nonnegative constant GOR from historical median",
+    "water": "Relaxation dynamics with 2x observed rate cap",
+    "integration": "Daily trapezoid from cutoff anchor"
+  },
+  "experiments": [
+    [
+      "2003-01-01",
+      3
+    ],
+    [
+      "2003-01-01",
+      5
+    ],
+    [
+      "2004-01-01",
+      3
+    ],
+    [
+      "2005-01-01",
+      3
+    ]
+  ],
+  "cases": {
+    "train": [
+      1,
+      70
+    ],
+    "validation": [
+      71,
+      85
+    ],
+    "test": [
+      86,
+      100
+    ]
+  },
+  "water_cap_STB_per_day": 15852.724,
+  "outputs": {
+    "backtests": "strict_challenger/data/strict_challenger_backtests.parquet",
+    "forecasts_2028": "strict_challenger/data/strict_challenger_2028.parquet",
+    "referee_report": "strict_challenger/tables/referee_*.csv",
+    "fit_params": "strict_challenger/tables/strict_challenger_fit_parameters.csv",
+    "endpoints": "strict_challenger/tables/strict_challenger_2028_endpoints.csv"
+  }
+}
