@@ -5,3 +5,8 @@ TestCases/*
 # Operating system files
 .DS_Store
 Thumbs.db
+
+# Unsupported asset types for Git Folders
+Afiq/bayesian_history_matching/
+**/bayesian_history_matching/
+bayesian_history_matching
