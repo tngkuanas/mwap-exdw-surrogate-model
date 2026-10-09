@@ -30,3 +30,5 @@ Thumbs.db
 Afiq/bayesian_history_matching/
 **/bayesian_history_matching/
 bayesian_history_matching
+mlflow.db
+mlruns/
