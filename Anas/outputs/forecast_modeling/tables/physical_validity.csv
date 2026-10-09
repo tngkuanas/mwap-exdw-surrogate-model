@@ -1,5 +1,0 @@
-model,evaluation,negative_prediction_fraction,corrected_fraction,negative_after_correction
-GP,train_OOF,0.0,0.0,0.0
-GP,validation,0.0,0.0,0.0
-PolyRidge,train_OOF,0.0,0.0,0.0
-PolyRidge,validation,0.0,0.0,0.0
