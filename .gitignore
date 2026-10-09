@@ -25,3 +25,8 @@ Thumbs.db
 
 # Brain history
 .brain_history.json
+
+# Unsupported asset types for Git Folders
+Afiq/bayesian_history_matching/
+**/bayesian_history_matching/
+bayesian_history_matching
