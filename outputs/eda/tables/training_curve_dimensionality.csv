@@ -1,0 +1,4 @@
+metric,training_cases,aligned_timestamps,components_for_99_percent,first_component_fraction
+oil_cum,70,160,1,0.9995341713871995
+gas_cum,70,160,1,0.9995585401964014
+water_cum,70,160,1,0.9990874432093041

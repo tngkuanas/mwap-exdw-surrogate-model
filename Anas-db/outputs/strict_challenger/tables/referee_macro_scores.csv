@@ -1,0 +1,2 @@
+model_id,mean_dev_NRMSE,worst_exp_NRMSE,median_dev_NRMSE,experiments_scored
+Strict_b0_Anas,0.15252290005051547,0.3006183897579188,0.13314673093682117,4
