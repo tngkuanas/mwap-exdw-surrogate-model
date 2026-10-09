@@ -1,10 +1,30 @@
-# Large test cases and dataset files
-TestCases/*
-!TestCases/.gitkeep
+# Large binary data files
+*.xlsx
+*.xls
+*.parquet
+*.pptx
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS
+# Processed data folder
+data/
+
+# Python virtual environment & cache
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
 
 # Operating system files
 .DS_Store
 Thumbs.db
+
+# Brain history
+.brain_history.json
 
 # Unsupported asset types for Git Folders
 Afiq/bayesian_history_matching/
