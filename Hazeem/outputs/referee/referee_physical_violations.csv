@@ -1,0 +1,19 @@
+model_id,split,total_predictions,negative_cumulative,negative_cum_pct,decreasing_steps,decreasing_pct
+Baseline_Anas_Separate_hist,train,11760,0,0.0,0,0.0
+Baseline_Anas_Separate_hist,validation,2520,0,0.0,0,0.0
+Ridge | grid-normalised state,train,11760,0,0.0,0,0.0
+Ridge | grid-normalised state,validation,2520,0,0.0,0,0.0
+Ridge | grid-normalised state + geology,train,11760,0,0.0,0,0.0
+Ridge | grid-normalised state + geology,validation,2520,0,0.0,0,0.0
+Ridge | grid-normalised state + raw 4,train,11760,0,0.0,0,0.0
+Ridge | grid-normalised state + raw 4,validation,2520,0,0.0,0,0.0
+Ridge | production state (no grid),train,11760,0,0.0,0,0.0
+Ridge | production state (no grid),validation,2520,0,0.0,0,0.0
+SVR | grid-normalised state,train,11760,0,0.0,0,0.0
+SVR | grid-normalised state,validation,2520,0,0.0,0,0.0
+SVR | grid-normalised state + geology,train,11760,0,0.0,0,0.0
+SVR | grid-normalised state + geology,validation,2520,0,0.0,0,0.0
+SVR | grid-normalised state + raw 4,train,11760,0,0.0,0,0.0
+SVR | grid-normalised state + raw 4,validation,2520,0,0.0,0,0.0
+SVR | production state (no grid),train,11760,0,0.0,0,0.0
+SVR | production state (no grid),validation,2520,0,0.0,0,0.0
