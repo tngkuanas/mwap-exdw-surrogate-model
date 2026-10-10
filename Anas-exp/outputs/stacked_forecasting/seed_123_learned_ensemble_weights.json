@@ -1,0 +1,186 @@
+{
+  "2005_3yr_12q": {
+    "w_global_simplex": {
+      "Recursive_ExtraTrees": 0.22998118929057645,
+      "Learned_Exponential_DCA": 0.540037627985107,
+      "Learned_Hyperbolic_DCA": 0.0,
+      "Hybrid_Dynamic": 0.22998118272431642
+    },
+    "w_phase_oil": {
+      "Recursive_ExtraTrees": 0.22559366295447272,
+      "Learned_Exponential_DCA": 0.5488126537166814,
+      "Learned_Hyperbolic_DCA": 4.215378046623641e-16,
+      "Hybrid_Dynamic": 0.22559368332884552
+    },
+    "w_phase_water": {
+      "Recursive_ExtraTrees": 0.2639666096766644,
+      "Learned_Exponential_DCA": 0.23603339350894442,
+      "Learned_Hyperbolic_DCA": 0.23603339096948536,
+      "Hybrid_Dynamic": 0.26396660584490583
+    },
+    "w_piecewise_macro": {
+      "Q1-4": {
+        "Recursive_ExtraTrees": 0.5000000358357041,
+        "Learned_Exponential_DCA": 0.0,
+        "Learned_Hyperbolic_DCA": 0.0,
+        "Hybrid_Dynamic": 0.499999964164296
+      },
+      "Q5-12": {
+        "Recursive_ExtraTrees": 0.22643864242028366,
+        "Learned_Exponential_DCA": 0.5471227375904542,
+        "Learned_Hyperbolic_DCA": 5.828670879282072e-16,
+        "Hybrid_Dynamic": 0.22643861998926168
+      },
+      "Q13-20": {
+        "Recursive_ExtraTrees": 0.22998118929057645,
+        "Learned_Exponential_DCA": 0.540037627985107,
+        "Learned_Hyperbolic_DCA": 0.0,
+        "Hybrid_Dynamic": 0.22998118272431642
+      },
+      "Q21-28": {
+        "Recursive_ExtraTrees": 0.22998118929057645,
+        "Learned_Exponential_DCA": 0.540037627985107,
+        "Learned_Hyperbolic_DCA": 0.0,
+        "Hybrid_Dynamic": 0.22998118272431642
+      }
+    }
+  },
+  "2004_4yr_16q": {
+    "w_global_simplex": {
+      "Recursive_ExtraTrees": 1.7894140672141452e-17,
+      "Learned_Exponential_DCA": 0.9999999999999999,
+      "Learned_Hyperbolic_DCA": 0.0,
+      "Hybrid_Dynamic": 1.8735013540549517e-16
+    },
+    "w_phase_oil": {
+      "Recursive_ExtraTrees": 1.0378969428016111e-17,
+      "Learned_Exponential_DCA": 1.0,
+      "Learned_Hyperbolic_DCA": 0.0,
+      "Hybrid_Dynamic": 9.367506770274758e-17
+    },
+    "w_phase_water": {
+      "Recursive_ExtraTrees": 0.0,
+      "Learned_Exponential_DCA": 0.3138931592546128,
+      "Learned_Hyperbolic_DCA": 0.3138929220012768,
+      "Hybrid_Dynamic": 0.37221391874411036
+    },
+    "w_piecewise_macro": {
+      "Q1-4": {
+        "Recursive_ExtraTrees": 0.2057458110901359,
+        "Learned_Exponential_DCA": 0.29306068416857445,
+        "Learned_Hyperbolic_DCA": 0.2954477158497128,
+        "Hybrid_Dynamic": 0.2057457888915769
+      },
+      "Q5-12": {
+        "Recursive_ExtraTrees": 0.04964949461095992,
+        "Learned_Exponential_DCA": 0.900701005286273,
+        "Learned_Hyperbolic_DCA": 0.0,
+        "Hybrid_Dynamic": 0.049649500102767176
+      },
+      "Q13-20": {
+        "Recursive_ExtraTrees": 2.1680771134969218e-18,
+        "Learned_Exponential_DCA": 1.0,
+        "Learned_Hyperbolic_DCA": 0.0,
+        "Hybrid_Dynamic": 2.0816681711721685e-17
+      },
+      "Q21-28": {
+        "Recursive_ExtraTrees": 1.7894140672141452e-17,
+        "Learned_Exponential_DCA": 0.9999999999999999,
+        "Learned_Hyperbolic_DCA": 0.0,
+        "Hybrid_Dynamic": 1.8735013540549517e-16
+      }
+    }
+  },
+  "2003_5yr_20q": {
+    "w_global_simplex": {
+      "Recursive_ExtraTrees": 1.8973538018496312e-18,
+      "Learned_Exponential_DCA": 0.8432483546376708,
+      "Learned_Hyperbolic_DCA": 0.0,
+      "Hybrid_Dynamic": 0.15675164536232922
+    },
+    "w_phase_oil": {
+      "Recursive_ExtraTrees": 0.0,
+      "Learned_Exponential_DCA": 0.9266565034635438,
+      "Learned_Hyperbolic_DCA": 0.0,
+      "Hybrid_Dynamic": 0.0733434965364563
+    },
+    "w_phase_water": {
+      "Recursive_ExtraTrees": 0.1646375898691694,
+      "Learned_Exponential_DCA": 0.417681165364842,
+      "Learned_Hyperbolic_DCA": 0.41768124476598867,
+      "Hybrid_Dynamic": 0.0
+    },
+    "w_piecewise_macro": {
+      "Q1-4": {
+        "Recursive_ExtraTrees": 0.14153137381408884,
+        "Learned_Exponential_DCA": 0.7169374673266207,
+        "Learned_Hyperbolic_DCA": 1.381707248615527e-15,
+        "Hybrid_Dynamic": 0.14153115885928927
+      },
+      "Q5-12": {
+        "Recursive_ExtraTrees": 0.0878658880646798,
+        "Learned_Exponential_DCA": 0.8242683009736044,
+        "Learned_Hyperbolic_DCA": 0.0,
+        "Hybrid_Dynamic": 0.08786581096171586
+      },
+      "Q13-20": {
+        "Recursive_ExtraTrees": 3.7730235602495554e-17,
+        "Learned_Exponential_DCA": 0.8458620764428865,
+        "Learned_Hyperbolic_DCA": 6.709043043340301e-16,
+        "Hybrid_Dynamic": 0.15413792355711287
+      },
+      "Q21-28": {
+        "Recursive_ExtraTrees": 1.8973538018496312e-18,
+        "Learned_Exponential_DCA": 0.8432483546376708,
+        "Learned_Hyperbolic_DCA": 0.0,
+        "Hybrid_Dynamic": 0.15675164536232922
+      }
+    }
+  },
+  "2001_7yr_28q": {
+    "w_global_simplex": {
+      "Recursive_ExtraTrees": 0.29207692070868574,
+      "Learned_Exponential_DCA": 0.6647996101503983,
+      "Learned_Hyperbolic_DCA": 8.92481347072177e-16,
+      "Hybrid_Dynamic": 0.0431234691409151
+    },
+    "w_phase_oil": {
+      "Recursive_ExtraTrees": 0.24046649121524644,
+      "Learned_Exponential_DCA": 0.6179022920123803,
+      "Learned_Hyperbolic_DCA": 4.943961906533901e-17,
+      "Hybrid_Dynamic": 0.14163121677237328
+    },
+    "w_phase_water": {
+      "Recursive_ExtraTrees": 0.49716965081213516,
+      "Learned_Exponential_DCA": 0.2514151745939324,
+      "Learned_Hyperbolic_DCA": 0.2514151745939323,
+      "Hybrid_Dynamic": 4.2458679379136516e-20
+    },
+    "w_piecewise_macro": {
+      "Q1-4": {
+        "Recursive_ExtraTrees": 0.4837881565930443,
+        "Learned_Exponential_DCA": 0.0,
+        "Learned_Hyperbolic_DCA": 0.03242366595449751,
+        "Hybrid_Dynamic": 0.4837881774524582
+      },
+      "Q5-12": {
+        "Recursive_ExtraTrees": 0.3140801537864988,
+        "Learned_Exponential_DCA": 0.3718396928343963,
+        "Learned_Hyperbolic_DCA": 0.0,
+        "Hybrid_Dynamic": 0.31408015337910483
+      },
+      "Q13-20": {
+        "Recursive_ExtraTrees": 0.34682393602388506,
+        "Learned_Exponential_DCA": 0.5720720731045965,
+        "Learned_Hyperbolic_DCA": 1.9542744159051217e-16,
+        "Hybrid_Dynamic": 0.08110399087151832
+      },
+      "Q21-28": {
+        "Recursive_ExtraTrees": 0.26555618129722036,
+        "Learned_Exponential_DCA": 0.6934168640428762,
+        "Learned_Hyperbolic_DCA": 0.0,
+        "Hybrid_Dynamic": 0.04102695465990351
+      }
+    }
+  }
+}

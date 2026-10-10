@@ -1,0 +1,27 @@
+{
+  "backtest_7y_macro_nrmse_K2": 0.0015747298504774218,
+  "backtest_7y_macro_nrmse_K3": 0.0010696617203789583,
+  "backtest_7y_coverage_K2": 0.5817460317460318,
+  "backtest_7y_coverage_K3": 0.7412698412698413,
+  "water_cap_sensitivity_adjustments": {
+    "1.5": 0,
+    "2.0": 0,
+    "3.0": 0
+  },
+  "pre_constraint_violations": {
+    "total": 7200,
+    "nan_count": 0,
+    "negative_count": 0,
+    "decreasing_count": 2271,
+    "total_violations": 2271,
+    "violation_rate": 0.3154166666666667
+  },
+  "post_constraint_violations": {
+    "total": 7200,
+    "nan_count": 0,
+    "negative_count": 0,
+    "decreasing_count": 417,
+    "total_violations": 417,
+    "violation_rate": 0.057916666666666665
+  }
+}

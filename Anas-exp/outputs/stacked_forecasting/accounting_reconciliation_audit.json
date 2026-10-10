@@ -1,0 +1,34 @@
+{
+  "total_case_quarters_checked": 3400,
+  "discrepancies_count": 0,
+  "case_71_anchor_oil_cum": 39475008.0,
+  "case_1_anchor_oil_cum": 35150436.0,
+  "solution_gas_oil_ratio_constant": 0.3633,
+  "geological_parameter_ranges": {
+    "Fault Transmissibility": {
+      "min": 0.0501092562639241,
+      "mean": 0.09882112742554831,
+      "std": 0.029482243706448648,
+      "max": 0.149950356557919
+    },
+    "Porosity Multiplier": {
+      "min": 0.801219112725201,
+      "mean": 1.1444580553007364,
+      "std": 0.20261065975531986,
+      "max": 1.49402691732536
+    },
+    "Permeability Multiplier": {
+      "min": 0.537516403698843,
+      "mean": 5.240640056920012,
+      "std": 2.7181524112437665,
+      "max": 9.784546444085
+    },
+    "Aquifer Pore Volume": {
+      "min": 53.9529099398785,
+      "mean": 127.02386726961667,
+      "std": 42.80777928638081,
+      "max": 199.83520004883
+    }
+  },
+  "status": "PASSED_VERIFIED"
+}

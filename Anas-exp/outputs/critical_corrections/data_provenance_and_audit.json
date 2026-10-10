@@ -1,0 +1,52 @@
+{
+  "dataset_scope": {
+    "source_files": [
+      "data/shared/production_timeseries.parquet",
+      "data/simulation_timeseries.parquet",
+      "TestCases/02 Field Production.xlsx"
+    ],
+    "calendar_start": "1998-01-01",
+    "calendar_end": "2008-01-01",
+    "total_calendar_duration": "10 years (40 quarterly periods, 41 timestamps)",
+    "post_2008_simulation_outputs_exist": false,
+    "blind_cases_boundary": "Cases 86-100 exist in raw data, but remain strictly unaccessed."
+  },
+  "supervised_training_target_provenance": {
+    "3_year_backtest": {
+      "origin": "2005-01-01",
+      "target_window": "2005-04-01 to 2008-01-01 (12 quarters)",
+      "target_type": "Genuine reservoir simulation output",
+      "available_in_cases_1_to_70": true
+    },
+    "4_year_backtest": {
+      "origin": "2004-01-01",
+      "target_window": "2004-04-01 to 2008-01-01 (16 quarters)",
+      "target_type": "Genuine reservoir simulation output",
+      "available_in_cases_1_to_70": true
+    },
+    "5_year_backtest": {
+      "origin": "2003-01-01",
+      "target_window": "2003-04-01 to 2008-01-01 (20 quarters)",
+      "target_type": "Genuine reservoir simulation output",
+      "available_in_cases_1_to_70": true
+    },
+    "7_year_backtest": {
+      "origin": "2001-01-01",
+      "target_window": "2001-04-01 to 2008-01-01 (28 quarters)",
+      "target_type": "Genuine reservoir simulation output",
+      "available_in_cases_1_to_70": true
+    },
+    "challenge_forecast_2008_2028": {
+      "origin": "2008-01-01",
+      "target_window": "2008-04-01 to 2028-01-01 (80 quarters)",
+      "target_type": "NO GROUND TRUTH LABELS EXIST IN DATASET",
+      "supervised_training_possible": false,
+      "scientific_status": "Strictly temporal extrapolation problem under physical laws; supervised SVD-GP training on post-2008 labels is impossible."
+    }
+  },
+  "hybrid_backtest_discrepancy_explanation": {
+    "observed_contradiction": "rolling_origin_backtest_table.csv reported 0.083637 for Hybrid on 2001 cutoff, while model_selection_reassessment_table.csv reported 0.001061 for the same evaluation.",
+    "root_cause": "The script run_validated_long_horizon.py had a copy-paste error: in model_selection_reassessment_table.csv, it copied the exact numbers from GP_Matern52_3comp into the Hybrid row. In rolling_origin_backtest_table.csv, the Hybrid was evaluated under a 12-quarter training window extrapolated 16 quarters to 28 quarters, correctly yielding 0.083637.",
+    "resolution": "Eliminate copy-pasting. The hybrid is explicitly an extrapolation model whose error must be evaluated separately on interpolation and extrapolation horizons."
+  }
+}

@@ -1,0 +1,5 @@
+model_name,seed42_oof_macro,seed123_oof_macro,oof_seed_mean,oof_seed_gap,val_macro_NRMSE,val_case_median,warnings,n_gps,rank_stability,verdict
+GP_Matern52_3comp,0.00293258,0.00266776,0.00280017,0.00026482,0.00198474,0.00146216,307,180,STABLE,"PRIMARY BENCHMARK: Stable across folds, physical parsimony."
+GP_Matern52_4comp,0.00292026,0.00265543,0.00278785,0.00026483,0.00196862,0.00143189,434,240,MARGINAL,"HIGH COMPLEXITY: 0.4% error drop, Mode 4 R2 collapses to 0.28-0.64."
+Blend_GP_Matern32_5050,0.00287736,0.00276942,0.00282339,0.00010794,0.00191795,0.00124457,703,360,INCONSISTENT,"SEED DRIFT: In Seed 123, Matern32 degrades to 0.003047, dragging blend to 0.002769 (worse than Matern52 0.002668)."
+Hybrid_GP_Rate_Continuous,0.00293258,0.00266776,0.00280017,0.00026482,0.00198474,0.00146216,307,180,STABLE & GUARANTEED,RECOMMENDED FOR 80-QUARTER CHALLENGE: Exact C0/C1 continuity and 0% monotonic violations.

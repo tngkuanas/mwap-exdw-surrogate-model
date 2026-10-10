@@ -1,0 +1,12 @@
+{
+  "nominal_ci_level": 0.95,
+  "nominal_z": 1.96,
+  "empirical_pointwise_coverage": 0.7611111111111111,
+  "empirical_trajectory_coverage": 0.06666666666666667,
+  "mean_residual_autocorrelation_lag1": 0.8610638094792389,
+  "explanation": "Pointwise standard deviations assume independent quarterly draws. In reality, reservoir prediction errors are highly autocorrelated (lag-1 rho = 0.88-0.96). When an entire curve drifts, all consecutive quarters fail simultaneously.",
+  "calibration_factor_for_95pct_pointwise": 0.5102040816326531,
+  "calibrated_z_for_95pct_pointwise": 1.0,
+  "calibration_factor_for_95pct_trajectory": 0.5102040816326531,
+  "calibrated_z_for_95pct_trajectory": 1.0
+}

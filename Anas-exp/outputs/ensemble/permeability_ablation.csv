@@ -1,0 +1,5 @@
+configuration,oil_dev_NRMSE
+All 4 Parameters (Raw),0.13926905622045907
+All 4 Parameters (Log-Transformed),0.13926905622045907
+Porosity Only,0.13926905622045907
+Porosity + Permeability,0.13926905622045907

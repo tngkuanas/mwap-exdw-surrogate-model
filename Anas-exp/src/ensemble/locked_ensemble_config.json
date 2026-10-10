@@ -1,0 +1,114 @@
+{
+  "model_name": "Blend_Phase_Specific_Simplex",
+  "status": "FROZEN",
+  "version": "1.0.0",
+  "description": "Locked Phase-Specific Simplex Stacked Ensemble for 20-Year Long-Horizon Production Forecasting",
+  "evaluation_metrics": {
+    "nested_outer_oof_macro_nrmse": 0.04960,
+    "validation_macro_nrmse": 0.04924,
+    "oil_cum_nrmse": 0.04080,
+    "gas_cum_nrmse": 0.04080,
+    "water_cum_nrmse": 0.06625,
+    "standalone_hyp_dca_macro_nrmse": 0.18749,
+    "error_reduction_vs_dca_pct": 73.73,
+    "bootstrap_p_value": 0.0001,
+    "win_rate_vs_standalone": "15/15 (100%)"
+  },
+  "base_models": [
+    "Recursive_ExtraTrees",
+    "Learned_Exponential_DCA",
+    "Learned_Hyperbolic_DCA",
+    "Hybrid_Dynamic"
+  ],
+  "weights": {
+    "oil": {
+      "Recursive_ExtraTrees": 0.24046649121524644,
+      "Learned_Exponential_DCA": 0.6179022920123803,
+      "Learned_Hyperbolic_DCA": 0.0,
+      "Hybrid_Dynamic": 0.14163121677237328
+    },
+    "water": {
+      "Recursive_ExtraTrees": 0.49716965081213516,
+      "Learned_Exponential_DCA": 0.2514151745939324,
+      "Learned_Hyperbolic_DCA": 0.2514151745939323,
+      "Hybrid_Dynamic": 0.0
+    }
+  },
+  "physics": {
+    "solution_gas_oil_ratio_rs_mscf_per_stb": 0.3633,
+    "gas_coupling_formula": "Q_g(t) = Q_{g,0} + 0.3633 * (Q_o(t) - Q_{o,0})",
+    "gas_rate_formula": "q_g(t) = 0.3633 * q_o(t)",
+    "non_negative_rates": true,
+    "monotonic_cumulatives": true,
+    "anchor_preservation": true,
+    "tail_stabilization": "Exponential DCA anchoring (61.8% oil weight) prevents late-time hyperbolic divergence"
+  },
+  "forecast_horizons": {
+    "Case 1": {
+      "num_quarters": 40,
+      "years": 10.0,
+      "start_date": "2008-04-01",
+      "end_date": "2018-01-01"
+    },
+    "Case 2": {
+      "num_quarters": 80,
+      "years": 20.0,
+      "start_date": "2008-04-01",
+      "end_date": "2028-01-01"
+    },
+    "Case 3": {
+      "num_quarters": 80,
+      "years": 20.0,
+      "start_date": "2008-04-01",
+      "end_date": "2028-01-01"
+    },
+    "Case 4": {
+      "num_quarters": 80,
+      "years": 20.0,
+      "start_date": "2008-04-01",
+      "end_date": "2028-01-01"
+    },
+    "Case 5": {
+      "num_quarters": 80,
+      "years": 20.0,
+      "start_date": "2008-04-01",
+      "end_date": "2028-01-01"
+    },
+    "Case 6": {
+      "num_quarters": 80,
+      "years": 20.0,
+      "start_date": "2008-04-01",
+      "end_date": "2028-01-01"
+    },
+    "Case 7": {
+      "num_quarters": 80,
+      "years": 20.0,
+      "start_date": "2008-04-01",
+      "end_date": "2028-01-01"
+    },
+    "Case 8": {
+      "num_quarters": 80,
+      "years": 20.0,
+      "start_date": "2008-04-01",
+      "end_date": "2028-01-01"
+    },
+    "Case 9": {
+      "num_quarters": 80,
+      "years": 20.0,
+      "start_date": "2008-04-01",
+      "end_date": "2028-01-01"
+    },
+    "Case 10": {
+      "num_quarters": 80,
+      "years": 20.0,
+      "start_date": "2008-04-01",
+      "end_date": "2028-01-01"
+    }
+  },
+  "training_constraints": {
+    "permitted_training_cases": [1, 70],
+    "permitted_validation_cases": [71, 85],
+    "prohibited_test_cases": [86, 100],
+    "random_seed": 123
+  }
+}

@@ -1,0 +1,3 @@
+model_id,split,total_predictions,negative_cumulative,negative_cum_pct,decreasing_steps,decreasing_pct
+Strict_b0_Anas,train,11760,0,0.0,0,0.0
+Strict_b0_Anas,validation,2520,0,0.0,0,0.0

@@ -1,0 +1,22 @@
+{
+  "cross_fitted_gamma_folds": [
+    1.7184024279578531,
+    1.4376372697094193,
+    2.02206943112187,
+    1.5694029472303888,
+    1.8571416874175473
+  ],
+  "mean_calibrated_gamma": 1.7209307526874156,
+  "effective_calibrated_z": 3.3730242752673343,
+  "validation_cases_71_to_85_uncalibrated": {
+    "nominal_level": 0.95,
+    "pointwise_coverage": 0.8933333333333333,
+    "simultaneous_trajectory_coverage": 0.7333333333333333
+  },
+  "validation_cases_71_to_85_calibrated": {
+    "nominal_level": 0.95,
+    "pointwise_coverage": 0.95,
+    "simultaneous_trajectory_coverage": 0.8
+  },
+  "extrapolation_uncertainty_limitation": "For horizons beyond 2008 (unobserved future), GP aleatoric covariance only captures parameter sensitivity within the surrogate. Epistemic uncertainty in the decline rate D_extrap and decline curvature b cannot be calibrated from data and must be represented by parametric scenario bounds (e.g. D +/- 50%)."
+}

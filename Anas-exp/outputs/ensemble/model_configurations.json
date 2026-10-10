@@ -1,0 +1,149 @@
+{
+  "timestamp": "2026-10-09 11:26:41",
+  "training_cases": 70,
+  "validation_cases": 15,
+  "cv_folds": 5,
+  "experiments": [
+    [
+      "2003-01-01",
+      3
+    ],
+    [
+      "2003-01-01",
+      5
+    ],
+    [
+      "2004-01-01",
+      3
+    ],
+    [
+      "2005-01-01",
+      3
+    ]
+  ],
+  "core_four_families": {
+    "Family1_ParametricDecline": {
+      "model": "StrictExponential",
+      "b": 0.0,
+      "window_years": 3.0
+    },
+    "Family2_LowRankRegression": {
+      "model": "SVD_Ridge",
+      "n_components": 1,
+      "alpha": 5.0
+    },
+    "Family3_GaussianProcess": {
+      "model": "GP_Matern",
+      "nu": 2.5,
+      "noise_level": 0.01,
+      "n_components": 1
+    },
+    "Family4_NonlinearRegression": {
+      "model": "PolynomialRidge",
+      "degree": 2,
+      "alpha": 20.0,
+      "n_components": 1
+    }
+  },
+  "meta_models": {
+    "SimpleAverage": {
+      "type": "Unweighted arithmetic mean"
+    },
+    "NonNegativeWeighted": {
+      "weights": {
+        "oil_cum": [
+          0.25,
+          0.25,
+          0.25,
+          0.25
+        ],
+        "gas_cum": [
+          0.25,
+          0.25,
+          0.25,
+          0.25
+        ],
+        "water_cum": [
+          0.25,
+          0.25,
+          0.25,
+          0.25
+        ]
+      }
+    },
+    "RidgeMeta": {
+      "alpha": 10.0,
+      "intercept": true
+    }
+  },
+  "physical_constraints": {
+    "anchor_preservation": true,
+    "monotonic_cumulative": true,
+    "water_rate_cap": "2.0x observed historical rate"
+  },
+  "validation_results_summary": [
+    {
+      "model_id": "Family3_GaussianProcess",
+      "split": "validation",
+      "mean_dev_NRMSE": 0.010979450206774415,
+      "worst_exp_NRMSE": 0.019646550755746128,
+      "median_dev_NRMSE": 0.008781652703483954,
+      "experiments_scored": 4,
+      "total_violations": 233
+    },
+    {
+      "model_id": "Stack_RidgeMeta",
+      "split": "validation",
+      "mean_dev_NRMSE": 0.012548319533625608,
+      "worst_exp_NRMSE": 0.023333944149461855,
+      "median_dev_NRMSE": 0.009627087717093547,
+      "experiments_scored": 4,
+      "total_violations": 219
+    },
+    {
+      "model_id": "Family2_LowRank_1comp",
+      "split": "validation",
+      "mean_dev_NRMSE": 0.019733151295404424,
+      "worst_exp_NRMSE": 0.020791599783296918,
+      "median_dev_NRMSE": 0.019680617710865947,
+      "experiments_scored": 4,
+      "total_violations": 302
+    },
+    {
+      "model_id": "Family4_PolynomialRidge",
+      "split": "validation",
+      "mean_dev_NRMSE": 0.02311426096342718,
+      "worst_exp_NRMSE": 0.02402183953774049,
+      "median_dev_NRMSE": 0.023247923641960894,
+      "experiments_scored": 4,
+      "total_violations": 285
+    },
+    {
+      "model_id": "Stack_SimpleAverage",
+      "split": "validation",
+      "mean_dev_NRMSE": 0.03628111116933589,
+      "worst_exp_NRMSE": 0.06812421269008721,
+      "median_dev_NRMSE": 0.03146679671016011,
+      "experiments_scored": 4,
+      "total_violations": 260
+    },
+    {
+      "model_id": "Stack_NonNegativeWeighted",
+      "split": "validation",
+      "mean_dev_NRMSE": 0.03628111116933589,
+      "worst_exp_NRMSE": 0.06812421269008721,
+      "median_dev_NRMSE": 0.03146679671016011,
+      "experiments_scored": 4,
+      "total_violations": 260
+    },
+    {
+      "model_id": "Family1_StrictExponential",
+      "split": "validation",
+      "mean_dev_NRMSE": 0.1688749827370134,
+      "worst_exp_NRMSE": 0.3072710982234785,
+      "median_dev_NRMSE": 0.15828895339034865,
+      "experiments_scored": 4,
+      "total_violations": 0
+    }
+  ]
+}

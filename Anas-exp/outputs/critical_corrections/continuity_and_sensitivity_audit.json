@@ -1,0 +1,98 @@
+[
+  {
+    "case_num": 71,
+    "phase": "oil_cum",
+    "D_quarterly_fitted": 0.00125,
+    "q_star_quarter": 10000.0,
+    "first_extrapolated_quarter_volume": 9993.752603352668,
+    "discrete_rate_ratio_ext_vs_prior": 0.9993752603352668,
+    "instantaneous_derivative_continuity": "Exact C1 in continuous domain; discrete finite difference drops by factor (1 - exp(-D))/D ~ 1 - D/2",
+    "sensitivity_to_D_40q_continuation": {
+      "D_0.010": 379679.9539643607,
+      "D_0.020": 325335.51794138923,
+      "D_0.035": 265258.0103023981,
+      "D_0.050": 222932.94335267745,
+      "D_0.100": 148168.43611112656
+    }
+  },
+  {
+    "case_num": 71,
+    "phase": "water_cum",
+    "D_quarterly_fitted": 0.00125,
+    "q_star_quarter": 10000.0,
+    "first_extrapolated_quarter_volume": 9993.752603352668,
+    "discrete_rate_ratio_ext_vs_prior": 0.9993752603352668,
+    "instantaneous_derivative_continuity": "Exact C1 in continuous domain; discrete finite difference drops by factor (1 - exp(-D))/D ~ 1 - D/2",
+    "sensitivity_to_D_40q_continuation": {
+      "D_0.010": 379679.9539643607,
+      "D_0.020": 325335.51794138923,
+      "D_0.035": 265258.0103023981,
+      "D_0.050": 222932.94335267745,
+      "D_0.100": 148168.43611112656
+    }
+  },
+  {
+    "case_num": 75,
+    "phase": "oil_cum",
+    "D_quarterly_fitted": 0.007482494053243298,
+    "q_star_quarter": 10000.0,
+    "first_extrapolated_quarter_volume": 9962.680668303528,
+    "discrete_rate_ratio_ext_vs_prior": 0.9962680668303528,
+    "instantaneous_derivative_continuity": "Exact C1 in continuous domain; discrete finite difference drops by factor (1 - exp(-D))/D ~ 1 - D/2",
+    "sensitivity_to_D_40q_continuation": {
+      "D_0.010": 379679.9539643607,
+      "D_0.020": 325335.51794138923,
+      "D_0.035": 265258.0103023981,
+      "D_0.050": 222932.94335267745,
+      "D_0.100": 148168.43611112656
+    }
+  },
+  {
+    "case_num": 75,
+    "phase": "water_cum",
+    "D_quarterly_fitted": 0.00125,
+    "q_star_quarter": 10000.0,
+    "first_extrapolated_quarter_volume": 9993.752603352668,
+    "discrete_rate_ratio_ext_vs_prior": 0.9993752603352668,
+    "instantaneous_derivative_continuity": "Exact C1 in continuous domain; discrete finite difference drops by factor (1 - exp(-D))/D ~ 1 - D/2",
+    "sensitivity_to_D_40q_continuation": {
+      "D_0.010": 379679.9539643607,
+      "D_0.020": 325335.51794138923,
+      "D_0.035": 265258.0103023981,
+      "D_0.050": 222932.94335267745,
+      "D_0.100": 148168.43611112656
+    }
+  },
+  {
+    "case_num": 82,
+    "phase": "oil_cum",
+    "D_quarterly_fitted": 0.00125,
+    "q_star_quarter": 10000.0,
+    "first_extrapolated_quarter_volume": 9993.752603352668,
+    "discrete_rate_ratio_ext_vs_prior": 0.9993752603352668,
+    "instantaneous_derivative_continuity": "Exact C1 in continuous domain; discrete finite difference drops by factor (1 - exp(-D))/D ~ 1 - D/2",
+    "sensitivity_to_D_40q_continuation": {
+      "D_0.010": 379679.9539643607,
+      "D_0.020": 325335.51794138923,
+      "D_0.035": 265258.0103023981,
+      "D_0.050": 222932.94335267745,
+      "D_0.100": 148168.43611112656
+    }
+  },
+  {
+    "case_num": 82,
+    "phase": "water_cum",
+    "D_quarterly_fitted": 0.00125,
+    "q_star_quarter": 10000.0,
+    "first_extrapolated_quarter_volume": 9993.752603352668,
+    "discrete_rate_ratio_ext_vs_prior": 0.9993752603352668,
+    "instantaneous_derivative_continuity": "Exact C1 in continuous domain; discrete finite difference drops by factor (1 - exp(-D))/D ~ 1 - D/2",
+    "sensitivity_to_D_40q_continuation": {
+      "D_0.010": 379679.9539643607,
+      "D_0.020": 325335.51794138923,
+      "D_0.035": 265258.0103023981,
+      "D_0.050": 222932.94335267745,
+      "D_0.100": 148168.43611112656
+    }
+  }
+]
