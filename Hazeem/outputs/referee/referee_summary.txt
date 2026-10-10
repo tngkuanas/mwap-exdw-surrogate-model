@@ -1,0 +1,9 @@
+SVR | grid-normalised state: PASS | mean_dev=0.0829 | worst_exp=0.1418 | violations=0
+Ridge | grid-normalised state: PASS | mean_dev=0.1096 | worst_exp=0.1761 | violations=0
+SVR | grid-normalised state + raw 4: PASS | mean_dev=0.1131 | worst_exp=0.1973 | violations=0
+SVR | production state (no grid): PASS | mean_dev=0.1133 | worst_exp=0.2052 | violations=0
+Ridge | grid-normalised state + raw 4: PASS | mean_dev=0.1152 | worst_exp=0.1791 | violations=0
+Ridge | grid-normalised state + geology: PASS | mean_dev=0.1154 | worst_exp=0.1793 | violations=0
+SVR | grid-normalised state + geology: PASS | mean_dev=0.1203 | worst_exp=0.2055 | violations=0
+Ridge | production state (no grid): PASS | mean_dev=0.1205 | worst_exp=0.2081 | violations=0
+Baseline_Anas_Separate_hist: PASS | mean_dev=0.1525 | worst_exp=0.3006 | violations=0
