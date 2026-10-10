@@ -1,0 +1,30 @@
+{
+  "finding_1_target_svd_basis": {
+    "target": "Future cumulative increments Delta_Q(t) = Q(t) - Q(t0)",
+    "dimension": "Fitted per (phase, horizon, origin) on (N_train x T_quarters) matrix.",
+    "source_location": "src/ensemble/run_master_ensemble_discovery.py:348-355",
+    "audit_verdict": "Mathematically sound for T <= 28 quarters, but basis is strictly bounded to the evaluation window."
+  },
+  "finding_2_historical_trajectory_representation": {
+    "finding": "SVD basis represents future cumulative increments exclusively. Historical trajectory variation is NOT in the basis.",
+    "history_link": "History enters solely via a 1D scalar feature: Q(t0) / mean(Q(t0)).",
+    "source_location": "src/ensemble/run_master_ensemble_discovery.py:63-65",
+    "audit_verdict": "All dynamic history (rate of decline, water-cut slope, GOR evolution) is discarded prior to origin."
+  },
+  "finding_3_how_gp_generates_80_quarter_forecast": {
+    "finding": "In audit_long_horizon.py:185-245, the GP model was NEVER EVALUATED for the 20-year forecast.",
+    "reality": "The code initialized inc_tr = [] and never fit a GP. Instead, it substituted hard-coded parametric multipliers multiplied by an ad-hoc Gram-Schmidt synthetic basis.",
+    "source_location": "src/ensemble/audit_long_horizon.py:201-245",
+    "audit_verdict": "The reported 20-year forecast was 100% an imposed synthetic trajectory, not a learned surrogate prediction."
+  },
+  "finding_4_connection_between_synthetic_and_svd_basis": {
+    "finding": "Zero mathematical connection exists between the synthetic polynomial basis (b1, b2, b3) and the learned SVD eigenvectors (Vt).",
+    "source_location": "src/ensemble/audit_long_horizon.py:201-215",
+    "audit_verdict": "The synthetic basis was unconstrained orthogonal polynomials, which oscillate and produce artificial decreasing steps."
+  },
+  "finding_5_coefficient_transfer_validity": {
+    "finding": "No projection tensor or basis transformation was applied. Coefficients were hard-coded heuristics (coeffs_c[0] = inc * 0.95, coeffs_c[1] = inc * 0.08 * (perm/5 - 1)).",
+    "source_location": "src/ensemble/audit_long_horizon.py:236-242",
+    "audit_verdict": "Methodologically invalid. An actual surrogate model must predict valid coordinates in a continuous or rate-integrated basis."
+  }
+}

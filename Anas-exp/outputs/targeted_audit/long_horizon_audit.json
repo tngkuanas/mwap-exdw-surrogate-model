@@ -1,0 +1,64 @@
+{
+  "point_construction": {
+    "validation_cases": 15,
+    "phases": 3,
+    "quarters": 80,
+    "ranks_evaluated": [
+      2,
+      3
+    ],
+    "total_evaluated_points": 7200,
+    "formula": "15 cases * 3 phases * 80 quarters * 2 ranks = 7200 points"
+  },
+  "flawed_audit_reconstruction": {
+    "decreasing_count": 2271,
+    "total": 7200,
+    "rate": 0.3154166666666667,
+    "explanation": "Flawed script assigned model_id='GP_20y' to both K=2 and K=3 without grouping by rank_K. Sorting by date interleaved K=2 and K=3 on identical dates, generating 1437 spurious negative jumps between models."
+  },
+  "corrected_audit": {
+    "total_points": 7200,
+    "genuine_decreasing_total": 834,
+    "genuine_rate": 0.11583333333333333,
+    "K2_violations": 426,
+    "K3_violations": 408,
+    "quarter_distribution": {
+      "53": 3,
+      "54": 3,
+      "55": 3,
+      "56": 9,
+      "57": 9,
+      "58": 9,
+      "59": 12,
+      "60": 12,
+      "61": 12,
+      "62": 15,
+      "63": 15,
+      "64": 18,
+      "65": 18,
+      "66": 18,
+      "67": 18,
+      "68": 18,
+      "69": 18,
+      "70": 18,
+      "71": 18,
+      "72": 18,
+      "73": 18,
+      "74": 18,
+      "75": 18,
+      "76": 18,
+      "77": 18,
+      "78": 18,
+      "79": 18,
+      "80": 18
+    },
+    "phase_distribution": {
+      "gas_cum": 136,
+      "oil_cum": 136,
+      "water_cum": 136
+    },
+    "max_negative_step": -6188.044816015288,
+    "mean_negative_step": -1418.656073363192,
+    "root_cause": "Synthetic orthogonal polynomial basis modes b2 and b3 have negative time-derivatives at early quarters (t <= 15). When high-permeability cases assign positive weight to b2, the derivative dQ/dt becomes negative."
+  }
+}

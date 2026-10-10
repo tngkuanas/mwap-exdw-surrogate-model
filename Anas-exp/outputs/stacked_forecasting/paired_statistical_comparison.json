@@ -1,0 +1,15 @@
+{
+  "cutoff": "2001-01-01",
+  "horizon_years": 7,
+  "ensemble_model": "Horizon_Phase_Specific_Adaptive",
+  "standalone_model": "Learned_Hyperbolic_DCA",
+  "mean_diff": -0.011204758971274386,
+  "median_diff": -0.03797337045991292,
+  "bootstrap_ci_95": [
+    -0.036678558725507786,
+    0.01871940644980088
+  ],
+  "ensemble_wins": 11,
+  "total_cases": 15,
+  "win_rate": 0.7333333333333333
+}

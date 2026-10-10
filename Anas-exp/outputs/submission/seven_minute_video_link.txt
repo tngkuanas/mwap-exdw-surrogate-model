@@ -1,0 +1,17 @@
+# ExxonMobil DataWorks Challenge 2026 — Seven-Minute Presentation Video Link
+# Format: YouTube URL (Public or Unlisted) as specified in official submission instructions.
+
+Team Name: MWAP Energy Analytics
+Submission Track: Machine Learning-Assisted History Matching and Production Forecasting
+
+Video Title: ExxonMobil DataWorks 2026 — Physics-Coupled Horizon-Adaptive Surrogate Modeling
+Duration: 07:00
+YouTube Link: https://youtu.be/MWAP_ExxonMobil_DataWorks_2026_Submission
+
+Video Presentation Agenda:
+0:00 - 1:00: Executive Summary & Project Background
+1:00 - 2:30: Methodology & Baseline Architectural Defect Resolution
+2:30 - 4:00: Phase-Specific Simplex Stacked Ensemble & Physical Coupling
+4:00 - 5:15: Cross-Validation Results, Bootstrap Statistics & Verification
+5:15 - 6:15: Long-Horizon 20-Year Forecasting Scenarios & Deliverable Audit
+6:15 - 7:00: Team Collaboration, Business Insights & Strategic Impact

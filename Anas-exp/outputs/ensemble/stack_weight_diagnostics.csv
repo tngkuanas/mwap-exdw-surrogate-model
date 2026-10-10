@@ -1,0 +1,6 @@
+stack_type,base_model,coefficient,intercept
+Ridge_2Family,Family2_LowRank_1comp,0.23892823301370514,3815.1040762513876
+Ridge_2Family,Family3_GP_Matern,0.7605157468222187,3815.1040762513876
+Ridge_3Family,Family1_StrictExponential,0.010478800863890995,11400.530735827982
+Ridge_3Family,Family2_LowRank_1comp,0.24652196184569364,11400.530735827982
+Ridge_3Family,Family3_GP_Matern,0.741799569456145,11400.530735827982
