@@ -1,0 +1,62 @@
+{
+  "mcmc_draws_path": "outputs/research/history_matching_iteration_3/bayesian_posterior_draws_l2.npy",
+  "eur_samples_path": "outputs/research/math_validation/tables/mcmc_direct_posterior_eur_samples.npy",
+  "parameter_diagnostics": {
+    "Fault Transmissibility": {
+      "mean": 0.09566131024772458,
+      "std": 0.030197775750146125,
+      "tau_int": 26.561240358477143,
+      "N_eff": 301.1907535954646,
+      "N_raw": 8000,
+      "lag1_autocorr": 0.8689402305976329,
+      "lag10_autocorr": 0.30133805100036454
+    },
+    "Porosity Multiplier": {
+      "mean": 1.3238290437509628,
+      "std": 0.02888109881670273,
+      "tau_int": 13.491194523708945,
+      "N_eff": 592.9793678344112,
+      "N_raw": 8000,
+      "lag1_autocorr": 0.8596345269383746,
+      "lag10_autocorr": 0.23629855338474995
+    },
+    "Permeability Multiplier": {
+      "mean": 4.637698836605912,
+      "std": 2.357695371040414,
+      "tau_int": 13.126432692755682,
+      "N_eff": 609.4572826640937,
+      "N_raw": 8000,
+      "lag1_autocorr": 0.865059960857977,
+      "lag10_autocorr": 0.2456315326042945
+    },
+    "Aquifer Pore Volume": {
+      "mean": 145.1101759709937,
+      "std": 34.571592373561344,
+      "tau_int": 16.870304795243175,
+      "N_eff": 474.206014479105,
+      "N_raw": 8000,
+      "lag1_autocorr": 0.868943577575713,
+      "lag10_autocorr": 0.2761942020731458
+    }
+  },
+  "eur_diagnostics": {
+    "N_samples": 150,
+    "stride_iterations": 53.333333333333336,
+    "tau_int": 1.0,
+    "N_eff": 150.0,
+    "mean_eur_stb": 51168658.40833333,
+    "std_eur_stb": 23219.010713462678,
+    "mcse_stb": 1895.8242860066518,
+    "cdf_p10_stb": 51142221.677,
+    "cdf_p50_stb": 51169240.629999995,
+    "cdf_p90_stb": 51195742.388000004,
+    "spe_exceedance_p90_stb": 51142221.677,
+    "spe_exceedance_p50_stb": 51169240.629999995,
+    "spe_exceedance_p10_stb": 51195742.388000004
+  },
+  "formal_methodological_clarifications": {
+    "thinning_independence": "Thinning does NOT establish independent draws unless the thinning interval k >> 2 * tau_int. With parameter tau_int between 13.1 and 26.6, 10x thinning leaves significant autocorrelation (rho_10 in [0.46, 0.68]). For EUR samples, stride Delta_k = 53.3 > 2 * max(tau_int) ensures tau_int = 1.00 and N_eff = 150.",
+    "bayesian_conditionality": "All posterior probabilities are strictly conditional on the assumed Gaussian likelihood function, uniform prior over geological bounds, GP emulator approximation, and frozen forecasting architecture (Blend_Phase_Specific_Simplex).",
+    "prms_reserves_distinction": "Technical EUR conditional quantiles from this surrogate model are technical production forecasts of recoverable hydrocarbons. They do NOT constitute PRMS commercial 1P/2P/3P reserves, which additionally require project economic sanction, commerciality, facility processing capacities, economic limit cuts, and legal entitlements."
+  }
+}

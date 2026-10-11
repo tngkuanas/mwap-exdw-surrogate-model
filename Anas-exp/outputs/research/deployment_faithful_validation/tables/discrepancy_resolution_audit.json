@@ -1,12 +1,23 @@
 {
   "dca_nrmse_reconciliation": {
-    "metric": "Macro NRMSE of Retrospective Challenger",
+    "metric": "Macro NRMSE of Retrospective Challenger at 2001 Origin",
     "value_evaluation_script": 0.4532,
     "value_challenger_script": 0.4013,
     "discrepancy_delta": 0.0519,
     "root_cause_1": "Water Rate Equation: Asymptotic exponential relaxation with Dw=0.20 (0.4532) vs. unconstrained linear growth qw_0 + growth*t (0.4013)",
     "root_cause_2": "Parameter Clamp Floor: D_pred clamped at 0.01 in evaluation script vs 0.005 in challenger script",
     "scientific_resolution": "Both implementations suffered from the same 2001 startup data collapse defect; both are superseded by maturity-matched 2004-2005 evaluations."
+  },
+  "dca_jan2008_predictions_reconciliation": {
+    "case1_predicted_D": 0.19383221122661198,
+    "case1_standalone_dca_eur_stb": 46356530.148237795,
+    "case2_predicted_D": 0.19410233091833454,
+    "case2_standalone_dca_eur_stb": 47493064.09146137,
+    "erroneous_prior_narrative_case1_D": 0.1656,
+    "erroneous_prior_narrative_case1_eur": 46730958.0,
+    "erroneous_prior_narrative_case2_D": 0.1659,
+    "erroneous_prior_narrative_case2_eur": 47511873.0,
+    "cause_of_discrepancy": "Prior report narrative accidentally transcribed values from a preliminary single-anchor test rather than the authoritative deployed_estimator_audit.json output. The JSON values are authoritative."
   },
   "geological_parameter_reconciliation": {
     "Case_2": {
