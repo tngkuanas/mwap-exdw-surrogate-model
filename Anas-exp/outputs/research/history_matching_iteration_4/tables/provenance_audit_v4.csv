@@ -1,0 +1,6 @@
+artifact_name,logical_role,file_path,file_size_bytes,row_count,sha256_hash,audit_status
+Raw Simulation Timeseries,"Physics Ground Truth (100 Cases, 1998-2008)",/Users/tengkuanas/Projects/mwap-exdw-surrogate-model/data/simulation_timeseries.parquet,844835,17222,11372e1a4add02bc50ec2e02574260d5039812581706551c1d6a2cee40fb056e,VERIFIED_OK
+Field Production History,"Observed History to Match (Case 0, 1998-2008)",/Users/tengkuanas/Projects/mwap-exdw-surrogate-model/data/field_history.parquet,11244,41,6c6d442077af1799b94a523dd0cb1b16935ab78d26a3263d95bf58f9e8b48287,VERIFIED_OK
+Uncertainty Parameter Table (Parquet),Geological Reservoir Parameters (100 Cases),/Users/tengkuanas/Projects/mwap-exdw-surrogate-model/data/shared/uncertainty_params.parquet,8510,100,316f1c4b8abbb163b6e60bca3f4712c768cf27a919d23da069348e0197ce9188,VERIFIED_OK
+Production Timeseries (Shared),Production History and Anchor Table,/Users/tengkuanas/Projects/mwap-exdw-surrogate-model/data/shared/production_timeseries.parquet,12732463,6724340,037fd2f8fa29c6db6c9e3f0df6b52527e8e15b879efe22f3e8329a3d86efe4eb,VERIFIED_OK
+Locked Ensemble Config JSON,Frozen Stacked Forecasting Weights & Rules,/Users/tengkuanas/Projects/mwap-exdw-surrogate-model/Anas-exp/src/ensemble/locked_ensemble_config.json,3126,1,c51a3614f81080719fc45cd0bb6b407f3a873de8aeea76dcd6cd921d54dad9a3,VERIFIED_OK
