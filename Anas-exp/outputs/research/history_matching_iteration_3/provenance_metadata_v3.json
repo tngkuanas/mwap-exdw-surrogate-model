@@ -1,0 +1,72 @@
+{
+  "iteration": "Research Iteration 3",
+  "timestamp": "2026-10-11T11:03:08.302817",
+  "git_commit": "a02f9810c88180ec21eafd2390cce4e72c59cd10",
+  "git_branch": "research/history-matching-integrity-v3",
+  "canonical_parameter_schema": [
+    "Fault_Transmissibility",
+    "Porosity_Multiplier",
+    "Permeability_Multiplier",
+    "Aquifer_Pore_Volume"
+  ],
+  "parameter_bounds": {
+    "Fault_Transmissibility": [
+      0.0001,
+      1.0
+    ],
+    "Porosity_Multiplier": [
+      0.75,
+      1.45
+    ],
+    "Permeability_Multiplier": [
+      0.2,
+      10.0
+    ],
+    "Aquifer_Pore_Volume": [
+      10.0,
+      200.0
+    ]
+  },
+  "tracked_files": {
+    "field_history_parquet": "/Users/tengkuanas/Projects/mwap-exdw-surrogate-model/Anas-exp/../data/field_history.parquet",
+    "clean_simulation_quarterly": "/Users/tengkuanas/Projects/mwap-exdw-surrogate-model/Anas-exp/../data/clean_simulation_quarterly.parquet",
+    "uncertainty_params": "/Users/tengkuanas/Projects/mwap-exdw-surrogate-model/data/shared/uncertainty_params.parquet",
+    "locked_ensemble_config": "/Users/tengkuanas/Projects/mwap-exdw-surrogate-model/Anas-exp/src/ensemble/locked_ensemble_config.json",
+    "submission_template_deliverable": "/Users/tengkuanas/Projects/mwap-exdw-surrogate-model/Anas-exp/outputs/submission/09_Template_Deliverable_Submission.xlsx",
+    "iteration_1_submission_workbook": "/Users/tengkuanas/Projects/mwap-exdw-surrogate-model/Anas-exp/outputs/history_matching/09_Template_Deliverable_History_Matched.xlsx",
+    "iteration_2_cases_spec": "/Users/tengkuanas/Projects/mwap-exdw-surrogate-model/Anas-exp/outputs/research/history_matching_iteration_2/tables/selected_10_cases_specification_v2.csv",
+    "iteration_2_forecast_summary": "/Users/tengkuanas/Projects/mwap-exdw-surrogate-model/Anas-exp/outputs/research/history_matching_iteration_2/tables/selected_10_cases_forecast_summary_v2.csv"
+  },
+  "file_sha256_hashes": {
+    "field_history_parquet": "6c6d442077af1799b94a523dd0cb1b16935ab78d26a3263d95bf58f9e8b48287",
+    "clean_simulation_quarterly": "FILE_NOT_FOUND",
+    "uncertainty_params": "316f1c4b8abbb163b6e60bca3f4712c768cf27a919d23da069348e0197ce9188",
+    "locked_ensemble_config": "c51a3614f81080719fc45cd0bb6b407f3a873de8aeea76dcd6cd921d54dad9a3",
+    "submission_template_deliverable": "818b1f6730f7a70e01be8666d194b4619b6705fcd226188cfaa0a67b082d9a0f",
+    "iteration_1_submission_workbook": "2e1c6f07df8ae89472aa560d9775ab394df3862b282b4ddafb799736588477e8",
+    "iteration_2_cases_spec": "b2214ca45a6c48c1b7f5d5be738b54fb0cb0e7a638eb6f1d721c12ed9f89cc57",
+    "iteration_2_forecast_summary": "731a2402ef2aa0c6d11307f9d84018cca1cf8d4b62e4fb2dbb79b18726cd20ce"
+  },
+  "discrepancy_audit_summary": {
+    "cases_evaluated": 10,
+    "cases_with_discrepancy": 10,
+    "max_permeability_delta": 5.911630803714729,
+    "max_aquifer_pv_delta": 105.94554037221562,
+    "max_loglik_delta": 2.165276762428789
+  },
+  "schema_hallucination_audit": {
+    "Defect": "Hallucinated Parameter Schema in Execution Summary Narrative",
+    "Description": "The chat assistant's final execution summary table contained 'WOC Depth (m)' and 'GOC Depth (m)' instead of canonical parameters 'Fault Transmissibility' and 'Aquifer Pore Volume'. This occurred because the assistant manually typed the table and conflated typical reservoir contact depths with the challenge's 4 explicit reservoir uncertainty multipliers.",
+    "Canonical_Parameters": [
+      "Fault_Transmissibility",
+      "Porosity_Multiplier",
+      "Permeability_Multiplier",
+      "Aquifer_Pore_Volume"
+    ],
+    "Prohibited_Hallucinated_Parameters": [
+      "WOC Depth",
+      "GOC Depth"
+    ],
+    "Enforcement": "All Iteration 3 tables must be generated programmatically from CSVs with schema validation."
+  }
+}

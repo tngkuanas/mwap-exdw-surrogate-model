@@ -1,0 +1,2 @@
+n_sims,exact_chi2_p,exact_ks_p,exact_mean_rank,exact_std_rank,mcmc_chi2_p,mcmc_ks_p,mcmc_mean_rank,mcmc_std_rank,is_exact_calibrated,is_mcmc_calibrated
+500,0.9400799273913705,0.9288371264112024,0.500196,0.28859111833873197,0.9060685891346634,0.9288371264112024,0.49986800000000003,0.2915445601893474,True,True
