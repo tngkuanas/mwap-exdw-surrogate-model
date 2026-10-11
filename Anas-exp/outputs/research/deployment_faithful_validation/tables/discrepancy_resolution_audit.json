@@ -1,0 +1,33 @@
+{
+  "dca_nrmse_reconciliation": {
+    "metric": "Macro NRMSE of Retrospective Challenger",
+    "value_evaluation_script": 0.4532,
+    "value_challenger_script": 0.4013,
+    "discrepancy_delta": 0.0519,
+    "root_cause_1": "Water Rate Equation: Asymptotic exponential relaxation with Dw=0.20 (0.4532) vs. unconstrained linear growth qw_0 + growth*t (0.4013)",
+    "root_cause_2": "Parameter Clamp Floor: D_pred clamped at 0.01 in evaluation script vs 0.005 in challenger script",
+    "scientific_resolution": "Both implementations suffered from the same 2001 startup data collapse defect; both are superseded by maturity-matched 2004-2005 evaluations."
+  },
+  "geological_parameter_reconciliation": {
+    "Case_2": {
+      "authoritative_cand_id": 440,
+      "authoritative_params": {
+        "Ft": 0.0707322443063581,
+        "Poro": 1.3467879610612974,
+        "Perm": 1.6141726141221335,
+        "AqPV": 148.92753569153146
+      },
+      "cause_of_past_discrepancy": "Prior report narrative accidentally cited Candidate 25 from Strategy B unconstrained quantiles instead of Candidate 440 from Strategy A."
+    },
+    "Case_10": {
+      "authoritative_cand_id": 144,
+      "authoritative_params": {
+        "Ft": 0.0638339249424106,
+        "Poro": 1.345824256304049,
+        "Perm": 2.876460240086842,
+        "AqPV": 167.76574698962503
+      },
+      "cause_of_past_discrepancy": "Prior report table accidentally duplicated Case 1 Candidate 56 parameters into the Case 10 row."
+    }
+  }
+}
