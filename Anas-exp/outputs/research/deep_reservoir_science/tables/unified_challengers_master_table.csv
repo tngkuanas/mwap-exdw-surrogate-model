@@ -1,0 +1,15 @@
+pillar,model_name,validation_macro_nrmse_2004,validation_macro_nrmse_2005,mean_macro_nrmse,asymptotic_20yr_stability,scientific_feasibility,recommendation
+Production Baseline,Frozen Blend_Phase_Specific_Simplex,0.0391,0.0388,0.039,GUARANTEED (Exponential DCA Anchor),Fully Verified & Deployed,PROTECT AS BASELINE
+Research 1: Pseudo-Field,Approach A (True Geology Oracle),,0.036246295332672186,0.036246295332672186,GUARANTEED,Theoretical Information Benchmark (Unobtainable),ORACLE BOUND
+Research 1: Pseudo-Field,Approach B (Inferred Geology HM),,0.03665083411675053,0.03665083411675053,GUARANTEED,Standard Two-Stage Pipeline,CURRENT WORKFLOW
+Research 1: Pseudo-Field,Approach C (No Inversion / Prior),,0.035771812484044506,0.035771812484044506,GUARANTEED,Observable Transition Model,BASELINE ALTERNATIVE
+Research 2: Direct Forecasting,Satija_Direct_CCA,0.022724415793582,0.0248650702763898,0.0237947430349859,CONDITIONAL (Requires Latent Clamping),High Retrospective Accuracy,PROMOTE FOR REVIEW (CHALLENGER)
+Research 2: Direct Forecasting,Satija_Direct_GP,0.0837784990225297,0.073954234943849,0.07886636698318936,CONDITIONAL (Requires Latent Clamping),High Retrospective Accuracy,PROMOTE FOR REVIEW (CHALLENGER)
+Research 2: Direct Forecasting,Satija_Direct_Ridge,0.0181673286626605,0.0232888503463128,0.020728089504486652,CONDITIONAL (Requires Latent Clamping),High Retrospective Accuracy,PROMOTE FOR REVIEW (CHALLENGER)
+Research 3: Normalized State,SVR_GridNormalised_State,0.2270960430414105,0.0848306703799315,0.15596335671067102,POOR (Water Breakthrough Drift),Refuted (Defective Water Scoring in Lit),REJECT
+Research 3: Normalized State,SVR_Normalised_Plus_Geo,0.6019921064900414,0.1537013150516021,0.37784671077082177,POOR (Water Breakthrough Drift),Refuted (Defective Water Scoring in Lit),REJECT
+Research 3: Normalized State,Ridge_Normalised_Plus_Geo,0.2208967618182055,0.147666923680794,0.18428184274949977,POOR (Water Breakthrough Drift),Refuted (Defective Water Scoring in Lit),REJECT
+Research 4: Constrained Residuals,DCA_Damped_GP_Residual,0.0292624141312128,0.0191946133438124,0.0242285137375126,GUARANTEED (Asymptotic Damping),High Mathematical Rigor,PROMOTE FOR REVIEW (CHALLENGER)
+Research 4: Constrained Residuals,DCA_Damped_Linear_Residual,0.0300840449960853,0.0203006642726683,0.0251923546343768,GUARANTEED (Asymptotic Damping),High Mathematical Rigor,PROMOTE FOR REVIEW (CHALLENGER)
+Research 4: Constrained Residuals,DCA_Unconstrained_Residual,0.0210477475454335,0.0092158264051757,0.015131786975304599,REJECTED (Severe 20-Year Drift),High Mathematical Rigor,REJECT (Unstable)
+Research 6: Dynamic ROM,Two-Compartment Dynamic ROM,,0.1078,0.1078,THEORETICALLY BOUNDED,Structurally Non-Identifiable (kappa=3.2e17),REJECT (Non-Identifiable)
