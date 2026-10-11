@@ -1,0 +1,5 @@
+origin,horizon_quarters,training_protocol,dca_training_method,base_models_training_horizon,macro_nrmse,oil_nrmse,water_nrmse,historical_source
+2004-01-01,16,Protocol A (Strict As-Of),Historical Fallback (horizon_quarters=0),Pre-origin data strictly <= 2004-01-01,0.039083,0.039457,0.038709,DEPLOYMENT_FAITHFUL_VALIDATION_REPORT (Model E_asof)
+2004-01-01,16,Protocol B (Forward Supervised),Forward-Supervised Targets (horizon_quarters=80),Training cases post-origin data through 2008,0.053032,0.062834,0.043229,PRODUCTION_ANCHORED_HYBRID_RESEARCH_REPORT (Model A)
+2005-01-01,12,Protocol A (Strict As-Of),Historical Fallback (horizon_quarters=0),Pre-origin data strictly <= 2005-01-01,0.03878,0.036802,0.040759,DEPLOYMENT_FAITHFUL_VALIDATION_REPORT (Model E_asof)
+2005-01-01,12,Protocol B (Forward Supervised),Forward-Supervised Targets (horizon_quarters=80),Training cases post-origin data through 2008,0.027557,0.050607,0.004507,PRODUCTION_ANCHORED_HYBRID_RESEARCH_REPORT (Model A)
