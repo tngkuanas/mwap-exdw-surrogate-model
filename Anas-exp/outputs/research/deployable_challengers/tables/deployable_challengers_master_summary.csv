@@ -1,0 +1,8 @@
+model_name,protocol,mean_val_macro_nrmse,oil_nrmse,water_nrmse,asymptotic_20yr_stability,paired_win_rate_vs_baseline,p_value_vs_baseline,mean_20yr_eur_MMstb,recommendation
+Frozen Blend_Phase_Specific_Simplex,Protocol A (Deployable Strict As-Of),0.039,0.0382,0.0398,GUARANTEED (Exponential DCA Anchor),BASELINE,1.0,51.18,KEEP FROZEN BASELINE
+Deployable_Damped_GP_Residual,Protocol A (Deployable Strict As-Of),0.0492440251584637,0.04382144810992235,0.05466660220700505,GUARANTEED (Envelope Damped),7/15 (46.7%),0.28,50.85,CONDITIONAL HYBRID (Review for Controlled Promotion)
+Deployable_Damped_Linear_Residual,Protocol A (Deployable Strict As-Of),0.06457386338451154,0.0440390353244298,0.08510869144459325,GUARANTEED (Envelope Damped),7/15 (46.7%),0.28,50.85,CONDITIONAL HYBRID (Review for Controlled Promotion)
+Deployable_Damped_Functional_Residual,Protocol A (Deployable Strict As-Of),0.062894241130279,0.0432665507750205,0.08252193148553745,GUARANTEED (Envelope Damped),7/15 (46.7%),0.28,50.85,CONDITIONAL HYBRID (Review for Controlled Promotion)
+Deployable Direct Ridge (DCA Tail),Protocol A (Deployable Strict As-Of),1.1257861624312122,0.2561206452622534,1.9954516796001711,GUARANTEED (DCA Tail Transition),2/15 (13.3%),0.001,49.32,REJECT (Lacks Mature As-Of Training Samples)
+Satija Direct Ridge (Protocol B Forward-Supervised),Protocol B (Research Only - Forward Supervised),0.0207,0.0328,0.0086,CONDITIONAL (Clamping Required),14/15 (93.3%),0.0001,52.4,UNAVAILABLE FOR DEPLOYMENT (Future Target Leakage)
+DCA Damped GP Residual (Protocol B Forward-Supervised),Protocol B (Research Only - Forward Supervised),0.0242,0.0145,0.0339,GUARANTEED,12/15 (80.0%),0.002,51.45,UNAVAILABLE FOR DEPLOYMENT (Future Target Leakage)
