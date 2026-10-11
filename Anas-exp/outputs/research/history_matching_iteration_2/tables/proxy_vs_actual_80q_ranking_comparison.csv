@@ -1,0 +1,4 @@
+comparison,spearman_correlation,interpretation
+Old 5-Year Constant Rate Proxy vs Actual 80Q Simplex EUR,,Flawed: Proxy assigns identical rank to all cases because it assumes constant terminal rate.
+Learned Exponential DCA vs Actual 80Q Simplex EUR,0.8388075423060256,High rank preservation between decline models.
+Geological Porosity Multiplier vs Actual 80Q Simplex EUR,-0.649320548006089,Strong monotonic dependence of EUR on hydrocarbon pore volume.
