@@ -1,0 +1,11 @@
+{
+  "mean_d_hist": 0.1901082218085211,
+  "mean_d_fut": 0.18543249496905953,
+  "d_bias": 0.004675726839461575,
+  "paired_t_pvalue": 5.590314925536656e-29,
+  "rmse_unscaled_val": 0.0012710670930342804,
+  "rmse_scaled_val": 0.001269606620993599,
+  "eur_spread_unscaled_stb": 27266.13741420023,
+  "eur_spread_standardized_stb": 29190.072148846462,
+  "spread_expansion_ratio": 1.0705613232053999
+}

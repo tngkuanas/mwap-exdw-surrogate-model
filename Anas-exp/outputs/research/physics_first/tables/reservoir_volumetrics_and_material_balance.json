@@ -1,0 +1,13 @@
+{
+  "mean_ooip_mmstb": 118.49436232821581,
+  "std_ooip_mmstb": 20.977807640001195,
+  "field_ooip_est_mmstb": 138.32614253042902,
+  "field_moip_est_mmstb": 98.04559059836197,
+  "q_oil_2008_mmstb": 38.378316970569294,
+  "q_oil_2028_mmstb": 51.172,
+  "recovery_factor_2008_pct": 27.744803887758827,
+  "recovery_factor_2028_pct": 36.99373022618857,
+  "recovery_factor_mobile_pct": 52.19204625899303,
+  "theoretical_max_rf_pct": 70.88001501725813,
+  "material_balance_valid": true
+}

@@ -1,0 +1,12 @@
+{
+  "q80_param_std_stb": 5826.273032524307,
+  "q80_model_std_stb": 5969631.311998195,
+  "q80_ratio_model_to_param": 1049816.4019201694,
+  "q80_model_variance_share_pct": 99.99990474533969,
+  "models_terminal_oil_mmstb": {
+    "Recursive_ExtraTrees": 62.244417234862524,
+    "Learned_Exponential_DCA": 47.50511275824347,
+    "Learned_Hyperbolic_DCA": 49.87001290238465,
+    "Hybrid_Dynamic": 48.414287060127414
+  }
+}
