@@ -1,0 +1,13 @@
+{
+  "mean_oil_nrmse_legacy": 0.12159075521519234,
+  "mean_oil_nrmse_consistent": 0.3671136118904104,
+  "mean_wat_nrmse_legacy": 0.3805633491652844,
+  "mean_wat_nrmse_consistent": 0.5393278008787726,
+  "mean_macro_nrmse_legacy": 0.2510770521902384,
+  "mean_macro_nrmse_consistent": 0.45322070638459155,
+  "delta_macro": 0.20214365419435315,
+  "mean_d_error_legacy": 0.0017300616613175797,
+  "mean_d_error_consistent": 0.17143213787412748,
+  "eur_spread_legacy_stb": 27319.002432510257,
+  "eur_spread_consistent_stb": 92909.78213042021
+}

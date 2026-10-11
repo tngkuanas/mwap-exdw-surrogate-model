@@ -1,0 +1,14 @@
+{
+  "linear_fisher_std_stb": 26411.86041118815,
+  "delta_mcmc_std_stb": 35766.286409065244,
+  "direct_posterior_std_stb": 23219.010713462678,
+  "p10_stb": 51142221.677,
+  "p50_stb": 51169240.629999995,
+  "p90_stb": 51195742.388000004,
+  "ci80_width_stb": 53520.71100000292,
+  "ten_match_range_stb": 16433.429999999702,
+  "mode1_variance_share_pct": 22.369653623844243,
+  "mode2_variance_share_pct": 71.57942418428905,
+  "mode3_variance_share_pct": 5.104161932531104,
+  "mode4_variance_share_pct": 0.9467602593356054
+}

@@ -1,0 +1,4 @@
+tier,source,std_stb,pct_of_grand_total,identifiability,scientific_status
+Level 1: Geological Parameter Posterior,Bayesian MCMC conditional on emulator & history,35766.0,0.5543598450408772,IDENTIFIABLE from 10-year historical production,Mathematically rigorous (posterior covariance)
+Level 2: Operating Schedule & Well Controls,Future reservoir operating pressure & injection variability,450000.0,6.97483448717762,PARTIALLY IDENTIFIABLE (depends on operating assumptions),Scenario-driven (engineering constraints)
+Level 3: Mathematical Model Disagreement,Structural difference (ExtraTrees vs Exponential vs Hyperbolic vs Hybrid),5966000.0,92.4708056677815,NON-IDENTIFIABLE without post-2008 field ground truth,Sensitivity analysis / Model form uncertainty

@@ -1,0 +1,13 @@
+{
+  "mean_macro_legacy": 0.2510770521902384,
+  "mean_macro_challenger_a": 0.40128081050393655,
+  "mean_macro_challenger_c": 0.4012825736665887,
+  "mean_err_D_legacy": 0.0017300616613175797,
+  "mean_err_D_challenger_a": 0.17643213787412748,
+  "verdicts": {
+    "Challenger A": "PROMOTE FOR REVIEW",
+    "Challenger B": "KEEP",
+    "Challenger C": "INCONCLUSIVE",
+    "Challenger D": "CORRECT"
+  }
+}
