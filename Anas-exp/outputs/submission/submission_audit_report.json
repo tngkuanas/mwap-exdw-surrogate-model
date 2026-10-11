@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-10 23:00:26",
+  "timestamp": "2026-10-11 15:34:06",
   "model_architecture": "Blend_Phase_Specific_Simplex",
   "status": "VERIFIED_SUBMISSION_READY",
   "official_deliverable": "outputs/submission/09_Template_Deliverable_Submission.xlsx",
@@ -22,6 +22,238 @@
       "Hybrid_Dynamic": 0.0
     }
   },
+  "scenarios": [
+    {
+      "case_id": "Case 1",
+      "candidate_id": 56,
+      "target_role": "Best Match Rank 1",
+      "horizon_quarters": 40,
+      "decline_sensitivity": 1.0,
+      "parameters": {
+        "Fault Transmissibility": 0.0894419003854032,
+        "Porosity Multiplier": 1.339613834023444,
+        "Permeability Multiplier": 1.9803126803421345,
+        "Aquifer Pore Volume": 163.84773776919744
+      },
+      "history_match_metrics": {
+        "oil_cum_nrmse": 0.0070984771340375,
+        "water_cum_nrmse": 0.0294814027887236,
+        "oil_rate_nrmse": 0.0216799136164946,
+        "water_rate_nrmse": 0.060061175185846,
+        "log_lik_l1": -513.1624375898832,
+        "log_lik_l2": -516.985034149993,
+        "terminal_oil_err": 0.0018029519624938,
+        "terminal_wat_err": 0.000620515229348
+      }
+    },
+    {
+      "case_id": "Case 2",
+      "candidate_id": 440,
+      "target_role": "Best Match Rank 2",
+      "horizon_quarters": 80,
+      "decline_sensitivity": 1.0,
+      "parameters": {
+        "Fault Transmissibility": 0.0707322443063581,
+        "Porosity Multiplier": 1.3467879610612974,
+        "Permeability Multiplier": 1.6141726141221335,
+        "Aquifer Pore Volume": 148.92753569153146
+      },
+      "history_match_metrics": {
+        "oil_cum_nrmse": 0.0061753529108968,
+        "water_cum_nrmse": 0.0241720933082382,
+        "oil_rate_nrmse": 0.0213263536073505,
+        "water_rate_nrmse": 0.0596144711637132,
+        "log_lik_l1": -513.1694116194024,
+        "log_lik_l2": -516.991269028427,
+        "terminal_oil_err": 0.0005040762940344,
+        "terminal_wat_err": 0.0047178328607524
+      }
+    },
+    {
+      "case_id": "Case 3",
+      "candidate_id": 242,
+      "target_role": "Best Match Rank 3",
+      "horizon_quarters": 80,
+      "decline_sensitivity": 1.0,
+      "parameters": {
+        "Fault Transmissibility": 0.0621387616828688,
+        "Porosity Multiplier": 1.3341814611772262,
+        "Permeability Multiplier": 2.48966830268873,
+        "Aquifer Pore Volume": 155.2842549327581
+      },
+      "history_match_metrics": {
+        "oil_cum_nrmse": 0.0069323628659941,
+        "water_cum_nrmse": 0.0312651043052744,
+        "oil_rate_nrmse": 0.0218416001906974,
+        "water_rate_nrmse": 0.0602480455011748,
+        "log_lik_l1": -513.1775557496337,
+        "log_lik_l2": -516.999992493198,
+        "terminal_oil_err": 0.0012494383611901,
+        "terminal_wat_err": 0.0023118536463088
+      }
+    },
+    {
+      "case_id": "Case 4",
+      "candidate_id": 461,
+      "target_role": "Best Match Rank 4",
+      "horizon_quarters": 80,
+      "decline_sensitivity": 1.0,
+      "parameters": {
+        "Fault Transmissibility": 0.083824942421257,
+        "Porosity Multiplier": 1.3421200268480495,
+        "Permeability Multiplier": 3.0557866933038995,
+        "Aquifer Pore Volume": 141.55313513066108
+      },
+      "history_match_metrics": {
+        "oil_cum_nrmse": 0.0044943880692835,
+        "water_cum_nrmse": 0.0220996263896852,
+        "oil_rate_nrmse": 0.0217853978392042,
+        "water_rate_nrmse": 0.0593235871786672,
+        "log_lik_l1": -513.2089968982903,
+        "log_lik_l2": -517.0277329019784,
+        "terminal_oil_err": 0.0027433404571827,
+        "terminal_wat_err": 0.0068664928556773
+      }
+    },
+    {
+      "case_id": "Case 5",
+      "candidate_id": 95,
+      "target_role": "Best Match Rank 5",
+      "horizon_quarters": 80,
+      "decline_sensitivity": 1.0,
+      "parameters": {
+        "Fault Transmissibility": 0.1067348633183934,
+        "Porosity Multiplier": 1.3315863492183235,
+        "Permeability Multiplier": 3.2505290986533724,
+        "Aquifer Pore Volume": 161.84771052321938
+      },
+      "history_match_metrics": {
+        "oil_cum_nrmse": 0.0064068471481691,
+        "water_cum_nrmse": 0.0310483800058789,
+        "oil_rate_nrmse": 0.0218519551181405,
+        "water_rate_nrmse": 0.0602685292567636,
+        "log_lik_l1": -513.2194401984419,
+        "log_lik_l2": -517.0388720928778,
+        "terminal_oil_err": 0.0005282797668698,
+        "terminal_wat_err": 0.002076766637453
+      }
+    },
+    {
+      "case_id": "Case 6",
+      "candidate_id": 286,
+      "target_role": "Best Match Rank 6",
+      "horizon_quarters": 80,
+      "decline_sensitivity": 1.0,
+      "parameters": {
+        "Fault Transmissibility": 0.1037068356238413,
+        "Porosity Multiplier": 1.3313146115213366,
+        "Permeability Multiplier": 2.6329102183250415,
+        "Aquifer Pore Volume": 152.16493245337668
+      },
+      "history_match_metrics": {
+        "oil_cum_nrmse": 0.0071342087903322,
+        "water_cum_nrmse": 0.0327382463693892,
+        "oil_rate_nrmse": 0.0217911134754244,
+        "water_rate_nrmse": 0.0605803141322937,
+        "log_lik_l1": -513.2225837908052,
+        "log_lik_l2": -517.0431917635551,
+        "terminal_oil_err": 0.0018337596457013,
+        "terminal_wat_err": 0.0036865087994524
+      }
+    },
+    {
+      "case_id": "Case 7",
+      "candidate_id": 392,
+      "target_role": "Best Match Rank 7",
+      "horizon_quarters": 80,
+      "decline_sensitivity": 1.0,
+      "parameters": {
+        "Fault Transmissibility": 0.0772840472259046,
+        "Porosity Multiplier": 1.3382847820209491,
+        "Permeability Multiplier": 1.6491402207062542,
+        "Aquifer Pore Volume": 171.13009555592288
+      },
+      "history_match_metrics": {
+        "oil_cum_nrmse": 0.0083764946605417,
+        "water_cum_nrmse": 0.0318297509363098,
+        "oil_rate_nrmse": 0.0220064513624359,
+        "water_rate_nrmse": 0.0605921041903712,
+        "log_lik_l1": -513.2261305519635,
+        "log_lik_l2": -517.0490201228358,
+        "terminal_oil_err": 0.0035588006627028,
+        "terminal_wat_err": 0.0026771875941009
+      }
+    },
+    {
+      "case_id": "Case 8",
+      "candidate_id": 119,
+      "target_role": "Best Match Rank 8",
+      "horizon_quarters": 80,
+      "decline_sensitivity": 1.0,
+      "parameters": {
+        "Fault Transmissibility": 0.0491459709002954,
+        "Porosity Multiplier": 1.3399527114438043,
+        "Permeability Multiplier": 1.891446354726381,
+        "Aquifer Pore Volume": 162.2698361004734
+      },
+      "history_match_metrics": {
+        "oil_cum_nrmse": 0.0072859214173172,
+        "water_cum_nrmse": 0.0289143097059723,
+        "oil_rate_nrmse": 0.0217840830566227,
+        "water_rate_nrmse": 0.0602932286134746,
+        "log_lik_l1": -513.2330714872528,
+        "log_lik_l2": -517.055148475635,
+        "terminal_oil_err": 0.0019285215901349,
+        "terminal_wat_err": 0.0002458226350986
+      }
+    },
+    {
+      "case_id": "Case 9",
+      "candidate_id": 290,
+      "target_role": "Best Match Rank 9",
+      "horizon_quarters": 80,
+      "decline_sensitivity": 1.0,
+      "parameters": {
+        "Fault Transmissibility": 0.0585768643686084,
+        "Porosity Multiplier": 1.3419689685881222,
+        "Permeability Multiplier": 2.925553224489934,
+        "Aquifer Pore Volume": 168.46374909469426
+      },
+      "history_match_metrics": {
+        "oil_cum_nrmse": 0.0052749806358027,
+        "water_cum_nrmse": 0.0243127997124406,
+        "oil_rate_nrmse": 0.0218186119822878,
+        "water_rate_nrmse": 0.0597344615151384,
+        "log_lik_l1": -513.2470228034138,
+        "log_lik_l2": -517.0663174182192,
+        "terminal_oil_err": 0.0013664952238675,
+        "terminal_wat_err": 0.0047903468719129
+      }
+    },
+    {
+      "case_id": "Case 10",
+      "candidate_id": 144,
+      "target_role": "Best Match Rank 10",
+      "horizon_quarters": 80,
+      "decline_sensitivity": 1.0,
+      "parameters": {
+        "Fault Transmissibility": 0.0638339249424106,
+        "Porosity Multiplier": 1.345824256304049,
+        "Permeability Multiplier": 2.876460240086842,
+        "Aquifer Pore Volume": 167.76574698962503
+      },
+      "history_match_metrics": {
+        "oil_cum_nrmse": 0.0047128001632722,
+        "water_cum_nrmse": 0.0219288652854372,
+        "oil_rate_nrmse": 0.0218276881331855,
+        "water_rate_nrmse": 0.0595237785325309,
+        "log_lik_l1": -513.2511288732317,
+        "log_lik_l2": -517.069903599664,
+        "terminal_oil_err": 0.0023289737724894,
+        "terminal_wat_err": 0.0072556336853021
+      }
+    }
+  ],
   "rate_reconciliation_max_error": 0.0,
   "solution_gor_residual_max": 0.0,
   "official_audit": {
@@ -38,151 +270,151 @@
         "num_quarters": 40,
         "start_date": "04/01/2008",
         "end_date": "01/01/2018",
-        "oil_cum_start": 38901110.32,
-        "oil_cum_final": 49253143.13,
-        "gas_cum_start": 14132468.15,
-        "gas_cum_final": 17893361.67,
-        "water_cum_start": 13440327.48,
-        "water_cum_final": 43926765.94,
+        "oil_cum_start": 38822789.07,
+        "oil_cum_final": 47650697.75,
+        "gas_cum_start": 14104014.04,
+        "gas_cum_final": 17311193.26,
+        "water_cum_start": 13550964.16,
+        "water_cum_final": 49486258.51,
         "oil_monotonic": true,
         "gas_monotonic": true,
         "water_monotonic": true,
-        "max_gor_residual": 5.430426530672605e-08
+        "max_gor_residual": 7.234385235310725e-08
       },
       "Case 2": {
         "num_quarters": 80,
         "start_date": "04/01/2008",
         "end_date": "2028-01-01 00:00:00",
-        "oil_cum_start": 38822734.14,
-        "oil_cum_final": 51162120.29,
-        "gas_cum_start": 14103994.08,
-        "gas_cum_final": 18586893.07,
-        "water_cum_start": 13550825.6,
-        "water_cum_final": 96113894.11,
+        "oil_cum_start": 38822761.67,
+        "oil_cum_final": 51172196.2,
+        "gas_cum_start": 14104004.08,
+        "gas_cum_final": 18590553.65,
+        "water_cum_start": 13550965.71,
+        "water_cum_final": 96161549.98,
         "oil_monotonic": true,
         "gas_monotonic": true,
         "water_monotonic": true,
-        "max_gor_residual": 1.2947187227885237e-07
+        "max_gor_residual": 1.3959365635640708e-07
       },
       "Case 3": {
         "num_quarters": 80,
         "start_date": "04/01/2008",
         "end_date": "2028-01-01 00:00:00",
-        "oil_cum_start": 38754989.46,
-        "oil_cum_final": 49228421.89,
-        "gas_cum_start": 14079382.44,
-        "gas_cum_final": 17884380.44,
-        "water_cum_start": 13683411.55,
-        "water_cum_final": 111104591.59,
+        "oil_cum_start": 38822785.13,
+        "oil_cum_final": 51185640.54,
+        "gas_cum_start": 14104012.61,
+        "gas_cum_final": 18595437.98,
+        "water_cum_start": 13550946.83,
+        "water_cum_final": 96156017.41,
         "oil_monotonic": true,
         "gas_monotonic": true,
         "water_monotonic": true,
-        "max_gor_residual": 1.2914243940898018e-07
+        "max_gor_residual": 9.781958537624647e-08
       },
       "Case 4": {
         "num_quarters": 80,
         "start_date": "04/01/2008",
         "end_date": "2028-01-01 00:00:00",
-        "oil_cum_start": 38872081.33,
-        "oil_cum_final": 52568733.12,
-        "gas_cum_start": 14121921.91,
-        "gas_cum_final": 19097915.51,
-        "water_cum_start": 13477162.89,
-        "water_cum_final": 87744671.91,
+        "oil_cum_start": 38822753.07,
+        "oil_cum_final": 51170449.92,
+        "gas_cum_start": 14104000.96,
+        "gas_cum_final": 18589919.23,
+        "water_cum_start": 13550920.06,
+        "water_cum_final": 96153797.11,
         "oil_monotonic": true,
         "gas_monotonic": true,
         "water_monotonic": true,
-        "max_gor_residual": 6.433392124582937e-08
+        "max_gor_residual": 1.191817176060539e-07
       },
       "Case 5": {
         "num_quarters": 80,
         "start_date": "04/01/2008",
         "end_date": "2028-01-01 00:00:00",
-        "oil_cum_start": 38851074.24,
-        "oil_cum_final": 51966480.97,
-        "gas_cum_start": 14114290.04,
-        "gas_cum_final": 18879117.31,
-        "water_cum_start": 13506631.15,
-        "water_cum_final": 91103250.75,
+        "oil_cum_start": 38822761.67,
+        "oil_cum_final": 51172701.34,
+        "gas_cum_start": 14104004.09,
+        "gas_cum_final": 18590737.17,
+        "water_cum_start": 13550934.3,
+        "water_cum_final": 96188949.97,
         "oil_monotonic": true,
         "gas_monotonic": true,
         "water_monotonic": true,
-        "max_gor_residual": 8.947497326383669e-08
+        "max_gor_residual": 1.423207512951663e-07
       },
       "Case 6": {
         "num_quarters": 80,
         "start_date": "04/01/2008",
         "end_date": "2028-01-01 00:00:00",
-        "oil_cum_start": 38836464.55,
-        "oil_cum_final": 51551223.91,
-        "gas_cum_start": 14108982.34,
-        "gas_cum_final": 18728254.41,
-        "water_cum_start": 13528728.37,
-        "water_cum_final": 93609055.5,
+        "oil_cum_start": 38822764.48,
+        "oil_cum_final": 51175569.74,
+        "gas_cum_start": 14104005.1,
+        "gas_cum_final": 18591779.26,
+        "water_cum_start": 13550944.27,
+        "water_cum_final": 96159326.7,
         "oil_monotonic": true,
         "gas_monotonic": true,
         "water_monotonic": true,
-        "max_gor_residual": 1.1912366615351999e-07
+        "max_gor_residual": 1.0893560437041927e-07
       },
       "Case 7": {
         "num_quarters": 80,
         "start_date": "04/01/2008",
         "end_date": "2028-01-01 00:00:00",
-        "oil_cum_start": 38809783.89,
-        "oil_cum_final": 50784943.23,
-        "gas_cum_start": 14099289.26,
-        "gas_cum_final": 18449864.64,
-        "water_cum_start": 13572924.11,
-        "water_cum_final": 98620998.15,
+        "oil_cum_start": 38822781.37,
+        "oil_cum_final": 51186883.36,
+        "gas_cum_start": 14104011.24,
+        "gas_cum_final": 18595889.49,
+        "water_cum_start": 13550981.51,
+        "water_cum_final": 96181892.4,
         "oil_monotonic": true,
         "gas_monotonic": true,
         "water_monotonic": true,
-        "max_gor_residual": 1.1148300194108174e-07
+        "max_gor_residual": 1.2902296891992293e-07
       },
       "Case 8": {
         "num_quarters": 80,
         "start_date": "04/01/2008",
         "end_date": "2028-01-01 00:00:00",
-        "oil_cum_start": 38793675.16,
-        "oil_cum_final": 50331335.92,
-        "gas_cum_start": 14093436.95,
-        "gas_cum_final": 18285069.11,
-        "water_cum_start": 13602387.22,
-        "water_cum_final": 101966181.26,
+        "oil_cum_start": 38822799.51,
+        "oil_cum_final": 51185194.64,
+        "gas_cum_start": 14104017.83,
+        "gas_cum_final": 18595275.98,
+        "water_cum_start": 13550966.66,
+        "water_cum_final": 96157120.97,
         "oil_monotonic": true,
         "gas_monotonic": true,
         "water_monotonic": true,
-        "max_gor_residual": 1.4922256841298775e-07
+        "max_gor_residual": 1.2462450071915043e-07
       },
       "Case 9": {
         "num_quarters": 80,
         "start_date": "04/01/2008",
         "end_date": "2028-01-01 00:00:00",
-        "oil_cum_start": 38775134.3,
-        "oil_cum_final": 49795418.76,
-        "gas_cum_start": 14086701.06,
-        "gas_cum_final": 18090370.4,
-        "water_cum_start": 13639213.68,
-        "water_cum_final": 106119756.11,
+        "oil_cum_start": 38822784.35,
+        "oil_cum_final": 51178372.82,
+        "gas_cum_start": 14104012.32,
+        "gas_cum_final": 18592797.62,
+        "water_cum_start": 13550940.77,
+        "water_cum_final": 96172790.15,
         "oil_monotonic": true,
         "gas_monotonic": true,
         "water_monotonic": true,
-        "max_gor_residual": 1.3050974567718754e-07
+        "max_gor_residual": 9.370138315256682e-08
       },
       "Case 10": {
         "num_quarters": 80,
         "start_date": "04/01/2008",
         "end_date": "2028-01-01 00:00:00",
-        "oil_cum_start": 38764798.15,
-        "oil_cum_final": 49504626.69,
-        "gas_cum_start": 14082945.94,
-        "gas_cum_final": 17984725.65,
-        "water_cum_start": 13661314.03,
-        "water_cum_final": 108632296.92,
+        "oil_cum_start": 38822771.11,
+        "oil_cum_final": 51172410.89,
+        "gas_cum_start": 14104007.51,
+        "gas_cum_final": 18590631.65,
+        "water_cum_start": 13550941.15,
+        "water_cum_final": 96168973.98,
         "oil_monotonic": true,
         "gas_monotonic": true,
         "water_monotonic": true,
-        "max_gor_residual": 1.5554973598064237e-07
+        "max_gor_residual": 9.636546000058033e-08
       }
     }
   },
@@ -349,9 +581,9 @@
     }
   },
   "tail_stabilization_audit": {
-    "case_2_q40_cum_stb": 47639673.01619037,
-    "case_2_q80_cum_stb": 51162120.2914278,
-    "case_2_hyp_q80_cum_stb": 49862506.39036041,
-    "unconstrained_divergence_pct": -2.540187728078074
+    "case_2_q40_cum_stb": 47644541.42165523,
+    "case_2_q80_cum_stb": 51172196.20101833,
+    "case_2_hyp_q80_cum_stb": 49858053.88865387,
+    "unconstrained_divergence_pct": -2.568078780910941
   }
 }
