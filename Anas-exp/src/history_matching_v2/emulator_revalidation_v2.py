@@ -190,9 +190,9 @@ class HistoricalSVDGPEmulatorV2:
             res["water_cum_std"] = std_wat_cum
 
             if return_cov:
-                # Epistemic covariance matrices for rate: Sigma_rate = D @ (V S V^T) @ D^T
-                cov_rate_oil = np.zeros((N_query, 40, 40))
-                cov_rate_wat = np.zeros((N_query, 40, 40))
+                n_int = len(self.days_fwd)
+                cov_rate_oil = np.zeros((N_query, n_int, n_int))
+                cov_rate_wat = np.zeros((N_query, n_int, n_int))
                 V_o = self.svd_oil.components_.T  # (41, K)
                 V_w = self.svd_wat.components_.T  # (41, K)
                 DV_o = D @ V_o  # (40, K)

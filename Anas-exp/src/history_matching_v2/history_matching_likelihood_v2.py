@@ -65,22 +65,26 @@ class HistoryMatchingLikelihoodV2:
         self.days_fwd = np.diff(self.dates).astype("timedelta64[D]").astype(float)  # (40,)
 
         # Ground truth observations
-        # 1. Cumulative trajectories: (41,)
-        self.obs_Qo = self.field_history["ramp_oil_cum_stb"].to_numpy()
-        self.obs_Qw = self.field_history["ramp_water_cum_stb"].to_numpy()
+        col_Qo = "ramp_oil_cum_stb" if "ramp_oil_cum_stb" in self.field_history.columns else "oil_cum_stb"
+        col_Qw = "ramp_water_cum_stb" if "ramp_water_cum_stb" in self.field_history.columns else "water_cum_stb"
+        col_qo = "ramp_oil_rate_stbd" if "ramp_oil_rate_stbd" in self.field_history.columns else "oil_rate_stbd"
+        col_qw = "ramp_water_rate_stbd" if "ramp_water_rate_stbd" in self.field_history.columns else "water_rate_stbd"
 
-        # 2. Incremental cumulatives: (40,)
+        # 1. Cumulative trajectories
+        self.obs_Qo = self.field_history[col_Qo].to_numpy()
+        self.obs_Qw = self.field_history[col_Qw].to_numpy()
+
+        # 2. Incremental cumulatives
         self.obs_inc_o = np.diff(self.obs_Qo)
         self.obs_inc_w = np.diff(self.obs_Qw)
 
-        # 3. Forward production rates: (40,)
-        # Note: In field_history.parquet, ramp_oil_rate_stbd is forward rate
+        # 3. Forward production rates
         self.obs_qo_fwd = self.obs_inc_o / self.days_fwd
         self.obs_qw_fwd = self.obs_inc_w / self.days_fwd
 
-        # 4. Terminal rate at 2008-01-01
-        self.obs_qo_term = float(self.field_history["ramp_oil_rate_stbd"].iloc[-1])
-        self.obs_qw_term = float(self.field_history["ramp_water_rate_stbd"].iloc[-1])
+        # 4. Terminal rate at origin
+        self.obs_qo_term = float(self.field_history[col_qo].iloc[-1])
+        self.obs_qw_term = float(self.field_history[col_qw].iloc[-1])
 
         # RMS Scale normalizers
         self.norm_qo = float(np.sqrt(np.mean(self.obs_qo_fwd ** 2))) + 1e-12
@@ -158,8 +162,8 @@ class HistoryMatchingLikelihoodV2:
             qo_back[1:] = np.diff(Qo_pred) / dt_const
             qw_back[1:] = np.diff(Qw_pred) / dt_const
 
-            obs_qo_full = self.field_history["ramp_oil_rate_stbd"].to_numpy()
-            obs_qw_full = self.field_history["ramp_water_rate_stbd"].to_numpy()
+            obs_qo_full = self.field_history[col_qo].to_numpy()
+            obs_qw_full = self.field_history[col_qw].to_numpy()
 
             cov_qo_41 = build_ar1_covariance(self.n_timestamps, 0.05 * self.norm_qo, self.rho_ar1)
             cov_qw_41 = build_ar1_covariance(self.n_timestamps, 0.05 * self.norm_qw, self.rho_ar1)

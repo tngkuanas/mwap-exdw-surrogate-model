@@ -85,6 +85,9 @@ def run_official_scenarios_variance_audit(
     }
     
     models = fit_locked_base_models(case_dict, unc_df, TRAIN_CASES, inference_origin)
+    if "Recursive_ExtraTrees" in models:
+        models["Recursive_ExtraTrees"].model_qo.n_jobs = 1
+        models["Recursive_ExtraTrees"].model_qw.n_jobs = 1
     dates_80q = pd.date_range("2008-04-01", "2028-01-01", freq="QS")
     
     # -------------------------------------------------------------------------

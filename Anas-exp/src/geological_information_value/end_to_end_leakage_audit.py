@@ -36,7 +36,8 @@ from geological_information_value.parameter_bounds import (
     create_parameter_series,
 )
 from geological_information_value.controlled_information_experiment import (
-    run_point_inversion_for_field,
+    fit_historical_emulator_and_likelihood,
+    run_point_inversion_l2,
 )
 
 
@@ -111,24 +112,12 @@ def run_extended_leakage_mutation_test(
     x_test = np.array([[init_st["qo"], init_st["qw"], init_st["Qo"]]])
     w_gate_pred_clean = float(gate_model_clean.predict(x_test)[0])
     
-    # Point parameter inversion on clean pre-origin history
-    hist_slice_clean = pre_tgt.iloc[-8:]
-    h_dates = pd.date_range(hist_slice_clean["date"].iloc[0], periods=len(hist_slice_clean), freq="QS")
-    first_tgt = hist_slice_clean.iloc[0]
-    init_hist_tgt = {
-        "qo": float(first_tgt["oil_rate_stbd"]),
-        "qw": float(first_tgt["water_rate_stbd"]),
-        "qg": float(first_tgt["gas_rate_mscfd"]),
-        "Qo": float(first_tgt["oil_cum_stb"]),
-        "Qw": float(first_tgt["water_cum_stb"]),
-        "Qg": float(first_tgt["gas_cum_mscf"]),
-        "wor": float(first_tgt.get("wor", float(first_tgt["water_rate_stbd"]) / max(float(first_tgt["oil_rate_stbd"]), 1.0))),
-        "res_age": (hist_slice_clean["date"].iloc[0] - pre_tgt["date"].iloc[0]).days / YEAR_DAYS,
-        "origin_date": hist_slice_clean["date"].iloc[0],
-    }
-    u_inv_clean = run_point_inversion_for_field(
-        hist_slice_clean, m_clean, weights, origin, init_hist_tgt, h_dates
+    # Point parameter inversion on clean pre-origin history using genuine history matcher
+    emu_clean, lik_clean = fit_historical_emulator_and_likelihood(
+        asof_clean, unc_df, train_cases, pre_tgt, origin, random_state=42
     )
+    u_pop_mean = unc_df.loc[train_cases, PARAM_NAMES].mean().to_numpy(dtype=float)
+    u_inv_clean = run_point_inversion_l2(lik_clean, u_pop_mean)
     
     # -------------------------------------------------------------------------
     # 2. MUTATED DATA PIPELINE (POST-ORIGIN NOISE INJECTION)
@@ -159,9 +148,10 @@ def run_extended_leakage_mutation_test(
     gate_coef_mut = gate_model_mut.coef_.copy()
     w_gate_pred_mut = float(gate_model_mut.predict(x_test)[0])
     
-    u_inv_mut = run_point_inversion_for_field(
-        hist_slice_clean, m_mutated, weights, origin, init_hist_tgt, h_dates
+    emu_mut, lik_mut = fit_historical_emulator_and_likelihood(
+        asof_mutated, unc_df, train_cases, pre_tgt, origin, random_state=42
     )
+    u_inv_mut = run_point_inversion_l2(lik_mut, u_pop_mean)
     
     # -------------------------------------------------------------------------
     # 3. PROTOCOL B COMPARISON (LEAKY PIPELINE SENSITIVITY)

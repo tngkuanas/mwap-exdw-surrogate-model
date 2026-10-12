@@ -1,50 +1,35 @@
 {
-  "exponential_dca": {
-    "alpha_D": 0.001,
-    "intercept_D": 0.23074338326079058,
-    "coef_D": {
-      "fault": 0.005108600844992317,
-      "poro": 0.04401754638714195,
-      "perm": 0.00012164813527310026,
-      "aq": -6.33052037192776e-06,
-      "qo_0": -2.2490665862359184e-05,
-      "qw_0": -1.1343978294541326e-06,
-      "wor_0": 0.017518660555470023,
-      "res_age": 2.197552017289047e-28
-    },
-    "alpha_water": 0.46415888336127775,
-    "intercept_water": -347.8140364892989,
-    "coef_water": {
-      "fault": -5.735291761072062,
-      "poro": -5.436097615079916,
-      "perm": -2.5271826084809845,
-      "aq": 0.05574848618303463,
-      "qo_0": 0.10792342570733915,
-      "qw_0": 0.06630787437289598,
-      "wor_0": -29.14561562849758,
-      "res_age": 6.666656121803473e-27
-    }
+  "Learned_Exponential_DCA_coefs": {
+    "log(qo)": 0.005108600844992317,
+    "log(qw+1)": 0.04401754638714195,
+    "res_age": 0.00012164813527310026,
+    "wor": -6.33052037192776e-06,
+    "Fault_Transmissibility": -2.2490665862359184e-05,
+    "Porosity_Multiplier": -1.1343978294541326e-06,
+    "Permeability_Multiplier": 0.017518660555470023,
+    "Aquifer_Pore_Volume": 2.197552017289047e-28
   },
-  "extratrees": {
-    "oil_feature_importances": {
-      "log_qo_k": 0.22821052823035756,
-      "log_qw_k": 0.011952743178422045,
-      "res_age": 0.7591072340422256,
-      "wor_k": 0.0007250541585274253,
-      "fault": 6.19734853611906e-10,
-      "poro": 4.414340270901963e-06,
-      "perm": 1.693522431593635e-08,
-      "aq": 8.495237354656686e-09
-    },
-    "water_feature_importances": {
-      "log_qo_k": 0.23638191550219761,
-      "log_qw_k": 0.3290210961005628,
-      "res_age": 0.22987737808919065,
-      "wor_k": 0.1444648085857824,
-      "fault": 1.1557073601865352e-05,
-      "poro": 0.06011021037182367,
-      "perm": 8.420972070129555e-05,
-      "aq": 4.88245561397422e-05
-    }
+  "alpha_selected": 0.001,
+  "perm_coef_is_negligible": false,
+  "aqpv_coef_is_negligible": true,
+  "ExtraTrees_importances_oil": {
+    "log(qo)": 0.22821052823035756,
+    "log(qw+1)": 0.011952743178422045,
+    "res_age": 0.7591072340422256,
+    "wor": 0.0007250541585274253,
+    "Fault_Transmissibility": 6.19734853611906e-10,
+    "Porosity_Multiplier": 4.414340270901963e-06,
+    "Permeability_Multiplier": 1.693522431593635e-08,
+    "Aquifer_Pore_Volume": 8.495237354656686e-09
+  },
+  "ExtraTrees_importances_water": {
+    "log(qo)": 0.23638191550219761,
+    "log(qw+1)": 0.3290210961005628,
+    "res_age": 0.22987737808919065,
+    "wor": 0.1444648085857824,
+    "Fault_Transmissibility": 1.1557073601865352e-05,
+    "Porosity_Multiplier": 0.06011021037182367,
+    "Permeability_Multiplier": 8.420972070129555e-05,
+    "Aquifer_Pore_Volume": 4.88245561397422e-05
   }
 }

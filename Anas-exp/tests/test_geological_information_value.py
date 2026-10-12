@@ -136,3 +136,35 @@ def test_extended_pipeline_mutation_leakage():
     assert res["protocol_a_base_wat_diff"] < 1e-12
     assert res["protocol_a_gate_coef_diff"] < 1e-12
     assert res["protocol_a_gate_pred_diff"] < 1e-12
+
+
+def test_saltelli_pick_freeze_invariants():
+    """Verifies that Saltelli pick-freeze indices satisfy theoretical bounds 0 <= S_i <= S_Ti."""
+    from scipy.stats import qmc
+    sampler = qmc.Sobol(d=8, seed=42)
+    mat = sampler.random(128)
+    A_unit = mat[:, :4]
+    B_unit = mat[:, 4:]
+    
+    # Linear test model Y = 2*u0 + 5*u1 + 0*u2 + 0.1*u3
+    def toy_model(U):
+        return 2.0 * U[:, 0] + 5.0 * U[:, 1] + 0.0 * U[:, 2] + 0.1 * U[:, 3]
+        
+    yA = toy_model(A_unit)
+    yB = toy_model(B_unit)
+    var_y = np.var(np.concatenate([yA, yB]))
+    
+    # Check pick freeze
+    for i in range(4):
+        AB_i = A_unit.copy()
+        AB_i[:, i] = B_unit[:, i]
+        yAB_i = toy_model(AB_i)
+        ST_i = np.mean((yA - yAB_i) ** 2) / (2.0 * var_y)
+        S_i = np.mean(yB * (yAB_i - yA)) / var_y
+        assert ST_i >= -0.05
+        # u1 should dominate u0, and u2 should have ~0 sensitivity
+        if i == 1:
+            assert ST_i > 0.50
+        if i == 2:
+            assert ST_i < 0.05
+

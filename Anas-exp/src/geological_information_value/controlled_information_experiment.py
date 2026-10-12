@@ -4,40 +4,44 @@ Package: geological_information_value
 Project: ExxonMobil DataWorks Challenge 2026
 Workspace: /Users/tengkuanas/Projects/mwap-exdw-surrogate-model/Anas-exp
 
-Addresses: Section 2 — Controlled Geological Information-Value Experiment
-Isolates the predictive value of geology itself by holding the forecasting architecture,
-weights, historical state, and scoring code 100% invariant, while varying ONLY the
-geological input vector u across 10 controlled configurations:
-  A. True geological parameters
-  B. Estimated parameters from point inversion
-  C. Bayesian posterior mean estimate
-  D. Training-population mean geology
-  E. Random prior-sampled geology
-  F. Adversarially mismatched / inverted geology
-  G1. Ablate Fault Transmissibility (Ft replaced with prior mean)
-  G2. Ablate Porosity Multiplier (Poro replaced with prior mean)
-  G3. Ablate Permeability Multiplier (Perm replaced with prior mean)
-  G4. Ablate Aquifer Pore Volume (AqPV replaced with prior mean)
+Section 2 — Controlled Geological Information-Value Experiment (Corrected)
+Isolates the predictive value of geological parameters u by holding the forecasting
+architecture, weights, historical state, and referee scoring protocol 100% invariant,
+while varying ONLY the geological input vector across controlled configurations:
+  A. True geological parameters (u_true)
+  B. Genuine point-inferred parameters (u_point from L2 likelihood minimization)
+  C. Genuine Bayesian posterior mean (u_bayes from MCMC posterior draws)
+  D. Out-of-fold population mean (strictly excluding held-out case c)
+  E. Random prior-sampled geology (M=10 draws per case, reporting mean +- std)
+  F. Adversarially mismatched / inverted geology (u_min + u_max - u_true)
+  G1. Ablate Fault Transmissibility (Ft replaced with out-of-fold mean)
+  G2. Ablate Porosity Multiplier (Poro replaced with out-of-fold mean)
+  G3a. Ablate Permeability with Prior Reference default (k = 1.0)
+  G3b. Ablate Permeability with Out-of-fold Population Mean (k ~= 5.293)
+  G3c. Ablate Permeability with Out-of-fold Population Median (k ~= 5.340)
+  G4. Ablate Aquifer Pore Volume (AqPV replaced with out-of-fold mean)
+
+Evaluates all conditions using the authoritative referee scorer (authoritative_scorer.py).
 """
 from typing import Dict, List, Tuple, Any, Optional
 import time
 import numpy as np
 import pandas as pd
 from scipy.optimize import minimize
+from scipy.stats import t as student_t
 
 from ensemble.data import load_uncertainty, resolve_shared_dir, TRAIN_CASES, PARAMS, YEAR_DAYS
-from ensemble.metrics import compute_increment_nrmse, compute_bias
 from ensemble.generate_competition_deliverable import (
     load_locked_config,
     generate_scenario_predictions,
 )
-from ensemble.run_horizon_adaptive_stacking_experiment import (
-    load_clean_simulation_quarterly,
-    build_case_quarterly_trajectories,
-)
 from forecast_advancement.protocol_framework import build_asof_case_dict, fit_base_models_under_protocol
+from history_matching_v2.emulator_revalidation_v2 import HistoricalSVDGPEmulatorV2
+from history_matching_v2.history_matching_likelihood_v2 import HistoryMatchingLikelihoodV2
+from geological_information_value.authoritative_scorer import integrate_and_score_rates
 from geological_information_value.parameter_bounds import (
     PARAM_NAMES,
+    SHORT_NAMES,
     LOWER_BOUNDS,
     UPPER_BOUNDS,
     PRIOR_MEANS,
@@ -49,56 +53,98 @@ from geological_information_value.parameter_bounds import (
 )
 
 EVAL_PSEUDO_FIELDS = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70]
+PARAM_BOUND_PAIRS = list(zip(LOWER_BOUNDS, UPPER_BOUNDS))
 
 
-def run_point_inversion_for_field(
-    history_df: pd.DataFrame,
-    base_models: Dict[str, Any],
-    weights: Dict[str, Dict[str, float]],
+def fit_historical_emulator_and_likelihood(
+    case_dict: Dict[int, pd.DataFrame],
+    unc_df: pd.DataFrame,
+    train_pool: List[int],
+    held_out_pre_df: pd.DataFrame,
     origin: pd.Timestamp,
-    init_state: Dict[str, Any],
-    history_dates: pd.DatetimeIndex,
+    random_state: int = 42,
+) -> Tuple[HistoricalSVDGPEmulatorV2, HistoryMatchingLikelihoodV2]:
+    """
+    Fits HistoricalSVDGPEmulatorV2 strictly on pre-origin training data and
+    constructs HistoryMatchingLikelihoodV2 for the held-out pre-origin history.
+    """
+    dates_pre = held_out_pre_df["date"].reset_index(drop=True)
+    X_train = unc_df.loc[train_pool, PARAM_NAMES].to_numpy(dtype=float)
+    Y_oil_tr = np.array([
+        case_dict[c][case_dict[c]["date"] <= origin]["oil_cum_stb"].to_numpy(dtype=float)
+        for c in train_pool
+    ])
+    Y_wat_tr = np.array([
+        case_dict[c][case_dict[c]["date"] <= origin]["water_cum_stb"].to_numpy(dtype=float)
+        for c in train_pool
+    ])
+    
+    emu = HistoricalSVDGPEmulatorV2(n_components=4, random_state=random_state)
+    emu.fit(X_train, Y_oil_tr, Y_wat_tr, dates=dates_pre)
+    lik_obj = HistoryMatchingLikelihoodV2(
+        emu, held_out_pre_df, rho_ar1=0.80, obs_noise_rel_oil=0.05, obs_noise_rel_wat=0.05
+    )
+    return emu, lik_obj
+
+
+def run_point_inversion_l2(
+    lik_obj: HistoryMatchingLikelihoodV2,
+    u_init: np.ndarray,
 ) -> np.ndarray:
     """
-    Finds geological parameters u in [0, 1]^4 that minimize the historical
-    surrogate reconstruction loss on pre-origin production rates.
+    Minimizes negative L2 log-likelihood on pre-origin production rates using L-BFGS-B.
     """
-    obs_qo = history_df["oil_rate_stbd"].values
-    obs_qw = history_df["water_rate_stbd"].values
-    scale_o = max(np.mean(obs_qo), 1.0)
-    scale_w = max(np.mean(obs_qw), 1.0)
+    def obj(u: np.ndarray) -> float:
+        return -float(lik_obj.evaluate_log_likelihood(u, model="L2"))
     
-    # Target state for back-forecasting / calibration
-    def loss_fun(u_norm: np.ndarray) -> float:
-        u_phys = denormalize_parameters(u_norm)
-        u_ser = create_parameter_series(u_phys)
-        
-        # Fast evaluation using base models
-        _, aud = generate_scenario_predictions(
-            models=base_models,
-            weights=weights,
-            init_state=init_state,
-            params=u_ser,
-            forecast_dates=history_dates,
-            decline_sensitivity=1.0,
-        )
-        pred_qo = aud["qo_rate"]
-        pred_qw = aud["qw_rate"]
-        
-        err_o = np.mean(((pred_qo - obs_qo[-len(pred_qo):]) / scale_o) ** 2)
-        err_w = np.mean(((pred_qw - obs_qw[-len(pred_qw):]) / scale_w) ** 2)
-        return float(err_o + err_w)
-    
-    # Optimization from prior mean
-    u0_norm = normalize_parameters(PRIOR_MEANS)
     res = minimize(
-        loss_fun,
-        u0_norm,
-        bounds=[(0.0, 1.0)] * 4,
+        obj,
+        u_init,
         method="L-BFGS-B",
-        options={"maxiter": 30, "ftol": 1e-4},
+        bounds=PARAM_BOUND_PAIRS,
+        options={"maxiter": 40, "ftol": 1e-4},
     )
-    return denormalize_parameters(res.x)
+    return np.asarray(res.x, dtype=float)
+
+
+def run_bayesian_mcmc_posterior(
+    lik_obj: HistoryMatchingLikelihoodV2,
+    u_start: np.ndarray,
+    n_samples: int = 400,
+    burn_in: int = 100,
+    seed: int = 42,
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """
+    Runs Metropolis MCMC targeting L2 likelihood to obtain posterior draws.
+    Returns:
+        bayes_mean: (4,)
+        bayes_std: (4,)
+        ci_90_low: (4,)
+        ci_90_high: (4,)
+    """
+    rng = np.random.RandomState(seed)
+    prop_scale = np.array([0.015, 0.035, 0.85, 18.0])
+    
+    u_curr = np.clip(u_start, LOWER_BOUNDS, UPPER_BOUNDS)
+    ll_curr = lik_obj.evaluate_log_likelihood(u_curr, model="L2")
+    
+    draws = []
+    for s in range(n_samples):
+        u_prop = u_curr + rng.normal(0.0, prop_scale)
+        if np.all(u_prop >= LOWER_BOUNDS) and np.all(u_prop <= UPPER_BOUNDS):
+            ll_prop = lik_obj.evaluate_log_likelihood(u_prop, model="L2")
+            if np.log(rng.uniform(1e-12, 1.0)) < (ll_prop - ll_curr):
+                u_curr = u_prop
+                ll_curr = ll_prop
+        if s >= burn_in:
+            draws.append(u_curr.copy())
+            
+    draws_arr = np.array(draws)
+    bayes_mean = np.mean(draws_arr, axis=0)
+    bayes_std = np.std(draws_arr, axis=0)
+    ci_90_low = np.percentile(draws_arr, 5.0, axis=0)
+    ci_90_high = np.percentile(draws_arr, 95.0, axis=0)
+    return bayes_mean, bayes_std, ci_90_low, ci_90_high
 
 
 def run_controlled_geological_value_experiment(
@@ -108,31 +154,28 @@ def run_controlled_geological_value_experiment(
     origin: pd.Timestamp = pd.Timestamp("2005-01-01"),
     horizon_quarters: int = 12,
     seed: int = 42,
+    n_random_draws: int = 10,
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
-    Executes the controlled geological information value experiment.
-    Returns:
-    - case_level_df: paired metrics for every case and condition
-    - summary_df: aggregated mean metrics, paired diffs, and p-values
+    Executes the controlled geological information value experiment across all 10+
+    geological configurations with authoritative referee scoring.
     """
     config = load_locked_config()
     weights = config["weights"]
     f_dates = pd.date_range(origin + pd.DateOffset(days=1), periods=horizon_quarters, freq="QS")
     
-    # Calculate population mean geology across all training cases 1-70
-    pop_mean_u = unc_df.loc[TRAIN_CASES, PARAM_NAMES].mean().to_numpy()
-    
     case_records = []
     
-    for c in pseudo_fields:
+    for c_idx, c in enumerate(pseudo_fields):
+        # Strictly exclude held-out field c from training pool
         train_pool = [x for x in TRAIN_CASES if x != c]
         
         # Fit base models once on permitted training pool under Protocol A (strict as-of)
         m_fit = fit_base_models_under_protocol(case_dict, unc_df, train_pool, origin, "Protocol_A")
         
         df_c = case_dict[c]
-        pre = df_c[df_c["date"] <= origin]
-        post = df_c[df_c["date"] > origin].iloc[:horizon_quarters]
+        pre = df_c[df_c["date"] <= origin].reset_index(drop=True)
+        post = df_c[df_c["date"] > origin].iloc[:horizon_quarters].reset_index(drop=True)
         assert len(post) == horizon_quarters, f"Case {c} has insufficient post-origin observations"
         
         last = pre.iloc[-1]
@@ -150,95 +193,88 @@ def run_controlled_geological_value_experiment(
             "origin_date": origin,
         }
         
-        # Historical slice for inversion
-        hist_recent = pre.iloc[-horizon_quarters:]
-        hist_dates = pd.date_range(
-            hist_recent["date"].iloc[0], periods=len(hist_recent), freq="QS"
-        )
-        first_recent = pre.iloc[-horizon_quarters]
-        init_hist = {
-            "qo": float(first_recent["oil_rate_stbd"]),
-            "qw": float(first_recent["water_rate_stbd"]),
-            "qg": float(first_recent["gas_rate_mscfd"]),
-            "Qo": float(first_recent["oil_cum_stb"]),
-            "Qw": float(first_recent["water_cum_stb"]),
-            "Qg": float(first_recent["gas_cum_mscf"]),
-            "wor": float(first_recent.get("wor", float(first_recent["water_rate_stbd"]) / max(float(first_recent["oil_rate_stbd"]), 1.0))),
-            "res_age": (hist_recent["date"].iloc[0] - pre["date"].iloc[0]).days / YEAR_DAYS,
-            "origin_date": hist_recent["date"].iloc[0],
-        }
+        # 1. Out-of-fold training population statistics (STRICTLY excluding held-out case c)
+        pool_df = unc_df.loc[train_pool, PARAM_NAMES]
+        u_pop_mean = pool_df.mean().to_numpy(dtype=float)
+        u_pop_median = pool_df.median().to_numpy(dtype=float)
         
-        # 1. Point Inversion
-        u_point = run_point_inversion_for_field(
-            hist_recent, m_fit, weights, origin, init_hist, hist_dates
+        # 2. Genuine Inversion via Historical SVD/GP Emulator & L2 Likelihood
+        emu, lik_obj = fit_historical_emulator_and_likelihood(
+            case_dict=case_dict,
+            unc_df=unc_df,
+            train_pool=train_pool,
+            held_out_pre_df=pre,
+            origin=origin,
+            random_state=seed + c,
+        )
+        u_point = run_point_inversion_l2(lik_obj, u_init=u_pop_mean)
+        u_bayes, u_bayes_sd, ci_low, ci_high = run_bayesian_mcmc_posterior(
+            lik_obj, u_start=u_point, n_samples=350, burn_in=100, seed=seed + 100 * c
         )
         
-        # 2. Bayesian Proxy / Smoothed Posterior Mean
-        # In reservoir MCMC with low perm/aq identifiability, posterior mean is a weighted shrinkage
-        # between point estimate and prior mean, regularized by observation precision.
-        u_bayes = 0.65 * u_point + 0.35 * PRIOR_MEANS
-        
-        # 3. Population Mean
-        u_pop = pop_mean_u
-        
-        # 4. Random Prior Sample
-        rng = np.random.RandomState(seed + c)
-        u_rand = denormalize_parameters(rng.uniform(0.0, 1.0, 4))
-        
-        # 5. Mismatched / Inverted Geology
+        # 3. Adversarially Mismatched / Inverted Geology
         u_mismatch = get_adversarial_mismatched_parameters(u_true)
         
-        # 6. Ablations
-        u_abl_ft = np.array([PRIOR_MEANS[0], u_true[1], u_true[2], u_true[3]])
-        u_abl_poro = np.array([u_true[0], PRIOR_MEANS[1], u_true[2], u_true[3]])
-        u_abl_perm = np.array([u_true[0], u_true[1], PRIOR_MEANS[2], u_true[3]])
-        u_abl_aq = np.array([u_true[0], u_true[1], u_true[2], PRIOR_MEANS[3]])
+        # 4. Geological Ablations (using strictly out-of-fold values)
+        u_abl_ft = np.array([u_pop_mean[0], u_true[1], u_true[2], u_true[3]])
+        u_abl_poro = np.array([u_true[0], u_pop_mean[1], u_true[2], u_true[3]])
+        # Perm ablations: prior reference (1.0), out-of-fold mean (~5.293), out-of-fold median (~5.340)
+        u_abl_perm_prior = np.array([u_true[0], u_true[1], 1.000, u_true[3]])
+        u_abl_perm_mean = np.array([u_true[0], u_true[1], u_pop_mean[2], u_true[3]])
+        u_abl_perm_med = np.array([u_true[0], u_true[1], u_pop_median[2], u_true[3]])
+        u_abl_aq = np.array([u_true[0], u_true[1], u_true[2], u_pop_mean[3]])
         
-        conditions = {
+        conditions_single: Dict[str, np.ndarray] = {
             "A_True_Geology": u_true,
             "B_Point_Inferred": u_point,
             "C_Bayes_Posterior_Mean": u_bayes,
-            "D_Population_Mean": u_pop,
-            "E_Random_Prior_Sample": u_rand,
+            "D_Population_Mean": u_pop_mean,
             "F_Adversarial_Mismatch": u_mismatch,
             "G1_Ablate_FaultTrans": u_abl_ft,
             "G2_Ablate_Porosity": u_abl_poro,
-            "G3_Ablate_Permeability": u_abl_perm,
+            "G3a_Ablate_Perm_PriorRef": u_abl_perm_prior,
+            "G3b_Ablate_Perm_PopMean": u_abl_perm_mean,
+            "G3c_Ablate_Perm_PopMedian": u_abl_perm_med,
             "G4_Ablate_AquiferVolume": u_abl_aq,
         }
         
-        actual_qo = post["oil_rate_stbd"].values
-        actual_qw = post["water_rate_stbd"].values
-        
-        for cond_name, u_vec in conditions.items():
-            u_series = create_parameter_series(u_vec)
+        # Helper to generate and authoritative-score a forecast
+        def evaluate_u_vector(u_vec: np.ndarray, cond_label: str, draw_idx: Optional[int] = None) -> Dict[str, Any]:
+            u_ser = create_parameter_series(u_vec)
             _, aud = generate_scenario_predictions(
                 models=m_fit,
                 weights=weights,
                 init_state=init_st,
-                params=u_series,
+                params=u_ser,
                 forecast_dates=f_dates,
                 decline_sensitivity=1.0,
             )
-            pred_qo = aud["qo_rate"]
-            pred_qw = aud["qw_rate"]
-            
-            nrmse_o = compute_increment_nrmse(actual_qo, pred_qo)
-            nrmse_w = compute_increment_nrmse(actual_qw, pred_qw)
-            macro = 0.5 * (nrmse_o + nrmse_w)
-            bias_o = compute_bias(actual_qo, pred_qo)
-            bias_w = compute_bias(actual_qw, pred_qw)
-            
-            case_records.append({
+            score_dict = integrate_and_score_rates(
+                init_state=init_st,
+                pred_rate_oil=aud["qo_rate"],
+                pred_rate_wat=aud["qw_rate"],
+                post_obs_df=post,
+                dt_days=91.3125,
+            )
+            rec = {
                 "case_id": c,
-                "condition": cond_name,
-                "macro_nrmse": macro,
-                "oil_nrmse": nrmse_o,
-                "water_nrmse": nrmse_w,
-                "oil_bias": bias_o,
-                "water_bias": bias_w,
-                "terminal_oil_rate": pred_qo[-1],
-                "terminal_water_rate": pred_qw[-1],
+                "condition": cond_label,
+                "draw_index": draw_idx if draw_idx is not None else 0,
+                "macro_nrmse": score_dict["macro_nrmse"],
+                "oil_nrmse": score_dict["oil_nrmse"],
+                "water_nrmse": score_dict["water_nrmse"],
+                "oil_bias": score_dict["oil_bias"],
+                "water_bias": score_dict["water_bias"],
+                "rmse_oil_stb": score_dict["rmse_oil_stb"],
+                "rmse_wat_stb": score_dict["rmse_wat_stb"],
+                "terminal_oil_rate": score_dict["pred_terminal_oil_rate"],
+                "terminal_water_rate": score_dict["pred_terminal_water_rate"],
+                "terminal_oil_cum": score_dict["pred_terminal_oil_cum"],
+                "terminal_water_cum": score_dict["pred_terminal_water_cum"],
+                "terminal_oil_rate_err": score_dict["terminal_rate_err_oil_stbd"],
+                "terminal_wat_rate_err": score_dict["terminal_rate_err_wat_stbd"],
+                "terminal_oil_cum_err": score_dict["terminal_cum_err_oil_stb"],
+                "terminal_wat_cum_err": score_dict["terminal_cum_err_wat_stb"],
                 "param_Ft": u_vec[0],
                 "param_Poro": u_vec[1],
                 "param_Perm": u_vec[2],
@@ -247,9 +283,60 @@ def run_controlled_geological_value_experiment(
                 "true_Poro": u_true[1],
                 "true_Perm": u_true[2],
                 "true_AqPV": u_true[3],
-            })
+            }
+            return rec
+        
+        # Evaluate deterministic conditions
+        for cond_name, u_vec in conditions_single.items():
+            case_records.append(evaluate_u_vector(u_vec, cond_name))
             
-    case_df = pd.DataFrame(case_records)
+        # Condition E: Multiple Random Prior Draws (M=10)
+        rng_prior = np.random.RandomState(seed + 1000 * c)
+        rand_recs = []
+        for m_idx in range(n_random_draws):
+            u_rand = denormalize_parameters(rng_prior.uniform(0.0, 1.0, 4))
+            r = evaluate_u_vector(u_rand, "E_Random_Prior_Sample", draw_idx=m_idx)
+            rand_recs.append(r)
+            
+        # Add all individual random draws to records
+        case_records.extend(rand_recs)
+        
+    raw_case_df = pd.DataFrame(case_records)
+    
+    # Create consolidated case-level DataFrame averaging across random draws for Condition E
+    cond_e_avg = (
+        raw_case_df[raw_case_df["condition"] == "E_Random_Prior_Sample"]
+        .groupby(["case_id", "condition"], as_index=False)
+        .agg({
+            "macro_nrmse": "mean",
+            "oil_nrmse": "mean",
+            "water_nrmse": "mean",
+            "oil_bias": "mean",
+            "water_bias": "mean",
+            "rmse_oil_stb": "mean",
+            "rmse_wat_stb": "mean",
+            "terminal_oil_rate": "mean",
+            "terminal_water_rate": "mean",
+            "terminal_oil_cum": "mean",
+            "terminal_water_cum": "mean",
+            "terminal_oil_rate_err": "mean",
+            "terminal_wat_rate_err": "mean",
+            "terminal_oil_cum_err": "mean",
+            "terminal_wat_cum_err": "mean",
+            "param_Ft": "mean",
+            "param_Poro": "mean",
+            "param_Perm": "mean",
+            "param_AqPV": "mean",
+            "true_Ft": "first",
+            "true_Poro": "first",
+            "true_Perm": "first",
+            "true_AqPV": "first",
+        })
+    )
+    cond_e_avg["draw_index"] = -1  # Indicates averaged draws
+    
+    non_e_df = raw_case_df[raw_case_df["condition"] != "E_Random_Prior_Sample"]
+    case_df = pd.concat([non_e_df, cond_e_avg], ignore_index=True)
     
     # Compute paired differences against Condition A (True Geology)
     base_case_df = case_df[case_df["condition"] == "A_True_Geology"].set_index("case_id")
@@ -265,30 +352,49 @@ def run_controlled_geological_value_experiment(
     
     # Aggregate Summary
     summary_list = []
+    base_mean = case_df[case_df["condition"] == "A_True_Geology"]["macro_nrmse"].mean()
+    
     for cond, grp in case_df.groupby("condition"):
         m_macro = grp["macro_nrmse"].mean()
+        s_macro = grp["macro_nrmse"].std(ddof=1) if len(grp) > 1 else 0.0
         m_oil = grp["oil_nrmse"].mean()
         m_wat = grp["water_nrmse"].mean()
-        m_diff_macro = grp["diff_vs_true_macro"].mean()
-        m_diff_oil = grp["diff_vs_true_oil"].mean()
-        m_diff_wat = grp["diff_vs_true_water"].mean()
-        win_rate = float((grp["diff_vs_true_macro"] < 0.0).mean())
         
-        # Relative degradation percentage vs True Geology:
-        base_mean = case_df[case_df["condition"] == "A_True_Geology"]["macro_nrmse"].mean()
+        diff_arr = grp["diff_vs_true_macro"].to_numpy()
+        m_diff_macro = float(np.mean(diff_arr))
+        s_diff_macro = float(np.std(diff_arr, ddof=1)) if len(diff_arr) > 1 else 0.0
+        n_c = len(grp)
+        
+        # Paired standard error and 95% Confidence Interval
+        se_diff = s_diff_macro / np.sqrt(max(n_c, 1))
+        t_crit = student_t.ppf(0.975, df=max(n_c - 1, 1))
+        ci_95_low = m_diff_macro - t_crit * se_diff
+        ci_95_high = m_diff_macro + t_crit * se_diff
+        
+        # Paired t-test p-value
+        if se_diff > 1e-12:
+            t_stat = m_diff_macro / se_diff
+            p_val = float(2.0 * (1.0 - student_t.cdf(abs(t_stat), df=n_c - 1)))
+        else:
+            p_val = 1.0 if cond == "A_True_Geology" else 0.0
+            
+        win_rate = float((grp["diff_vs_true_macro"] < -1e-6).mean())
         rel_deg_pct = ((m_macro - base_mean) / base_mean) * 100.0
         
         summary_list.append({
             "condition": cond,
             "macro_nrmse_mean": m_macro,
+            "macro_nrmse_std": s_macro,
             "oil_nrmse_mean": m_oil,
             "water_nrmse_mean": m_wat,
             "diff_vs_true_macro": m_diff_macro,
+            "diff_se": se_diff,
+            "diff_ci95_low": ci_95_low,
+            "diff_ci95_high": ci_95_high,
             "rel_degradation_pct": rel_deg_pct,
-            "diff_vs_true_oil": m_diff_oil,
-            "diff_vs_true_water": m_diff_wat,
+            "p_value_vs_true": p_val,
             "win_rate_vs_true": win_rate,
-            "n_cases": len(grp),
+            "n_cases": n_c,
         })
         
     summary_df = pd.DataFrame(summary_list).sort_values("condition").reset_index(drop=True)
