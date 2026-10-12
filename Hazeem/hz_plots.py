@@ -1,6 +1,8 @@
 """hz_plots.py — figures for Hazeem's geology track (structure, backtest, 2028)."""
 import numpy as np
 import pandas as pd
+import matplotlib
+import matplotlib.dates
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.patches import Patch
@@ -138,6 +140,111 @@ def plot_forecast(F, panel, cases=(71, 78, 85), path=None):
     axs[0].legend(frameon=False, fontsize=8.5, loc="upper left")
     fig.suptitle("Oil forecast 2008 → 2028: the decline shape (b) is the biggest open choice",
                  x=0.01, ha="left", fontsize=12)
+    fig.tight_layout()
+    if path:
+        fig.savefig(path, dpi=160, bbox_inches="tight")
+    return fig
+
+
+def _rates_from_cum(df):
+    """df: one case/model/phase cumulative series (date-sorted) -> mid-interval daily rate."""
+    df = df.sort_values("date")
+    d = df["date"].diff().dt.days.to_numpy()
+    r = np.diff(df["prediction"].to_numpy()) / d[1:]
+    return df["date"].iloc[1:].to_numpy(), r
+
+
+def plot_oil_shapes(panel, bt_preds, F, b_by_cutoff, case=78, path=None):
+    """(a) Arps diagnostic, (b,c) backtest oil-rate at 2004/2005 cutoffs, (d) 2028 oil rate."""
+    fig, axs = plt.subplots(1, 4, figsize=(17, 4.4))
+    # (a) Arps diagnostic: ln D vs ln q after each case's peak decline (training cases, <=2008)
+    r = panel[panel.case_num.between(1, 70) & panel.D_fwd.notna() & (panel.D_fwd > 1e-3)]
+    peak = r.loc[r.groupby("case_num").D_fwd.idxmax(), ["case_num", "date"]].set_index("case_num").date
+    r = r[r.date >= r.case_num.map(peak)]
+    ax = axs[0]
+    sc = ax.scatter(r.qo, r.D_fwd, c=r.date.dt.year, cmap="Blues", s=10, vmin=2001, vmax=2008)
+    qq = np.linspace(r.qo.min(), r.qo.max(), 50); q0, d0 = r.qo.median(), r.D_fwd.median()
+    ax.plot(qq, np.full_like(qq, d0), color="#9a9893", lw=1.5, ls="--", label="b = 0 (exponential): D constant")
+    ax.plot(qq, d0 * (qq / q0) ** 1.0, color="#e08a1e", lw=2, label="b = 1 (hyperbolic): D ∝ q")
+    ax.set_xscale("log"); ax.set_yscale("log")
+    ax.set_xlabel("Oil rate q (STB/d)"); ax.set_ylabel("Next-year decline rate D (1/yr)")
+    ax.set_title("(a) Decline slows as rate falls", loc="left", fontsize=11)
+    ax.legend(frameon=False, fontsize=8, loc="upper left")
+    fig.colorbar(sc, ax=ax, fraction=.05, pad=.02).set_label("Year")
+    # (b, c) backtests
+    styles = {"hyperbolic": ("#e08a1e", "-"), "exponential": ("#2a78d6", "-"), "baseline": ("#9a9893", "--")}
+    for ax, origin, lab in [(axs[1], "2004-01-01", "(b)"), (axs[2], "2005-01-01", "(c)")]:
+        h = panel[(panel.case_num == case)]
+        ax.plot(h.date, h.qo, color="#1f1f1d", lw=2, label="Simulator (truth)")
+        o = pd.Timestamp(origin)
+        anchor = h[h.date == o]
+        for key, mid in [("hyperbolic", "SVR | oil hyperbolic"), ("exponential", "SVR | oil exponential"),
+                         ("baseline", "Baseline_Anas_Separate_hist")]:
+            sel = bt_preds[(bt_preds.case_num == case) & (bt_preds.origin == o) & (bt_preds.phase == "oil_cum") &
+                           bt_preds.model_id.str.startswith(mid)]
+            sel = sel[sel.model_id == sel.model_id.iloc[0]]
+            first = pd.DataFrame({"date": [o], "prediction": [float(anchor["no"].iloc[0])]})
+            dts, rr = _rates_from_cum(pd.concat([first, sel[["date", "prediction"]]]))
+            name = key if key == "baseline" else f"{key} (b = {b_by_cutoff[origin] if key == 'hyperbolic' else 0:.2f})"
+            ax.plot(dts, rr, color=styles[key][0], ls=styles[key][1], lw=2, label=name)
+        ax.axvline(o, color="#cfcdc8", lw=1)
+        ax.set_xlim(pd.Timestamp("2001-01-01"), pd.Timestamp("2008-03-01")); ax.set_ylim(3000, 16000)
+        ax.set_title(f"{lab} Backtest from {o.year}, case {case}", loc="left", fontsize=11)
+        ax.set_ylabel("Oil rate (STB/d)"); ax.legend(frameon=False, fontsize=8, loc="upper right")
+    # (d) 2028
+    ax = axs[3]
+    h = panel[panel.case_num == case]
+    ax.plot(h.date, h.qo, color="#1f1f1d", lw=2, label="Simulator history")
+    for key, mid in [("hyperbolic", "Hazeem_SVR_hyperbolic"), ("exponential", "Hazeem_SVR_exponential"),
+                     ("baseline", "Baseline_Anas_Separate_hist")]:
+        sel = F[(F.case_num == case) & (F.model_id == mid) & (F.phase == "oil_cum")]
+        first = pd.DataFrame({"date": [pd.Timestamp("2008-01-01")], "prediction": [float(h["no"].iloc[-1])]})
+        dts, rr = _rates_from_cum(pd.concat([first, sel[["date", "prediction"]]]))
+        ax.plot(dts, rr, color=styles[key][0], ls=styles[key][1], lw=2, label=key)
+    ax.axvline(pd.Timestamp("2008-01-01"), color="#cfcdc8", lw=1)
+    ax.set_title(f"(d) Forecast to 2028, case {case}", loc="left", fontsize=11)
+    ax.set_xticks(pd.to_datetime(["2000-01-01", "2008-01-01", "2016-01-01", "2024-01-01"]))
+    ax.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%Y"))
+    ax.set_ylabel("Oil rate (STB/d)"); ax.legend(frameon=False, fontsize=8, loc="upper right")
+    for a in axs:
+        for s in ["top", "right"]:
+            a.spines[s].set_visible(False)
+        a.grid(color="#eeece8"); a.set_axisbelow(True)
+    fig.suptitle("Oil decline shape: hyperbolic vs exponential. Indistinguishable over 3 years, "
+                 "very different over 20", x=0.01, ha="left", fontsize=12)
+    fig.tight_layout()
+    if path:
+        fig.savefig(path, dpi=160, bbox_inches="tight")
+    return fig
+
+
+def plot_water_fix(panel, F, cases=(71, 78, 85), path=None):
+    """Water and liquid rate to 2028: old relaxation water vs liquid-capped water."""
+    fig, axs = plt.subplots(1, len(cases), figsize=(14, 4.3), sharey=True)
+    for ax, c in zip(axs, cases):
+        h = panel[panel.case_num == c]
+        ax.plot(h.date, h.qw, color="#1f1f1d", lw=2, label="Water, history")
+        ax.plot(h.date, h.qo + h.qw, color="#1f1f1d", lw=1, ls=":", label="Liquid (oil+water), history")
+        for mid, col, ls, lab in [("Hazeem_SVR_hyperbolic_uncappedwater", "#c0392b", "--", "Water, old model (no cap)"),
+                                  ("Hazeem_SVR_hyperbolic", "#2a78d6", "-", "Water, fixed (liquid cap)")]:
+            f = F[(F.case_num == c) & (F.model_id == mid)]
+            parts = {}
+            for ph in ["oil_cum", "water_cum"]:
+                sel = f[f.phase == ph]
+                first = pd.DataFrame({"date": [pd.Timestamp("2008-01-01")],
+                                      "prediction": [float(h["no" if ph == "oil_cum" else "nw"].iloc[-1])]})
+                parts[ph] = _rates_from_cum(pd.concat([first, sel[["date", "prediction"]]]))
+            ax.plot(parts["water_cum"][0], parts["water_cum"][1], color=col, ls=ls, lw=2, label=lab)
+            ax.plot(parts["water_cum"][0], parts["water_cum"][1] + parts["oil_cum"][1], color=col, ls=":", lw=1.2)
+        ax.axvline(pd.Timestamp("2008-01-01"), color="#cfcdc8", lw=1)
+        ax.set_title(f"Case {c}", loc="left", fontsize=11)
+        for s in ["top", "right"]:
+            ax.spines[s].set_visible(False)
+        ax.grid(color="#eeece8"); ax.set_axisbelow(True)
+    axs[0].set_ylabel("Rate (STB/d)")
+    axs[0].legend(frameon=True, framealpha=.9, fontsize=8, loc="lower right")
+    fig.suptitle("Water fix: the old model let total liquid grow up to 51% while injection fell. "
+                 "Dotted = liquid", x=0.01, ha="left", fontsize=12)
     fig.tight_layout()
     if path:
         fig.savefig(path, dpi=160, bbox_inches="tight")

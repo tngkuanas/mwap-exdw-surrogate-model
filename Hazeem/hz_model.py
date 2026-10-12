@@ -35,7 +35,8 @@ from sklearn.svm import SVR
 YEAR = 365.25
 QDATES = pd.date_range("1998-01-01", "2008-01-01", freq="QS")
 EXPERIMENTS = [("2003-01-01", 3), ("2003-01-01", 5), ("2004-01-01", 3), ("2005-01-01", 3)]
-PLATEAU = 15400.0   # oil rate on the initial plateau is 15,508 STB/d
+PLATEAU = 15400.0       # oil rate on the initial plateau is 15,508 STB/d
+WOR_MAX = 0.97 / 0.03   # water cut capped at 97% (W4's physical bound)
 
 
 # ── 1. quarterly panel ────────────────────────────────────────────
@@ -71,6 +72,17 @@ def build_panel(curves, cases, geo):
     p["ln_qw"] = np.log(np.maximum(p.qw, 1.0))
     p["E_recent"] = p["ln_qw"] - g["ln_qw"].shift(4)
     p["E_fwd"] = g["ln_qw"].shift(-4) - p["ln_qw"]
+    # water-oil ratio (WOR): ln WOR is ~linear in cumulative oil (the classic WOR-Np plot)
+    p["ln_wor"] = np.log(np.maximum(p.qw, 1.0) / np.maximum(p.qo, 1.0))
+    dNp = (g["no"].shift(-4) - p["no"]) / 1e6
+    p["C_fwd"] = (g["ln_wor"].shift(-4) - p["ln_wor"]) / dNp.where(dNp > 1e-3)      # label
+    dNp_b = (p["no"] - g["no"].shift(4)) / 1e6
+    p["C_recent"] = (p["ln_wor"] - g["ln_wor"].shift(4)) / dNp_b.where(dNp_b > 1e-3)  # state
+    # total liquid (oil + water): the operator controls it, so it is far smoother than water
+    p["ql"] = p.qo + p.qw
+    p["L_fwd"] = np.log(g["ql"].shift(-4) / p["ql"])        # label: 1-yr liquid log-growth
+    p["L_recent"] = np.log(p["ql"] / g["ql"].shift(4))      # state
+    p[["L_fwd", "L_recent"]] = p[["L_fwd", "L_recent"]].replace([np.inf, -np.inf], np.nan)
     # grid-free versions of the cumulative state (no OOIP / aquifer normalisation)
     p["no_s"] = p["no"] / 1e7
     p["nw_s"] = p["nw"] / 1e7
@@ -154,17 +166,37 @@ def hyperbolic_forecast(state, D0, b, B, dates, cutoff, water=None):
         qo = state.qo * np.exp(-D0 * t)
     else:
         qo = state.qo * (1 + b * D0 * t) ** (-1 / b)
-    if water is None:      # learned water-cut growth
+    if water is None:      # learned water-cut growth (unstable, kept for reference)
         wc = expit(state.logit_wc + max(B, 0.0) * t)
         qw = qo * wc / (1 - wc)
+    elif "L" in water:     # liquid-based: liquid = (qo+qw)_T * exp(G t); water = liquid - oil
+        ql = (state.qo + state.qw) * np.exp(water["L"] * t)
+        qw = np.clip(ql - qo, 0.0, WOR_MAX * qo)
+    elif "C" in water:     # WOR-Np: ln WOR = ln WOR_T + C * (Np - Np_T); water follows oil
+        dNp = cumulative_trapezoid(qo, days, initial=0) / 1e6          # million STB since cutoff
+        ln_wor = np.log(max(state.qw, 1.0) / max(state.qo, 1.0)) + max(water["C"], 0.0) * dNp
+        qw = qo * np.exp(np.minimum(ln_wor, np.log(WOR_MAX)))
     else:                  # history-fitted water relaxation (Anas's 'Separate' water)
         qw = state.qw * (water["water_ratio"] + (1 - water["water_ratio"]) * np.exp(-water["water_k"] * t))
+        if "Lcap" in water:  # voidage limit: total liquid may not exceed its own trend
+            ql_cap = (state.qo + state.qw) * np.exp(water["Lcap"] * t)
+            qw = np.clip(np.minimum(qw, ql_cap - qo), 0.0, WOR_MAX * qo)
     qg = state.gor * qo
     rates = np.column_stack([qo, qg, qw])
     cum = np.array([state["no"], state["ng"], state["nw"]]) + cumulative_trapezoid(
         rates, days, axis=0, initial=0)
     pos = dense.get_indexer(dates)
     return cum[pos]
+
+
+def wor_slope_history(panel, case, cutoff, years=3):
+    """Slope of ln WOR vs cumulative oil (million STB) over the last `years` before cutoff."""
+    cutoff = pd.Timestamp(cutoff)
+    h = panel[(panel.case_num == case) & (panel.date <= cutoff) &
+              (panel.date >= cutoff - pd.DateOffset(years=years)) & (panel.qw > 1)]
+    if len(h) < 4:
+        return 0.0
+    return float(max(np.polyfit(h["no"] / 1e6, h["ln_wor"], 1)[0], 0.0))
 
 
 def experiment_dates(origin, horizon):
@@ -175,10 +207,18 @@ def experiment_dates(origin, horizon):
 
 # ── 5. run one configuration over all experiments ─────────────────
 def run(panel, geo, feature_cols, kind, model_id, dev_cases=range(1, 86),
-        train_cases=range(1, 71), seed=42, target="lin", water_fits=None, guard=None):
+        train_cases=range(1, 71), seed=42, target="lin", water_fits=None, guard=None,
+        water_mode=None, oil_b=None):
     """target: 'lin' fits D_fwd, 'log' fits ln D_fwd, 'resid' fits D_fwd - D_recent
     (falls back to the recently observed decline when extrapolating).
-    water_fits: dict (case, cutoff) -> {'water_ratio','water_k'} to use history water."""
+    water_fits: dict (case, cutoff) -> {'water_ratio','water_k'} to use history water.
+    water_mode: None/'relax' (water_fits); liquid-based 'liq_flat' (liquid held at the cutoff
+      rate), 'liq_hist' (last-year liquid trend), 'liq_ml' (liquid trend predicted by the same
+      model kind); WOR-based 'wor_hist' / 'wor_ml' (tested, not recommended).
+      For liquid modes water = liquid - oil, capped at 97% water cut.
+      'relax_cap_flat' / 'relax_cap_hist' / 'relax_cap_ml': W4 relaxation water, but total
+      liquid is capped by a flat / last-year / learned liquid trend (voidage limit).
+    oil_b: None = estimate Arps b from the panel; a number forces it (0 = exponential)."""
     train_cases = list(train_cases)
     folds = {}
     for f, (_, hold) in enumerate(KFold(5, shuffle=True, random_state=seed).split(train_cases)):
@@ -205,9 +245,19 @@ def run(panel, geo, feature_cols, kind, model_id, dev_cases=range(1, 86),
                 yD = tr.D_fwd.clip(lower=0)
             mD = make_model(kind).fit(X, yD)
             mB = make_model(kind).fit(X, tr.B_fwd)
-            b = estimate_b(panel, fit_cases, cutoff)
+            b = estimate_b(panel, fit_cases, cutoff) if oil_b is None else float(oil_b)
             st = panel[(panel.date == cutoff) & panel.case_num.isin(score_cases)]
             Xs = design(st, geo, feature_cols)
+            if water_mode in ("liq_ml", "relax_cap_ml"):
+                tl = tr[tr.L_fwd.notna() & tr.L_recent.notna()]
+                Xl_cols = feature_cols + ["L_recent"]
+                mL = make_model(kind).fit(design(tl, geo, Xl_cols), tl.L_fwd)
+                Lpred = np.clip(mL.predict(design(st, geo, Xl_cols)), -0.5, 0.2)
+            if water_mode == "wor_ml":
+                tw = tr[tr.C_fwd.notna() & tr.C_recent.notna() & (tr.qw > 1)]
+                Xw_cols = feature_cols + ["ln_wor", "C_recent"]
+                mC = make_model(kind).fit(design(tw, geo, Xw_cols), tw.C_fwd)
+                Cpred = np.clip(mC.predict(design(st, geo, Xw_cols)), 0, None)
             if target == "log":
                 D0 = np.exp(mD.predict(Xs))
             elif target == "resid":
@@ -219,7 +269,25 @@ def run(panel, geo, feature_cols, kind, model_id, dev_cases=range(1, 86),
                 D0 = np.clip(D0, guard[0] * rec, guard[1] * rec)
             B = mB.predict(Xs)
             for (_, s), d0, bb in zip(st.iterrows(), D0, B):
-                w = None if water_fits is None else water_fits[(int(s.case_num), cutoff)]
+                rel = None if water_fits is None else water_fits.get((int(s.case_num), cutoff))
+                if water_mode == "relax_cap_flat":
+                    w = {**rel, "Lcap": 0.0}
+                elif water_mode == "relax_cap_hist":
+                    w = {**rel, "Lcap": float(np.clip(s.L_recent, -0.5, 0.2))}
+                elif water_mode == "relax_cap_ml":
+                    w = {**rel, "Lcap": float(Lpred[list(st.case_num).index(s.case_num)])}
+                elif water_mode == "liq_flat":
+                    w = {"L": 0.0}
+                elif water_mode == "liq_hist":
+                    w = {"L": float(np.clip(s.L_recent, -0.5, 0.2))}
+                elif water_mode == "liq_ml":
+                    w = {"L": float(Lpred[list(st.case_num).index(s.case_num)])}
+                elif water_mode == "wor_hist":
+                    w = {"C": wor_slope_history(panel, int(s.case_num), cutoff)}
+                elif water_mode == "wor_ml":
+                    w = {"C": float(Cpred[list(st.case_num).index(s.case_num)])}
+                else:
+                    w = None if water_fits is None else water_fits[(int(s.case_num), cutoff)]
                 cum = hyperbolic_forecast(s, d0, b, bb, dates, cutoff, water=w)
                 for j, ph in enumerate(["oil_cum", "gas_cum", "water_cum"]):
                     out.append(pd.DataFrame({
