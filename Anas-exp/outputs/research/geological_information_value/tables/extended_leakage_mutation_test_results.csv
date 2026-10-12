@@ -1,0 +1,2 @@
+protocol_a_base_oil_diff,protocol_a_base_wat_diff,protocol_a_gate_alpha_diff,protocol_a_gate_coef_diff,protocol_a_gate_pred_diff,protocol_a_inversion_diff,protocol_a_is_fully_leak_free,protocol_b_base_oil_diff,protocol_b_is_future_sensitive
+0.0,0.0,0.0,0.0,0.0,6.869504964868156e-09,True,238.95698948950758,True

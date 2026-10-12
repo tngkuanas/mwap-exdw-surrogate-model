@@ -1,0 +1,3 @@
+model_name,macro_nrmse_mean,oil_nrmse_mean,water_nrmse_mean,diff_vs_baseline,win_rate_vs_baseline
+Frozen_Ensemble_Baseline,0.9873909835399164,1.0154891225256213,0.9592928445542118,0.0,0.5
+Geology_Conditioned_Physical_Forecaster_GCDF,1.2255373897413118,1.1073921707778247,1.3436826087047986,0.23814640620139538,0.0

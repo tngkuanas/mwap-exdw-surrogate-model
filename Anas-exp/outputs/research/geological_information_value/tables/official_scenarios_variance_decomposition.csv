@@ -1,0 +1,5 @@
+evaluation_scope,min_eur_oil_stb,max_eur_oil_stb,spread_eur_oil_stb,std_eur_oil_stb,spread_rel_pct,n_samples,primary_driver
+Official Scenarios (Strategy A: 10 Best Matches),51170449.922235936,51186883.3606244,16433.438388466835,6366.008752871214,0.032110238156310734,10,Extreme posterior concentration of porosity (1.331 - 1.346) in top 10 point matches
+Quality-Filtered Quantiles (Strategy C: P10 to P90),51145909.62182969,51187693.634721875,41784.01289218664,13729.231680653886,0.08165764396094552,10,Dispersion across historical candidate pool quality filters
+Full Prior Parameter Box (100 Random Samples),50801913.921038665,51697401.90264598,895487.9816073179,246798.73387183456,1.7461098710611123,100,Model architecture insensitivity: DCA coefficients on Perm and Aq are ~1e-4 and ~1e-6
+Structural Forecasting Model Architecture (4 Base Models),47889416.720048636,61743846.54417261,13854429.824123971,5649758.698870657,26.60411479495386,4,Divergence between Recursive ExtraTrees (62.2 MMSTB) and Exponential DCA (47.5 MMSTB)

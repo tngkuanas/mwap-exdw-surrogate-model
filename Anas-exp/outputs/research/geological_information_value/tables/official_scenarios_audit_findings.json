@@ -1,0 +1,12 @@
+{
+  "shared_case0_anchor_cum_oil_stb": 38378316.9705693,
+  "case0_anchor_fraction_of_eur": 0.749895955327419,
+  "official_eur_spread_stb": 16433.438388466835,
+  "full_prior_eur_spread_stb": 895487.9816073179,
+  "architecture_eur_spread_stb": 13854429.824123971,
+  "architecture_variance_share_pct": 99.81144346593055,
+  "geological_variance_share_pct": 0.18855653406944928,
+  "dca_exponential_weight_oil": 0.6179022920123803,
+  "hybrid_weight_oil": 0.14163121677237328,
+  "effective_long_term_exponential_weight_oil": 0.7595335087847537
+}
