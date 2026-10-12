@@ -1,0 +1,2 @@
+protocol_a_oil_max_diff,protocol_a_wat_max_diff,protocol_a_is_leak_free,protocol_b_oil_max_diff,protocol_b_is_sensitive,residual_forecaster_asof_diff,residual_forecaster_is_leak_free
+0.0,0.0,True,238.95698948950758,True,51.23070076662407,False
