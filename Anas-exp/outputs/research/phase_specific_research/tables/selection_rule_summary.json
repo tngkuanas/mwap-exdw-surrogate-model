@@ -1,0 +1,14 @@
+{
+  "n_total_instances": 255,
+  "n_positive_instances": 136,
+  "n_negative_instances": 119,
+  "positive_class_prevalence": 0.5333333333333333,
+  "majority_class_baseline_accuracy": 0.5333333333333333,
+  "baseline_macro_nrmse": 0.10506650049444405,
+  "candidate_c_macro_nrmse": 0.12902201478260744,
+  "best_gated_macro_nrmse": 0.0970268657798244,
+  "likelihood_ratio_statistic": 7.478120134768972,
+  "likelihood_ratio_p_value": 0.006245324296510368,
+  "water_cut_independent_predictive_value": true,
+  "mean_learned_threshold": 0.2793333333333335
+}

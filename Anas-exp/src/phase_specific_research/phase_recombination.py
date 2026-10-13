@@ -34,6 +34,7 @@ def predict_candidate_rates(
     h_star_water: int = 8,
     gate_state: Optional[Dict[str, float]] = None,
     base_rates: Optional[Dict[str, Dict[str, np.ndarray]]] = None,
+    gate_threshold: float = 0.35,
 ) -> Dict[str, np.ndarray]:
     """
     Generates quarterly oil, water, and gas rates for any candidate architecture
@@ -108,8 +109,8 @@ def predict_candidate_rates(
     elif candidate_id == "Candidate_F_State_Conditioned_Gating":
         # Conditioned on observable water cut and decline rate at origin
         fw_0 = float(init_state["wor"] / (1.0 + init_state["wor"]))
-        # High water cut (> 0.35) favors ExtraTrees water; low water cut favors Frozen water
-        gate_w = 1.0 / (1.0 + np.exp(-10.0 * (fw_0 - 0.35)))
+        # High water cut (> gate_threshold) favors ExtraTrees water; low water cut favors Frozen water
+        gate_w = 1.0 / (1.0 + np.exp(-10.0 * (fw_0 - gate_threshold)))
         qw = (1.0 - gate_w) * qw_frozen + gate_w * qw_et
         qo = qo_frozen
         
@@ -128,10 +129,12 @@ def predict_candidate_rates(
         
         w_et_t = w_oil["Recursive_ExtraTrees"] * eta
         w_exp_t = w_oil["Learned_Exponential_DCA"] + w_oil["Recursive_ExtraTrees"] * (1.0 - eta)
+        w_hyp = w_oil.get("Learned_Hyperbolic_DCA", 0.0)
         
         qo = (
             w_et_t * r_et["oil_rate"]
             + w_exp_t * r_exp["oil_rate"]
+            + w_hyp * r_hyp["oil_rate"]
             + w_oil["Hybrid_Dynamic"] * r_hyb["oil_rate"]
         )
         qw = qw_frozen
@@ -170,3 +173,13 @@ ALL_CANDIDATE_IDS = [
     "Candidate_G_Transitioned_ExtraTrees_Water",
     "Candidate_H_Constrained_Long_Tail",
 ]
+
+RELEVANT_CANDIDATE_IDS = [
+    "Candidate_A_Frozen_Baseline",
+    "Candidate_B_ExtraTreesOil_FrozenWater",
+    "Candidate_C_FrozenOil_ExtraTreesWater",
+    "Candidate_D_ExtraTreesBoth",
+    "Candidate_F_State_Conditioned_Gating",
+    "Candidate_H_Constrained_Long_Tail",
+]
+

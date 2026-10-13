@@ -4,17 +4,17 @@ Package: phase_specific_research
 Project: ExxonMobil DataWorks Challenge 2026
 Workspace: /Users/tengkuanas/Projects/mwap-exdw-surrogate-model/Anas-exp
 
-Section 4: Nested, Reservoir-Grouped Cross-Validation.
-Implements:
-1. Multi-origin (2002, 2003, 2004, 2005) x multi-horizon (4Q, 8Q, 12Q, 16Q, 20Q) grid.
-2. Strict historical Protocol A fitting at each origin.
-3. Authoritative cumulative-increment NRMSE referee scoring.
-4. Comprehensive metrics: Macro, Oil, Water NRMSE, Bias, Win Rates, Worst-Case Error, Water-Cut Error, Physical Violations.
-5. Cluster-robust standard errors accounting for repeated observations per reservoir cluster.
-6. Multiple hypothesis testing adjustments (Bonferroni & Benjamini-Hochberg).
-7. Secondary confirmation on Cases 71-85 (Cases 86-100 strictly sealed).
+Corrected Section 1 & 2: True Leave-One-Reservoir-Out Cross-Validation.
+Guarantees:
+1. Outer-fold reservoir isolation: held-out case c_held is strictly removed from the training pool:
+   train_pool = [c for c in TRAIN_CASES if c != c_held]
+2. All base models, transforms, and gates fitted solely on train_pool under Protocol A.
+3. Candidate F gate threshold tuned strictly inside inner training folds.
+4. Comprehensive cluster-robust standard errors (Huber-White / Liang-Zeger, M=15, df=14),
+   exact paired differences, win rates, worst-case errors, and Bonferroni adjustments.
+5. Direct comparison between the corrected LOO benchmark and the previous contaminated benchmark.
 """
-from typing import Dict, List, Tuple, Any, Optional
+from typing import Dict, List, Tuple, Any, Optional, Callable
 import time
 import numpy as np
 import pandas as pd
@@ -33,7 +33,7 @@ from geological_information_value.authoritative_scorer import score_cumulative_f
 from geological_information_value.parameter_bounds import PARAM_NAMES, create_parameter_series
 from phase_specific_research.phase_recombination import (
     predict_candidate_rates,
-    ALL_CANDIDATE_IDS,
+    RELEVANT_CANDIDATE_IDS,
 )
 from phase_specific_research.selection_rule_analysis import extract_observable_state_features
 
@@ -61,43 +61,100 @@ EVAL_GRID = [
 ]
 
 
-def evaluate_all_candidates_at_origin(
+def tune_inner_gate_threshold(
+    case_dict: Dict[int, pd.DataFrame],
+    train_pool: List[int],
+    origins: List[str] = ["2002-01-01", "2003-01-01", "2004-01-01", "2005-01-01"],
+    candidate_thresholds: List[float] = [0.25, 0.30, 0.35, 0.40, 0.45],
+) -> float:
+    """
+    Learns the optimal water-cut threshold strictly from inner training reservoirs.
+    Examines the separation between early low-watercut vs mature waterflood response.
+    """
+    # Sample training pseudo-fields present in train_pool
+    train_eval_cases = [c for c in EVAL_PSEUDO_FIELDS if c in train_pool]
+    if len(train_eval_cases) == 0:
+        return 0.35
+        
+    # Collect origin water cuts across training reservoirs
+    fw_records = []
+    for orig_str in origins:
+        orig = pd.Timestamp(orig_str)
+        # Mature origins (2004, 2005) represent the ExtraTrees-favorable regime
+        is_mature_regime = orig >= pd.Timestamp("2004-01-01")
+        for c in train_eval_cases:
+            df_c = case_dict[c]
+            row = df_c[df_c["date"] == orig]
+            if len(row) > 0:
+                qo = float(row.iloc[0]["oil_rate_stbd"])
+                qw = float(row.iloc[0]["water_rate_stbd"])
+                fw = qw / max(qo + qw, 1.0)
+                fw_records.append({"case_id": c, "origin": orig_str, "fw": fw, "mature": is_mature_regime})
+                
+    fw_df = pd.DataFrame(fw_records)
+    if len(fw_df) == 0:
+        return 0.35
+        
+    best_thresh = 0.35
+    best_acc = -1.0
+    for th in candidate_thresholds:
+        # Predict mature regime if fw > th
+        preds = fw_df["fw"] > th
+        acc = float(np.mean(preds == fw_df["mature"]))
+        if acc > best_acc:
+            best_acc = acc
+            best_thresh = th
+            
+    return float(best_thresh)
+
+
+def evaluate_single_reservoir_leave_out(
+    held_out_case: int,
     case_dict: Dict[int, pd.DataFrame],
     unc_df: pd.DataFrame,
-    test_cases: List[int],
-    origin: pd.Timestamp,
-    horizon_quarters: int,
     locked_weights: Dict[str, Dict[str, float]],
-    candidate_ids: List[str] = ALL_CANDIDATE_IDS,
-) -> pd.DataFrame:
+    eval_grid: List[Tuple[str, int]] = EVAL_GRID,
+    candidate_ids: List[str] = RELEVANT_CANDIDATE_IDS,
+    tracer_callback: Optional[Callable[[int, List[int]], None]] = None,
+) -> List[Dict[str, Any]]:
+    r"""
+    Evaluates a single outer-fold held-out reservoir strictly trained on train_pool = TRAIN_CASES \ {held_out_case}.
     """
-    Evaluates all candidates at a single (origin, horizon) condition strictly under Protocol A.
-    """
-    f_dates = pd.date_range(origin + pd.DateOffset(months=3), periods=horizon_quarters, freq="QS")
-    
-    # Fit base models strictly under Protocol A
-    models = fit_base_models_under_protocol(
-        case_dict=case_dict,
-        unc_df=unc_df,
-        train_cases=TRAIN_CASES,
-        origin=origin,
-        protocol="Protocol_A",
-        horizon_quarters=horizon_quarters,
+    train_pool = [c for c in TRAIN_CASES if c != held_out_case]
+    assert held_out_case not in train_pool, (
+        f"DATA LEAKAGE VIOLATION: held_out_case {held_out_case} detected in train_pool!"
     )
+    if tracer_callback is not None:
+        tracer_callback(held_out_case, train_pool)
+        
+    df_c = case_dict[held_out_case]
+    params = create_parameter_series(unc_df.loc[held_out_case, PARAM_NAMES].to_dict())
     
+    # 1. Learn inner-fold threshold strictly from train_pool
+    gate_thresh = tune_inner_gate_threshold(case_dict, train_pool)
+    
+    # Group eval_grid by origin
+    unique_origins = sorted(list(set(orig_str for orig_str, _ in eval_grid)))
     records = []
-    for c in test_cases:
-        df_c = case_dict[c]
-        obs_origin = df_c[df_c["date"] == origin]
+    
+    for orig_str in unique_origins:
+        orig = pd.Timestamp(orig_str)
+        obs_origin = df_c[df_c["date"] == orig]
         if len(obs_origin) == 0:
             continue
         obs_origin = obs_origin.iloc[0]
         
-        true_fwd = df_c[df_c["date"].isin(f_dates)].sort_values("date")
-        if len(true_fwd) < horizon_quarters:
-            continue
-            
-        t_days = (origin - df_c["date"].min()).days
+        # Fit base models strictly on train_pool under Protocol A
+        models = fit_base_models_under_protocol(
+            case_dict=case_dict,
+            unc_df=unc_df,
+            train_cases=train_pool,
+            origin=orig,
+            protocol="Protocol_A",
+            horizon_quarters=20,  # Under Protocol A, historical fit is independent of horizon
+        )
+        
+        t_days = (orig - df_c["date"].min()).days
         init_state = {
             "qo": float(obs_origin["oil_rate_stbd"]),
             "qw": float(obs_origin["water_rate_stbd"]),
@@ -107,113 +164,120 @@ def evaluate_all_candidates_at_origin(
             "Qg": float(obs_origin["gas_cum_mscf"]),
             "wor": float(obs_origin["water_rate_stbd"] / max(obs_origin["oil_rate_stbd"], 1.0)),
             "res_age": float(t_days / YEAR_DAYS),
-            "origin_date": origin,
+            "origin_date": orig,
         }
-        params = create_parameter_series(unc_df.loc[c, PARAM_NAMES].to_dict())
-        state_feats = extract_observable_state_features(df_c, origin)
+        state_feats = extract_observable_state_features(df_c, orig)
         
-        true_cum_o = true_fwd["oil_cum_stb"].values
-        true_cum_w = true_fwd["water_cum_stb"].values
-        true_rate_o = true_fwd["oil_rate_stbd"].values
-        true_rate_w = true_fwd["water_rate_stbd"].values
-        true_fw = true_rate_w / np.maximum(true_rate_o + true_rate_w, 1e-6)
-        
-        # Precompute base model predictions once per case for 8x speedup
-        base_rates = {
-            "Recursive_ExtraTrees": models["Recursive_ExtraTrees"].predict_rates(init_state, params, f_dates),
-            "Learned_Exponential_DCA": models["Learned_Exponential_DCA"].predict_rates(init_state, params, f_dates),
-            "Learned_Hyperbolic_DCA": models["Learned_Hyperbolic_DCA"].predict_rates(init_state, params, f_dates),
-            "Hybrid_Dynamic": models["Hybrid_Dynamic"].predict_rates(init_state, params, f_dates),
-        }
-        
-        for cand_id in candidate_ids:
-            pred = predict_candidate_rates(
-                candidate_id=cand_id,
-                models=models,
-                locked_weights=locked_weights,
-                init_state=init_state,
-                params=params,
-                forecast_dates=f_dates,
-                base_rates=base_rates,
-            )
+        # Evaluate each horizon associated with this origin
+        horizons_for_orig = [h for o, h in eval_grid if o == orig_str]
+        for h_q in horizons_for_orig:
+            f_dates = pd.date_range(orig + pd.DateOffset(months=3), periods=h_q, freq="QS")
+            true_fwd = df_c[df_c["date"].isin(f_dates)].sort_values("date")
+            if len(true_fwd) < h_q:
+                continue
+                
+            true_cum_o = true_fwd["oil_cum_stb"].values
+            true_cum_w = true_fwd["water_cum_stb"].values
+            true_rate_o = true_fwd["oil_rate_stbd"].values
+            true_rate_w = true_fwd["water_rate_stbd"].values
+            true_fw = true_rate_w / np.maximum(true_rate_o + true_rate_w, 1e-6)
             
-            # Authoritative increment scoring
-            sc = score_cumulative_forecast(
-                pred_cum_oil=pred["cum_oil"],
-                pred_cum_wat=pred["cum_water"],
-                true_cum_oil=true_cum_o,
-                true_cum_wat=true_cum_w,
-                origin_cum_oil=init_state["Qo"],
-                origin_cum_wat=init_state["Qw"],
-                pred_rate_oil=pred["oil_rate"],
-                pred_rate_wat=pred["water_rate"],
-                true_rate_oil=true_rate_o,
-                true_rate_wat=true_rate_w,
-            )
-            
-            # Water-cut error
-            pred_fw = pred["water_rate"] / np.maximum(pred["oil_rate"] + pred["water_rate"], 1e-6)
-            fw_rmse = float(np.sqrt(np.mean((pred_fw - true_fw) ** 2)))
-            
-            # Physical violations check
-            neg_rates = int(np.sum(pred["oil_rate"] < -1e-6) + np.sum(pred["water_rate"] < -1e-6))
-            non_mono_o = int(np.sum(np.diff(pred["cum_oil"]) < -1e-6))
-            non_mono_w = int(np.sum(np.diff(pred["cum_water"]) < -1e-6))
-            viol_count = neg_rates + non_mono_o + non_mono_w
-            
-            rec = {
-                "origin": str(origin)[:10],
-                "horizon_quarters": horizon_quarters,
-                "case_id": c,
-                "candidate_id": cand_id,
-                "macro_nrmse": sc["macro_nrmse"],
-                "oil_nrmse": sc["oil_nrmse"],
-                "water_nrmse": sc["water_nrmse"],
-                "oil_bias": sc["oil_bias"],
-                "water_bias": sc["water_bias"],
-                "water_cut_rmse": fw_rmse,
-                "physical_violations": viol_count,
+            # Precompute base model predictions once per (origin, horizon)
+            base_rates = {
+                "Recursive_ExtraTrees": models["Recursive_ExtraTrees"].predict_rates(init_state, params, f_dates),
+                "Learned_Exponential_DCA": models["Learned_Exponential_DCA"].predict_rates(init_state, params, f_dates),
+                "Learned_Hyperbolic_DCA": models["Learned_Hyperbolic_DCA"].predict_rates(init_state, params, f_dates),
+                "Hybrid_Dynamic": models["Hybrid_Dynamic"].predict_rates(init_state, params, f_dates),
             }
-            rec.update(state_feats)
-            records.append(rec)
             
-    return pd.DataFrame(records)
+            for cand_id in candidate_ids:
+                pred = predict_candidate_rates(
+                    candidate_id=cand_id,
+                    models=models,
+                    locked_weights=locked_weights,
+                    init_state=init_state,
+                    params=params,
+                    forecast_dates=f_dates,
+                    base_rates=base_rates,
+                    gate_threshold=gate_thresh,
+                )
+                
+                sc = score_cumulative_forecast(
+                    pred_cum_oil=pred["cum_oil"],
+                    pred_cum_wat=pred["cum_water"],
+                    true_cum_oil=true_cum_o,
+                    true_cum_wat=true_cum_w,
+                    origin_cum_oil=init_state["Qo"],
+                    origin_cum_wat=init_state["Qw"],
+                    pred_rate_oil=pred["oil_rate"],
+                    pred_rate_wat=pred["water_rate"],
+                    true_rate_oil=true_rate_o,
+                    true_rate_wat=true_rate_w,
+                )
+                
+                pred_fw = pred["water_rate"] / np.maximum(pred["oil_rate"] + pred["water_rate"], 1e-6)
+                fw_rmse = float(np.sqrt(np.mean((pred_fw - true_fw) ** 2)))
+                
+                neg_rates = int(np.sum(pred["oil_rate"] < -1e-6) + np.sum(pred["water_rate"] < -1e-6))
+                non_mono_o = int(np.sum(np.diff(pred["cum_oil"]) < -1e-6))
+                non_mono_w = int(np.sum(np.diff(pred["cum_water"]) < -1e-6))
+                viol_count = neg_rates + non_mono_o + non_mono_w
+                
+                rec = {
+                    "origin": orig_str,
+                    "horizon_quarters": h_q,
+                    "case_id": held_out_case,
+                    "candidate_id": cand_id,
+                    "macro_nrmse": sc["macro_nrmse"],
+                    "oil_nrmse": sc["oil_nrmse"],
+                    "water_nrmse": sc["water_nrmse"],
+                    "oil_bias": sc["oil_bias"],
+                    "water_bias": sc["water_bias"],
+                    "water_cut_rmse": fw_rmse,
+                    "physical_violations": viol_count,
+                    "gate_threshold_learned": gate_thresh,
+                }
+                rec.update(state_feats)
+                records.append(rec)
+                
+    return records
 
 
-def run_full_nested_cross_validation(
+def run_full_leave_reservoir_out_cross_validation(
     case_dict: Dict[int, pd.DataFrame],
     unc_df: pd.DataFrame,
     test_cases: List[int] = EVAL_PSEUDO_FIELDS,
     eval_grid: List[Tuple[str, int]] = EVAL_GRID,
+    candidate_ids: List[str] = RELEVANT_CANDIDATE_IDS,
+    tracer_callback: Optional[Callable[[int, List[int]], None]] = None,
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
-    Executes full nested reservoir-grouped cross-validation across all grid conditions.
-    Computes cluster-robust statistics at the reservoir cluster level.
+    Executes true leave-one-reservoir-out cross-validation across all 15 outer pseudo-field folds.
     """
     config = load_locked_config()
     locked_weights = config["weights"]
     
-    all_case_dfs = []
-    print(f"Executing Nested Reservoir-Grouped Cross-Validation across {len(eval_grid)} conditions...")
+    all_records = []
+    print(f"Executing Genuine Leave-One-Reservoir-Out Cross-Validation on {len(test_cases)} outer folds...")
     t_start = time.perf_counter()
     
-    for orig_str, h_q in eval_grid:
-        orig = pd.Timestamp(orig_str)
+    for idx, c_held in enumerate(test_cases, 1):
         t0 = time.perf_counter()
-        df_cond = evaluate_all_candidates_at_origin(
+        recs = evaluate_single_reservoir_leave_out(
+            held_out_case=c_held,
             case_dict=case_dict,
             unc_df=unc_df,
-            test_cases=test_cases,
-            origin=orig,
-            horizon_quarters=h_q,
             locked_weights=locked_weights,
+            eval_grid=eval_grid,
+            candidate_ids=candidate_ids,
+            tracer_callback=tracer_callback,
         )
-        all_case_dfs.append(df_cond)
-        print(f"  Condition ({orig_str}, {h_q:2d}Q): evaluated {len(df_cond)} forecasts in {time.perf_counter() - t0:.2f}s")
+        all_records.extend(recs)
+        print(f"  Fold {idx:2d}/{len(test_cases)} (Held-out Case {c_held:2d}): evaluated {len(recs)} forecasts in {time.perf_counter() - t0:.2f}s")
         
-    master_case_df = pd.concat(all_case_dfs, ignore_index=True)
+    master_case_df = pd.DataFrame(all_records)
     
-    # Summary aggregation with cluster-robust statistics
+    # Aggregation with cluster-robust statistics
     base_mask = master_case_df["candidate_id"] == "Candidate_A_Frozen_Baseline"
     base_df = master_case_df[base_mask].set_index(["origin", "horizon_quarters", "case_id"])
     
@@ -221,7 +285,7 @@ def run_full_nested_cross_validation(
     unique_reservoirs = master_case_df["case_id"].unique()
     M_clusters = len(unique_reservoirs)
     
-    for cand_id in ALL_CANDIDATE_IDS:
+    for cand_id in candidate_ids:
         cand_df = master_case_df[master_case_df["candidate_id"] == cand_id].set_index(["origin", "horizon_quarters", "case_id"])
         
         macro_mean = float(cand_df["macro_nrmse"].mean())
@@ -242,15 +306,11 @@ def run_full_nested_cross_validation(
             p_adj_bonf = 1.0
             win_rate = 0.0
         else:
-            # Paired difference against baseline
             diffs = cand_df["macro_nrmse"] - base_df["macro_nrmse"]
             win_rate = float(np.mean(diffs < 0.0))
             
-            # Reservoir cluster-level aggregation
             res_diffs = diffs.groupby("case_id").mean()
             diff_mean = float(res_diffs.mean())
-            
-            # Cluster-robust standard error: SE = std(mean_i) / sqrt(M)
             diff_se_cluster = float(res_diffs.std(ddof=1) / np.sqrt(M_clusters))
             
             t_crit = float(student_t.ppf(0.975, df=M_clusters - 1))
@@ -259,7 +319,7 @@ def run_full_nested_cross_validation(
             
             t_stat = diff_mean / max(diff_se_cluster, 1e-12)
             p_val = float(2.0 * (1.0 - student_t.cdf(abs(t_stat), df=M_clusters - 1)))
-            p_adj_bonf = float(min(1.0, (len(ALL_CANDIDATE_IDS) - 1) * p_val))
+            p_adj_bonf = float(min(1.0, (len(candidate_ids) - 1) * p_val))
             
         summary_records.append({
             "candidate_id": cand_id,
@@ -283,5 +343,5 @@ def run_full_nested_cross_validation(
         })
         
     summary_df = pd.DataFrame(summary_records).sort_values("macro_nrmse_mean").reset_index(drop=True)
-    print(f"Nested Cross-Validation completed in {time.perf_counter() - t_start:.2f} seconds.")
+    print(f"Leave-One-Reservoir-Out Cross-Validation completed in {time.perf_counter() - t_start:.2f} seconds.")
     return master_case_df, summary_df

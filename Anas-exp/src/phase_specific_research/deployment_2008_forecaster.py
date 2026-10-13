@@ -123,24 +123,57 @@ def run_deployment_2008_scenarios(
             
     df_scenarios = pd.DataFrame(case_records)
     
-    # Aggregate summary per candidate
+    # Aggregate summary per candidate separately for 40Q (Case 1) and 80Q (Cases 2-10)
     summary_records = []
     for cand_id in candidates_to_deploy:
         sub = df_scenarios[df_scenarios["candidate_id"] == cand_id]
-        sub_80 = sub[sub["horizon_quarters"] == 80]
+        c1 = sub[sub["scenario_id"] == "Case 1"].iloc[0]
+        c2_10 = sub[sub["scenario_id"] != "Case 1"]
+        
+        # 40Q metrics (Case 1)
+        c1_eur_o = float(c1["eur_oil_stb"])
+        c1_inc_o = float(c1["incremental_oil_stb"])
+        c1_eur_w = float(c1["eur_water_stb"])
+        c1_term_qo = float(c1["terminal_oil_rate_stbd"])
+        c1_term_qw = float(c1["terminal_water_rate_stbd"])
+        c1_term_fw = float(c1["terminal_water_cut"])
+        
+        # 80Q metrics (Cases 2-10: Geological Uncertainty Ensemble)
+        eur_o_80 = c2_10["eur_oil_stb"]
+        eur_w_80 = c2_10["eur_water_stb"]
+        mean_eur_o_80 = float(eur_o_80.mean())
+        spread_eur_o_80 = float(eur_o_80.max() - eur_o_80.min())
+        std_eur_o_80 = float(eur_o_80.std())
+        mean_inc_o_80 = float(c2_10["incremental_oil_stb"].mean())
+        
+        mean_eur_w_80 = float(eur_w_80.mean())
+        spread_eur_w_80 = float(eur_w_80.max() - eur_w_80.min())
+        std_eur_w_80 = float(eur_w_80.std())
+        
+        mean_term_qo_80 = float(c2_10["terminal_oil_rate_stbd"].mean())
+        mean_term_qw_80 = float(c2_10["terminal_water_rate_stbd"].mean())
+        mean_term_fw_80 = float(c2_10["terminal_water_cut"].mean())
         
         summary_records.append({
             "candidate_id": cand_id,
-            "mean_eur_oil_stb": float(sub["eur_oil_stb"].mean()),
-            "spread_eur_oil_stb": float(sub["eur_oil_stb"].max() - sub["eur_oil_stb"].min()),
-            "std_eur_oil_stb": float(sub["eur_oil_stb"].std()),
-            "mean_incremental_oil_stb": float(sub["incremental_oil_stb"].mean()),
-            "mean_eur_water_stb": float(sub["eur_water_stb"].mean()),
-            "spread_eur_water_stb": float(sub["eur_water_stb"].max() - sub["eur_water_stb"].min()),
-            "mean_terminal_oil_rate_stbd": float(sub["terminal_oil_rate_stbd"].mean()),
-            "mean_terminal_water_rate_stbd": float(sub["terminal_water_rate_stbd"].mean()),
-            "mean_terminal_water_cut": float(sub["terminal_water_cut"].mean()),
-            "mean_20yr_eur_oil_stb": float(sub_80["eur_oil_stb"].mean()) if len(sub_80) > 0 else float("nan"),
+            # Case 1 (40Q / 10-Yr)
+            "case1_40q_eur_oil_stb": c1_eur_o,
+            "case1_40q_inc_oil_stb": c1_inc_o,
+            "case1_40q_eur_water_stb": c1_eur_w,
+            "case1_40q_terminal_oil_rate_stbd": c1_term_qo,
+            "case1_40q_terminal_water_rate_stbd": c1_term_qw,
+            "case1_40q_terminal_water_cut": c1_term_fw,
+            # Cases 2-10 (80Q / 20-Yr Geological Ensemble)
+            "cases2_10_mean_20yr_eur_oil_stb": mean_eur_o_80,
+            "cases2_10_geological_spread_oil_stb": spread_eur_o_80,
+            "cases2_10_std_eur_oil_stb": std_eur_o_80,
+            "cases2_10_mean_inc_oil_stb": mean_inc_o_80,
+            "cases2_10_mean_20yr_eur_water_stb": mean_eur_w_80,
+            "cases2_10_geological_spread_water_stb": spread_eur_w_80,
+            "cases2_10_std_eur_water_stb": std_eur_w_80,
+            "cases2_10_mean_terminal_oil_rate_stbd": mean_term_qo_80,
+            "cases2_10_mean_terminal_water_rate_stbd": mean_term_qw_80,
+            "cases2_10_mean_terminal_water_cut": mean_term_fw_80,
         })
         
     df_summary = pd.DataFrame(summary_records)
