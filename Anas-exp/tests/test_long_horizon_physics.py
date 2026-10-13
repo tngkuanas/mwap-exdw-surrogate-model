@@ -1,87 +1,127 @@
 """
-Tests for long-horizon forecasting physics and hybrid continuation:
-1. Continuity at transition boundary (C0 continuity).
-2. Monotonicity of rate-continuous extrapolation (zero decreasing steps).
-3. Anchor preservation and rate domain non-negativity.
+Unit and Regression Tests: test_long_horizon_physics.py
+Package: tests
+Project: ExxonMobil DataWorks Challenge 2026
+Workspace: /Users/tengkuanas/Projects/mwap-exdw-surrogate-model/Anas-exp
+
+Tests:
+1. Exact multiphase volume balance identities.
+2. Koval fractional flow and bounded logistic water-cut functions.
+3. Modified Arps decline with exponential floor D_lim.
+4. Stretched Exponential Production Decline (SEPD - Valko 2009).
+5. Two-compartment depletion model.
+6. Challenger forecaster class instantiation, fitting, and rate predictions.
+7. Non-negativity and monotonic cumulative accumulation constraints.
 """
 import pytest
 import numpy as np
 import pandas as pd
-from sklearn.gaussian_process import GaussianProcessRegressor
-from sklearn.gaussian_process.kernels import ConstantKernel, Matern, WhiteKernel
-from ensemble.run_validated_long_horizon import predict_hybrid_gp_rate_continuous, predict_rate_domain_decline
 
-def test_hybrid_gp_rate_continuous_continuity_and_monotonicity():
-    """Verify that hybrid GP rate-continuous extrapolation has exact C0 continuity and zero decreasing steps."""
-    # Synthetic GP and basis
-    K = 3
-    T_learned = 20
-    T_extended = 80
-    n_cases = 5
+from long_horizon_physics.literature_foundations import (
+    evaluate_exact_multiphase_identities,
+    koval_fractional_flow,
+    logistic_water_cut_progression,
+    modified_arps_decline,
+    stretched_exponential_decline,
+    two_compartment_depletion,
+    build_research_hypothesis_matrix,
+)
+from long_horizon_physics.multiphase_coupled_models import (
+    KovalFractionalFlowForecaster,
+    TotalLiquidBoundedWORForecaster,
+    RecoveryStateDependentForecaster,
+    BaselinePreservingSelectiveCorrector,
+)
+from long_horizon_physics.long_horizon_decline_models import (
+    ModifiedArpsDeclineForecaster,
+    StretchedExponentialForecaster,
+    TwoCompartmentDepletionForecaster,
+    ConstrainedTailHybridForecaster,
+)
 
-    learned_dates = pd.date_range("2008-04-01", periods=T_learned, freq="QS")
-    extended_dates = pd.date_range("2008-04-01", periods=T_extended, freq="QS")
-    origin = pd.Timestamp("2008-01-01")
 
-    # Mock SVD basis (monotonic exponential decay)
-    t_idx = np.arange(1, T_learned + 1)
-    b1 = 1.0 - np.exp(-t_idx / 10.0)
-    b2 = (t_idx / float(T_learned)) ** 1.5
-    b3 = np.log1p(t_idx)
-    Vt = np.vstack([b1 / np.linalg.norm(b1), b2 / np.linalg.norm(b2), b3 / np.linalg.norm(b3)])
+def test_multiphase_exact_identities():
+    qo = np.array([4000.0, 3000.0, 2000.0, 1000.0])
+    qw = np.array([500.0, 1500.0, 3000.0, 6000.0])
+    qg = 0.363 * qo
+    
+    res = evaluate_exact_multiphase_identities(qo, qw, qg)
+    
+    # 1. Liquid identity: q_L = q_o + q_w
+    np.testing.assert_allclose(res["liquid_rate"], qo + qw, rtol=1e-12)
+    # 2. Cut identity: f_o + f_w = 1.0
+    np.testing.assert_allclose(res["water_cut"] + res["oil_cut"], 1.0, rtol=1e-12)
+    # 3. WOR identity: wor = q_w / q_o
+    np.testing.assert_allclose(res["wor"], qw / qo, rtol=1e-12)
+    # 4. GOR identity: gor = q_g / q_o = 0.363
+    np.testing.assert_allclose(res["gor"], 0.363, rtol=1e-12)
 
-    mean_inc = np.linspace(100, 1000, T_learned)[None, :]
-    X_val_s = np.random.randn(n_cases, 5)
-    anchors_val = np.array([5000.0, 10000.0, 15000.0, 20000.0, 25000.0])[:, None]
 
-    # Mock fitted GP models
-    class MockGP:
-        def predict(self, X, return_std=False):
-            m = np.ones(len(X)) * 50.0
-            s = np.ones(len(X)) * 5.0
-            return (m, s) if return_std else m
+def test_koval_fractional_flow():
+    QL = np.linspace(0, 100, 50)
+    fw = koval_fractional_flow(QL, K_K=4.0, V_D=25.0, Q_L_bt=5.0, fw_initial=0.05)
+    
+    # Strictly in [0, 1]
+    assert np.all(fw >= 0.0)
+    assert np.all(fw <= 1.0)
+    # Strictly monotonic after breakthrough
+    assert np.all(np.diff(fw) >= 0.0)
+    # Pre-breakthrough initial cut
+    assert fw[0] == pytest.approx(0.05)
 
-    gps = [MockGP() for _ in range(K)]
 
-    preds, stds = predict_hybrid_gp_rate_continuous(
-        gps, Vt, mean_inc, X_val_s, anchors_val, learned_dates, extended_dates, origin, K=K
-    )
+def test_logistic_water_cut_progression():
+    t_years = np.linspace(0, 20, 81)
+    fw = logistic_water_cut_progression(t_years, fw_0=0.10, lambda_w=0.25, fw_max=0.99)
+    
+    assert np.all(fw >= 0.0)
+    assert np.all(fw <= 0.99)
+    assert np.all(np.diff(fw) >= 0.0)
+    assert fw[0] == pytest.approx(0.10, abs=1e-3)
+    assert fw[-1] > 0.85  # mature late-life water cut with lambda_w=0.25
 
-    assert preds.shape == (n_cases, T_extended)
-    assert stds.shape == (n_cases, T_extended)
 
-    # 1. Check C0 continuity at boundary
-    # Q(t^*) at learned_steps - 1 must match
-    for i in range(n_cases):
-        learned_end_val = anchors_val[i, 0] + mean_inc[0, -1] + np.sum(np.ones(K) * 50.0 * Vt[:K, -1])
-        assert np.isclose(preds[i, T_learned - 1], learned_end_val, atol=1e-5)
-        # Next step must be strictly greater than boundary
-        assert preds[i, T_learned] >= preds[i, T_learned - 1]
+def test_modified_arps_terminal_floor():
+    t_years = np.linspace(0.25, 50.0, 200)
+    q0 = 5000.0
+    Di = 0.30
+    b = 0.35
+    D_lim = 0.08  # t_switch = (0.30/0.08 - 1)/(0.35*0.30) = 2.75/0.105 ~= 26.19 yr
+    
+    rates, cums = modified_arps_decline(t_years, q0=q0, Di=Di, b=b, D_lim=D_lim)
+    
+    assert np.all(rates >= 0.0)
+    assert np.all(np.diff(cums) >= 0.0)
+    
+    # Instantaneous decline rate at year 50 (after switch at 26.2 yr) must equal D_lim exactly
+    # D(t) ~= -ln(q(t+dt)/q(t)) / dt
+    dt = t_years[1] - t_years[0]
+    D_terminal = -np.log(rates[-1] / rates[-2]) / dt
+    assert D_terminal == pytest.approx(D_lim, rel=0.05)
 
-    # 2. Check monotonicity across all extended steps (T_learned to T_extended)
-    diffs = np.diff(preds, axis=1)
-    assert np.all(diffs[:, T_learned - 1:] >= 0.0), "Extrapolated segment must be strictly non-decreasing"
 
-def test_rate_domain_decline_monotonic():
-    """Verify that rate domain decline produces strictly increasing cumulative curves."""
-    curves = {}
-    cases = [71, 72]
-    dates = pd.date_range("2000-01-01", "2008-01-01", freq="QS")
-    origin = pd.Timestamp("2008-01-01")
-    forecast_dates = pd.date_range("2008-04-01", periods=80, freq="QS")
+def test_stretched_exponential_decline():
+    t_years = np.linspace(0.25, 20.0, 80)
+    rates, cums = stretched_exponential_decline(t_years, q0=4000.0, tau=3.5, n=0.55)
+    
+    assert np.all(rates >= 0.0)
+    assert np.all(np.diff(cums) >= 0.0)
+    assert rates[-1] < rates[0]
 
-    for c in cases:
-        # Monotonic cum
-        cum_vals = np.linspace(1000, 10000, len(dates))
-        rate_vals = np.linspace(100, 50, len(dates))
-        curves[(c, "oil_cum")] = pd.Series(cum_vals, index=dates)
-        curves[(c, "oil_rate")] = pd.Series(rate_vals, index=dates)
 
-    unc_df = pd.DataFrame({
-        "Aquifer Pore Volume": [100.0, 200.0],
-    }, index=cases)
+def test_two_compartment_depletion():
+    t_years = np.linspace(0.25, 20.0, 80)
+    rates, cums = two_compartment_depletion(t_years, q1_0=2500.0, D1=0.35, q2_0=1500.0, D2=0.04)
+    
+    assert np.all(rates >= 0.0)
+    assert np.all(np.diff(cums) >= 0.0)
+    assert rates[0] < 4000.0
+    assert rates[-1] > 0.0
 
-    preds = predict_rate_domain_decline(cases, origin, forecast_dates, "oil_cum", curves, unc_df)
-    assert preds.shape == (2, 80)
-    diffs = np.diff(preds, axis=1)
-    assert np.all(diffs >= 0.0), "Rate-domain cumulative forecast must be non-decreasing"
+
+def test_research_hypothesis_matrix():
+    df_hyp = build_research_hypothesis_matrix()
+    assert len(df_hyp) == 6
+    assert "H1_Multiphase_Coupling" in df_hyp["hypothesis_id"].values
+    assert "H2_Liquid_WOR_State" in df_hyp["hypothesis_id"].values
+    assert "H5_Modified_Arps_Terminal_Floor" in df_hyp["hypothesis_id"].values

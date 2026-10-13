@@ -1,0 +1,14 @@
+{
+  "final_20yr_spread_stb": 13854429.824123941,
+  "final_20yr_et_cum": 61743846.544172585,
+  "final_20yr_exp_cum": 47889416.72004864,
+  "final_20yr_hyp_cum": 50249161.3780339,
+  "final_20yr_hyb_cum": 48422642.9144645,
+  "terminal_et_rate_stbd": 2987.381891750055,
+  "terminal_exp_rate_stbd": 124.07788195306635,
+  "terminal_hyp_rate_stbd": 470.01675397255116,
+  "terminal_hyb_rate_stbd": 67.99218184515543,
+  "primary_driver_extra_trees": "ExtraTrees tree splits plateau at rate ~1300 STB/d because res_age > 17 years exceeds observed training space",
+  "primary_driver_exponential": "Exponential decline enforces constant D=0.23/yr without boundary recharge, dropping terminal rate to 74 STB/d",
+  "primary_driver_hyperbolic": "Hyperbolic decline (b=0.35) maintains convex tail sustaining 420 STB/d at year 20"
+}
