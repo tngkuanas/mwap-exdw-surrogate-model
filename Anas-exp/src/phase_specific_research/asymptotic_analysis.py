@@ -214,45 +214,99 @@ def compare_frozen_vs_constrained_tail(
     origin: pd.Timestamp = pd.Timestamp("2008-01-01"),
 ) -> pd.DataFrame:
     """
-    Direct comparison between exact Frozen Baseline and Constrained Long-Tail Ensemble
-    across 20, 30, 50, and 100 years on Field Case 0.
+    Direct comparison between Frozen Baseline, Candidate H (Exp & Arps), Candidate B,
+    and Candidate B Tapered (Exp & Arps) across 20, 30, 50, and 100 years on Field Case 0.
     """
+    from phase_specific_research.as_of_gate_selection import compute_modified_arps_rate
+    
     records = []
+    w_oil = weights["oil"]
+    
     for yr in horizons_years:
         n_q = yr * 4
         f_dates = pd.date_range(origin + pd.DateOffset(months=3), periods=n_q, freq="QS")
+        step_indices = np.arange(1, n_q + 1)
+        t_years = init_state["res_age"] + step_indices * (DT_DAYS / 365.25)
         
         r_et = models["Recursive_ExtraTrees"].predict_rates(init_state, params, f_dates)
         r_exp = models["Learned_Exponential_DCA"].predict_rates(init_state, params, f_dates)
         r_hyp = models["Learned_Hyperbolic_DCA"].predict_rates(init_state, params, f_dates)
         r_hyb = models["Hybrid_Dynamic"].predict_rates(init_state, params, f_dates)
         
+        # 1. Exact Frozen Baseline
         qo_froz = (
-            weights["oil"]["Recursive_ExtraTrees"] * r_et["oil_rate"]
-            + weights["oil"]["Learned_Exponential_DCA"] * r_exp["oil_rate"]
-            + weights["oil"].get("Learned_Hyperbolic_DCA", 0.0) * r_hyp["oil_rate"]
-            + weights["oil"]["Hybrid_Dynamic"] * r_hyb["oil_rate"]
+            w_oil["Recursive_ExtraTrees"] * r_et["oil_rate"]
+            + w_oil["Learned_Exponential_DCA"] * r_exp["oil_rate"]
+            + w_oil.get("Learned_Hyperbolic_DCA", 0.0) * r_hyp["oil_rate"]
+            + w_oil["Hybrid_Dynamic"] * r_hyb["oil_rate"]
         )
         cum_o_froz = init_state["Qo"] + np.cumsum(np.maximum(0, qo_froz) * DT_DAYS)
         
-        pred_tail = predict_constrained_long_tail_rates(
-            models, weights, init_state, params, f_dates, t_support_years=14.0, taper_scale_years=2.0
+        # 2. Candidate H (Exp DCA tail beyond 14 yr)
+        eta_h = 1.0 / (1.0 + np.exp((t_years - 14.0) / 2.0))
+        w_et_t = w_oil["Recursive_ExtraTrees"] * eta_h
+        w_exp_t = w_oil["Learned_Exponential_DCA"] + w_oil["Recursive_ExtraTrees"] * (1.0 - eta_h)
+        qo_tail_exp = (
+            w_et_t * r_et["oil_rate"]
+            + w_exp_t * r_exp["oil_rate"]
+            + w_oil.get("Learned_Hyperbolic_DCA", 0.0) * r_hyp["oil_rate"]
+            + w_oil["Hybrid_Dynamic"] * r_hyb["oil_rate"]
         )
-        qo_tail = pred_tail["oil_rate"]
-        cum_o_tail = init_state["Qo"] + np.cumsum(np.maximum(0, qo_tail) * DT_DAYS)
+        cum_o_tail_exp = init_state["Qo"] + np.cumsum(np.maximum(0, qo_tail_exp) * DT_DAYS)
+        
+        # 3. Candidate H (Modified Arps tail beyond 14 yr)
+        x_in = np.array([[
+            float(params.get("Fault Transmissibility", params.get("fault", 0.1))),
+            float(params.get("Porosity Multiplier", params.get("poro", 1.0))),
+            float(params.get("Permeability Multiplier", params.get("perm", 5.0))),
+            float(params.get("Aquifer Pore Volume", params.get("aq", 100.0))),
+            init_state["qo"], init_state["qw"], init_state["wor"], init_state["res_age"],
+        ]])
+        D_pred = max(0.01, float(models["Learned_Hyperbolic_DCA"].model_D.predict(x_in)[0])) if hasattr(models["Learned_Hyperbolic_DCA"], "model_D") else 0.05
+        t_rel = step_indices * (DT_DAYS / 365.25)
+        r_arps_mod = compute_modified_arps_rate(init_state["qo"], D_pred, b=0.35, D_lim=0.05, t_years=t_rel)
+        
+        qo_tail_arps = (
+            w_et_t * r_et["oil_rate"]
+            + w_oil["Learned_Exponential_DCA"] * r_exp["oil_rate"]
+            + (w_oil["Recursive_ExtraTrees"] * (1.0 - eta_h)) * r_arps_mod
+            + w_oil.get("Learned_Hyperbolic_DCA", 0.0) * r_hyp["oil_rate"]
+            + w_oil["Hybrid_Dynamic"] * r_hyb["oil_rate"]
+        )
+        cum_o_tail_arps = init_state["Qo"] + np.cumsum(np.maximum(0, qo_tail_arps) * DT_DAYS)
+        
+        # 4. Candidate B (Pure ExtraTrees oil)
+        qo_b = r_et["oil_rate"]
+        cum_o_b = init_state["Qo"] + np.cumsum(np.maximum(0, qo_b) * DT_DAYS)
+        
+        # 5. Candidate B Tapered Exp (ExtraTrees oil supported up to 9.75 yr, then Exp DCA)
+        eta_b = 1.0 / (1.0 + np.exp((t_years - 9.75) / 1.0))
+        qo_b_taper_exp = eta_b * r_et["oil_rate"] + (1.0 - eta_b) * r_exp["oil_rate"]
+        cum_o_b_taper_exp = init_state["Qo"] + np.cumsum(np.maximum(0, qo_b_taper_exp) * DT_DAYS)
+        
+        # 6. Candidate B Tapered Arps (ExtraTrees oil supported up to 9.75 yr, then Modified Arps)
+        qo_b_taper_arps = eta_b * r_et["oil_rate"] + (1.0 - eta_b) * r_arps_mod
+        cum_o_b_taper_arps = init_state["Qo"] + np.cumsum(np.maximum(0, qo_b_taper_arps) * DT_DAYS)
         
         records.append({
             "horizon_years": yr,
             "frozen_terminal_oil_rate_stbd": float(qo_froz[-1]),
-            "tail_terminal_oil_rate_stbd": float(qo_tail[-1]),
             "frozen_eur_oil_stb": float(cum_o_froz[-1]),
-            "tail_eur_oil_stb": float(cum_o_tail[-1]),
-            "eur_difference_stb": float(cum_o_tail[-1] - cum_o_froz[-1]),
-            "eur_difference_pct": float((cum_o_tail[-1] - cum_o_froz[-1]) / cum_o_froz[-1] * 100.0),
-            "tail_terminal_approaches_zero": bool(qo_tail[-1] < 10.0),
+            "cand_h_exp_terminal_rate_stbd": float(qo_tail_exp[-1]),
+            "cand_h_exp_eur_oil_stb": float(cum_o_tail_exp[-1]),
+            "cand_h_arps_terminal_rate_stbd": float(qo_tail_arps[-1]),
+            "cand_h_arps_eur_oil_stb": float(cum_o_tail_arps[-1]),
+            "cand_b_et_terminal_rate_stbd": float(qo_b[-1]),
+            "cand_b_et_eur_oil_stb": float(cum_o_b[-1]),
+            "cand_b_taper_exp_terminal_rate_stbd": float(qo_b_taper_exp[-1]),
+            "cand_b_taper_exp_eur_oil_stb": float(cum_o_b_taper_exp[-1]),
+            "cand_b_taper_arps_terminal_rate_stbd": float(qo_b_taper_arps[-1]),
+            "cand_b_taper_arps_eur_oil_stb": float(cum_o_b_taper_arps[-1]),
+            "eur_difference_cand_h_vs_frozen_stb": float(cum_o_tail_exp[-1] - cum_o_froz[-1]),
         })
         
     return pd.DataFrame(records)
+
 
 
 def evaluate_taper_sensitivity_grid(

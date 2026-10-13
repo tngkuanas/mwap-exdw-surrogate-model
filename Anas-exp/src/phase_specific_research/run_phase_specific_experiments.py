@@ -57,6 +57,7 @@ from phase_specific_research.asymptotic_analysis import (
 )
 from phase_specific_research.phase_recombination import (
     predict_candidate_rates,
+    DECISIVE_CANDIDATE_IDS,
     RELEVANT_CANDIDATE_IDS,
 )
 from geological_information_value.parameter_bounds import PARAM_NAMES, create_parameter_series
@@ -68,6 +69,7 @@ from phase_specific_research.selection_rule_analysis import (
 from phase_specific_research.nested_cross_validation import (
     run_full_leave_reservoir_out_cross_validation,
     evaluate_single_reservoir_leave_out,
+    evaluate_cases_71_to_85_dual_protocols,
     EVAL_PSEUDO_FIELDS,
     EVAL_GRID,
 )
@@ -87,7 +89,7 @@ def plot_figure_1_asymptotic_audit(df_stress: pd.DataFrame, df_comp: pd.DataFram
     ax1 = axes[0]
     years = df_comp["horizon_years"].values
     froz_rates = df_comp["frozen_terminal_oil_rate_stbd"].values
-    tail_rates = df_comp["tail_terminal_oil_rate_stbd"].values
+    tail_rates = df_comp["cand_h_exp_terminal_rate_stbd"].values if "cand_h_exp_terminal_rate_stbd" in df_comp.columns else df_comp["tail_terminal_oil_rate_stbd"].values
     
     ax1.plot(years, froz_rates, marker="o", color="#c0392b", lw=2.5, label="Frozen Ensemble (Floor: ~737.12 STB/d)")
     ax1.plot(years, tail_rates, marker="s", color="#27ae60", lw=2.5, label="Constrained Long-Tail (Tapers to 0 STB/d)")
@@ -103,7 +105,7 @@ def plot_figure_1_asymptotic_audit(df_stress: pd.DataFrame, df_comp: pd.DataFram
     # Right: Cumulative Recovery Divergence
     ax2 = axes[1]
     froz_eur = df_comp["frozen_eur_oil_stb"].values / 1e6
-    tail_eur = df_comp["tail_eur_oil_stb"].values / 1e6
+    tail_eur = (df_comp["cand_h_exp_eur_oil_stb"].values if "cand_h_exp_eur_oil_stb" in df_comp.columns else df_comp["tail_eur_oil_stb"].values) / 1e6
     
     ax2.plot(years, froz_eur, marker="o", color="#c0392b", lw=2.5, label="Frozen Ensemble EUR (Diverges linearly)")
     ax2.plot(years, tail_eur, marker="s", color="#27ae60", lw=2.5, label="Constrained Tail EUR (Finite Limit: 48.44 MMSTB)")
@@ -129,12 +131,19 @@ def plot_figure_2_phase_recombination(master_case_df: pd.DataFrame, save_path: P
         "Candidate_A_Frozen_Baseline",
         "Candidate_B_ExtraTreesOil_FrozenWater",
         "Candidate_C_FrozenOil_ExtraTreesWater",
-        "Candidate_F_State_Conditioned_Gating",
+        "Candidate_F_Sigmoid_Gate",
         "Candidate_H_Constrained_Long_Tail",
     ]
-    labels = ["Frozen Baseline", "ET Oil +\nFrozen W", "Frozen O +\nET W (Cand C)", "State Gate\n(Cand F)", "Constrained\nTail (Cand H)"]
-    macro_means = [sub_2005[sub_2005["candidate_id"] == c]["macro_nrmse"].mean() for c in cands]
-    
+    labels = ["Frozen Baseline", "ET Oil +\nFrozen W", "Frozen O +\nET W (Cand C)", "Sigmoid Gate\n(Cand F)", "Constrained\nTail (Cand H)"]
+    macro_means = []
+    for c in cands:
+        if c in sub_2005["candidate_id"].values:
+            macro_means.append(sub_2005[sub_2005["candidate_id"] == c]["macro_nrmse"].mean())
+        elif "Candidate_F_State_Conditioned_Gating" in sub_2005["candidate_id"].values and c == "Candidate_F_Sigmoid_Gate":
+            macro_means.append(sub_2005[sub_2005["candidate_id"] == "Candidate_F_State_Conditioned_Gating"]["macro_nrmse"].mean())
+        else:
+            macro_means.append(0.0)
+            
     x = np.arange(len(cands))
     bars = ax1.bar(x, macro_means, color=["#7f8c8d", "#e67e22", "#27ae60", "#2980b9", "#8e44ad"], width=0.55)
     ax1.set_xticks(x)
@@ -153,15 +162,20 @@ def plot_figure_2_phase_recombination(master_case_df: pd.DataFrame, save_path: P
     horizons = pvt.index.values
     
     ax2.plot(horizons, pvt["Candidate_A_Frozen_Baseline"], marker="o", color="#7f8c8d", lw=2, label="Frozen Baseline")
-    ax2.plot(horizons, pvt["Candidate_C_FrozenOil_ExtraTreesWater"], marker="^", color="#c0392b", lw=2.5, label="Cand C (ET Water: Catastrophic Collapse)")
-    ax2.plot(horizons, pvt["Candidate_F_State_Conditioned_Gating"], marker="s", color="#2980b9", lw=2, label="Cand F (State Gated)")
-    ax2.plot(horizons, pvt["Candidate_H_Constrained_Long_Tail"], marker="d", color="#8e44ad", lw=2, linestyle="--", label="Cand H (Constrained Tail)")
-    
+    if "Candidate_C_FrozenOil_ExtraTreesWater" in pvt.columns:
+        ax2.plot(horizons, pvt["Candidate_C_FrozenOil_ExtraTreesWater"], marker="^", color="#c0392b", lw=2.5, label="Cand C (ET Water: Catastrophic Collapse)")
+    gate_col = "Candidate_F_Sigmoid_Gate" if "Candidate_F_Sigmoid_Gate" in pvt.columns else ("Candidate_F_State_Conditioned_Gating" if "Candidate_F_State_Conditioned_Gating" in pvt.columns else None)
+    if gate_col:
+        ax2.plot(horizons, pvt[gate_col], marker="s", color="#2980b9", lw=2, label="Cand F (Sigmoid Gate)")
+    if "Candidate_H_Constrained_Long_Tail" in pvt.columns:
+        ax2.plot(horizons, pvt["Candidate_H_Constrained_Long_Tail"], marker="d", color="#8e44ad", lw=2, linestyle="--", label="Cand H (Constrained Tail)")
+        
     ax2.set_xlabel("Forecast Horizon (Quarters from 2002)", fontweight="bold")
     ax2.set_ylabel("Mean Macro NRMSE", fontweight="bold")
     ax2.set_title("B: Early-Life Regime (2002): ExtraTrees Water Error Compounding", fontsize=11, fontweight="bold")
     ax2.grid(True, linestyle=":", alpha=0.6)
     ax2.legend(frameon=True, fontsize=8.5)
+
     
     plt.tight_layout()
     plt.savefig(save_path, dpi=300)
@@ -385,30 +399,34 @@ def main():
         print("  Stage 1 completed: stress test, support boundaries, sensitivity grid, synthetic experiment saved.")
         
     # -------------------------------------------------------------------------
-    # STAGE 2: Genuine Leave-One-Reservoir-Out Cross-Validation (Cases 1-70)
+    # STAGE 2: Decisive Leave-One-Reservoir-Out Cross-Validation (Cases 1-70)
     # -------------------------------------------------------------------------
     print("\n" + "=" * 80)
-    print("STAGE 2: Genuine Leave-One-Reservoir-Out Cross-Validation (Cases 1-70)")
+    print("STAGE 2: Decisive Leave-One-Reservoir-Out Cross-Validation (Cases 1-70)")
     print("=" * 80)
     
     nested_cases_path = TABLE_DIR / "nested_cv_case_evaluations.csv"
     nested_summ_path = TABLE_DIR / "nested_cv_summary_benchmark.csv"
+    decisive_cases_path = TABLE_DIR / "decisive_nested_cv_case_evaluations.csv"
+    decisive_summ_path = TABLE_DIR / "decisive_nested_cv_summary_benchmark.csv"
     
-    if nested_cases_path.exists() and nested_summ_path.exists() and not args.force:
-        print("  [Stage 2] Loading cached Genuine LOO Cross-Validation Benchmark...")
-        master_case_df = pd.read_csv(nested_cases_path)
-        summary_df = pd.read_csv(nested_summ_path)
+    if decisive_cases_path.exists() and decisive_summ_path.exists() and not args.force:
+        print("  [Stage 2] Loading cached Decisive LOO Cross-Validation Benchmark...")
+        master_case_df = pd.read_csv(decisive_cases_path)
+        summary_df = pd.read_csv(decisive_summ_path)
     else:
         master_case_df, summary_df = run_full_leave_reservoir_out_cross_validation(
             case_dict=case_dict,
             unc_df=unc_df,
             test_cases=EVAL_PSEUDO_FIELDS,
             eval_grid=EVAL_GRID,
-            candidate_ids=RELEVANT_CANDIDATE_IDS,
+            candidate_ids=DECISIVE_CANDIDATE_IDS,
         )
         master_case_df.to_csv(nested_cases_path, index=False)
         summary_df.to_csv(nested_summ_path, index=False)
-        print("  Stage 2 completed: LOO evaluations and cluster-robust summary benchmark saved.")
+        master_case_df.to_csv(decisive_cases_path, index=False)
+        summary_df.to_csv(decisive_summ_path, index=False)
+        print("  Stage 2 completed: decisive LOO evaluations and summary benchmark saved.")
     
     # -------------------------------------------------------------------------
     # STAGE 3: Discriminative Selection Rule Analysis & Statistical Tests
@@ -439,53 +457,22 @@ def main():
     print("  Stage 4 completed: TOST equivalence tests at delta=0.005 and delta=0.001 saved.")
     
     # -------------------------------------------------------------------------
-    # STAGE 5: Secondary Confirmation on Validation Cases 71-85 (Sealed)
+    # STAGE 5: Secondary Confirmation on Validation Cases 71-85 (Dual Protocol)
     # -------------------------------------------------------------------------
     print("\n" + "=" * 80)
-    print("STAGE 5: Secondary Confirmation on Cases 71-85 (Origin 2005, 12Q)")
+    print("STAGE 5: Secondary Confirmation on Cases 71-85 (Protocol A vs Protocol B)")
     print("=" * 80)
     
-    val_records = []
-    models_2005 = fit_locked_base_models(case_dict, unc_df, TRAIN_CASES, pd.Timestamp("2005-01-01"))
-    f_dates_val = pd.date_range("2005-04-01", periods=12, freq="QS")
-    
-    for c in VAL_CASES:
-        df_c = case_dict[c]
-        obs_origin = df_c[df_c["date"] == "2005-01-01"].iloc[0]
-        true_fwd = df_c[df_c["date"].isin(f_dates_val)].sort_values("date")
-        t_days = (pd.Timestamp("2005-01-01") - df_c["date"].min()).days
-        init_state = {
-            "qo": float(obs_origin["oil_rate_stbd"]),
-            "qw": float(obs_origin["water_rate_stbd"]),
-            "qg": float(obs_origin["gas_rate_mscfd"]),
-            "Qo": float(obs_origin["oil_cum_stb"]),
-            "Qw": float(obs_origin["water_cum_stb"]),
-            "Qg": float(obs_origin["gas_cum_mscf"]),
-            "wor": float(obs_origin["water_rate_stbd"] / max(obs_origin["oil_rate_stbd"], 1.0)),
-            "res_age": float(t_days / YEAR_DAYS),
-            "origin_date": pd.Timestamp("2005-01-01"),
-        }
-        params = create_parameter_series(unc_df.loc[c, PARAM_NAMES].to_dict())
-        base_rates = {
-            "Recursive_ExtraTrees": models_2005["Recursive_ExtraTrees"].predict_rates(init_state, params, f_dates_val),
-            "Learned_Exponential_DCA": models_2005["Learned_Exponential_DCA"].predict_rates(init_state, params, f_dates_val),
-            "Learned_Hyperbolic_DCA": models_2005["Learned_Hyperbolic_DCA"].predict_rates(init_state, params, f_dates_val),
-            "Hybrid_Dynamic": models_2005["Hybrid_Dynamic"].predict_rates(init_state, params, f_dates_val),
-        }
-        for cand_id in RELEVANT_CANDIDATE_IDS:
-            pred = predict_candidate_rates(cand_id, models_2005, locked_weights, init_state, params, f_dates_val, base_rates=base_rates)
-            sc = score_cumulative_forecast(
-                pred["cum_oil"], pred["cum_water"], true_fwd["oil_cum_stb"].values, true_fwd["water_cum_stb"].values,
-                init_state["Qo"], init_state["Qw"], pred["oil_rate"], pred["water_rate"],
-                true_fwd["oil_rate_stbd"].values, true_fwd["water_rate_stbd"].values
-            )
-            val_records.append({
-                "case_id": c, "candidate_id": cand_id, "macro_nrmse": sc["macro_nrmse"],
-                "oil_nrmse": sc["oil_nrmse"], "water_nrmse": sc["water_nrmse"]
-            })
-    val_df = pd.DataFrame(val_records)
-    val_df.to_csv(TABLE_DIR / "secondary_confirmation_cases_71_to_85.csv", index=False)
-    print("  Stage 5 completed: secondary confirmation on Cases 71-85 saved.")
+    val_df_A, val_df_B = evaluate_cases_71_to_85_dual_protocols(
+        case_dict=case_dict,
+        unc_df=unc_df,
+        locked_weights=locked_weights,
+        candidate_ids=DECISIVE_CANDIDATE_IDS,
+    )
+    val_df_A.to_csv(TABLE_DIR / "secondary_confirmation_cases_71_to_85_protocol_a.csv", index=False)
+    val_df_B.to_csv(TABLE_DIR / "secondary_confirmation_cases_71_to_85_protocol_b.csv", index=False)
+    val_df_B.to_csv(TABLE_DIR / "secondary_confirmation_cases_71_to_85.csv", index=False)
+    print("  Stage 5 completed: secondary confirmation Protocol A and Protocol B saved.")
     
     # -------------------------------------------------------------------------
     # STAGE 6: January 2008 Forward Deployment (Separated 40Q vs 80Q)
@@ -497,16 +484,11 @@ def main():
     df_deploy_scenarios, df_deploy_summary = run_deployment_2008_scenarios(
         models=models_2008,
         locked_weights=locked_weights,
-        candidates_to_deploy=[
-            "Candidate_A_Frozen_Baseline",
-            "Candidate_C_FrozenOil_ExtraTreesWater",
-            "Candidate_F_State_Conditioned_Gating",
-            "Candidate_H_Constrained_Long_Tail",
-        ],
     )
     df_deploy_scenarios.to_csv(TABLE_DIR / "deployment_2008_scenarios_comparison.csv", index=False)
     df_deploy_summary.to_csv(TABLE_DIR / "deployment_2008_summary_comparison.csv", index=False)
     print("  Stage 6 completed: separated 40Q/80Q deployment tables saved.")
+
     
     # -------------------------------------------------------------------------
     # STAGE 7: Byte-Level Checksum Verification of Official Deliverable

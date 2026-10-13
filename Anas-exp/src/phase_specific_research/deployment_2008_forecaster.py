@@ -34,11 +34,18 @@ def run_deployment_2008_scenarios(
     locked_weights: Dict[str, Dict[str, float]],
     candidates_to_deploy: List[str] = [
         "Candidate_A_Frozen_Baseline",
+        "Candidate_B_ExtraTreesOil_FrozenWater",
         "Candidate_C_FrozenOil_ExtraTreesWater",
-        "Candidate_E_Horizon_Adaptive_Blending",
         "Candidate_H_Constrained_Long_Tail",
+        "Candidate_H_Modified_Arps",
+        "Candidate_B_Tapered_Exp",
+        "Candidate_B_Tapered_Arps",
+        "Candidate_Hard_WaterCut",
+        "Candidate_Abstention_Gate",
+        "Candidate_Shrinkage_Blend",
     ],
     origin: pd.Timestamp = pd.Timestamp("2008-01-01"),
+    gate_params: Optional[Dict[str, Any]] = None,
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
     Executes January 2008 forward deployment on actual Field Case 0 history
@@ -89,6 +96,7 @@ def run_deployment_2008_scenarios(
                 params=params,
                 forecast_dates=f_dates,
                 base_rates=base_rates,
+                gate_params=gate_params,
             )
             
             qo = pred["oil_rate"]
