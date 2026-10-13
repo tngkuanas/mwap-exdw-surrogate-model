@@ -61,6 +61,7 @@ from geological_information_value.parameter_bounds import (
 from geological_information_value.controlled_information_experiment import (
     EVAL_PSEUDO_FIELDS,
     run_controlled_geological_value_experiment,
+    run_multi_origin_geological_value_study,
 )
 from geological_information_value.forward_model_sensitivity import (
     compute_local_jacobians,
@@ -88,12 +89,14 @@ BRAIN_DIR = Path("/Users/tengkuanas/.gemini/antigravity-cli/brain/4b7e1d00-9795-
 
 def plot_figure_1_controlled_information_value(summary_df: pd.DataFrame, save_path: Path):
     """Figure 1: Macro, Oil, and Water NRMSE across Controlled Geological Configurations."""
-    fig, ax = plt.subplots(figsize=(14, 6))
+    fig, ax = plt.subplots(figsize=(16, 6))
     
     order = [
         "A_True_Geology",
         "B_Point_Inferred",
         "C_Bayes_Posterior_Mean",
+        "C2_Shrinkage_50_50",
+        "C3_Post_Predictive_Mean",
         "D_Population_Mean",
         "E_Random_Prior_Sample",
         "F_Adversarial_Mismatch",
@@ -104,22 +107,27 @@ def plot_figure_1_controlled_information_value(summary_df: pd.DataFrame, save_pa
         "G3c_Ablate_Perm_PopMedian",
         "G4_Ablate_AquiferVolume",
     ]
+    # Filter to conditions present in summary_df
+    order = [cond for cond in order if cond in summary_df["condition"].values]
     df_plot = summary_df.set_index("condition").reindex(order).reset_index()
     
-    labels = [
-        "A: True Geology",
-        "B: Point Inferred",
-        "C: Bayes Mean",
-        "D: Pop Mean",
-        "E: Prior Draws (M=10)",
-        "F: Adversarial Mismatch",
-        "G1: Ablate Ft",
-        "G2: Ablate Poro",
-        "G3a: Perm (Prior k=1.0)",
-        "G3b: Perm (Mean k=5.29)",
-        "G3c: Perm (Med k=5.34)",
-        "G4: Ablate AqPV",
-    ]
+    label_map = {
+        "A_True_Geology": "A: True Geology",
+        "B_Point_Inferred": "B: Point Inferred",
+        "C_Bayes_Posterior_Mean": "C: Bayes Mean",
+        "C2_Shrinkage_50_50": "C2: Shrink (50/50)",
+        "C3_Post_Predictive_Mean": "C3: Post Pred Mean",
+        "D_Population_Mean": "D: Pop Mean",
+        "E_Random_Prior_Sample": "E: Prior Draws (M=10)",
+        "F_Adversarial_Mismatch": "F: Adv Mismatch",
+        "G1_Ablate_FaultTrans": "G1: Ablate Ft",
+        "G2_Ablate_Porosity": "G2: Ablate Poro",
+        "G3a_Ablate_Perm_PriorRef": "G3a: Perm (Prior k=1.0)",
+        "G3b_Ablate_Perm_PopMean": "G3b: Perm (Mean k=5.29)",
+        "G3c_Ablate_Perm_PopMedian": "G3c: Perm (Med k=5.34)",
+        "G4_Ablate_AquiferVolume": "G4: Ablate AqPV",
+    }
+    labels = [label_map.get(cond, cond) for cond in order]
     x = np.arange(len(labels))
     width = 0.25
     
@@ -131,7 +139,7 @@ def plot_figure_1_controlled_information_value(summary_df: pd.DataFrame, save_pa
     ax.axhline(true_macro, color="#1f77b4", linestyle="--", alpha=0.7, label=f"True Geology Macro ({true_macro:.4f})")
     
     ax.set_ylabel("NRMSE (Horizon 12Q)", fontsize=11, fontweight="bold")
-    ax.set_title("Figure 1: Controlled Geological Information Value Benchmark (Authoritative Scorer)\nIdentical Frozen Ensemble & Historical State Across 12 Controlled Geological Inputs", fontsize=12, fontweight="bold")
+    ax.set_title("Figure 1: Controlled Geological Information Value Benchmark (Authoritative Scorer)\nIdentical Frozen Ensemble & Historical State Across Controlled Geological Inputs", fontsize=12, fontweight="bold")
     ax.set_xticks(x)
     ax.set_xticklabels(labels, rotation=35, ha="right", fontsize=9)
     ax.legend(frameon=True, loc="upper left")
@@ -333,6 +341,40 @@ def main():
         case_ctrl_df.to_csv(case_path, index=False)
         summary_ctrl_df.to_csv(summary_path, index=False)
         print(f"  Completed in {time.perf_counter() - t0:.2f}s. Saved 2 tables.")
+        
+    # -------------------------------------------------------------------------
+    # STAGE 2b: Multi-Origin & Multi-Horizon Geological Value Study
+    # -------------------------------------------------------------------------
+    multi_orig_path = TABLE_DIR / "multi_origin_geological_value_study.csv"
+    multi_orig_summ_path = TABLE_DIR / "multi_origin_geological_value_summary.csv"
+    if multi_orig_path.exists() and multi_orig_summ_path.exists() and not args.force:
+        print("\n[Stage 2b] Loading cached Multi-Origin Geological Value Study...")
+        multi_orig_df = pd.read_csv(multi_orig_path)
+        multi_orig_summary = pd.read_csv(multi_orig_summ_path)
+    else:
+        print("\n[Stage 2b] Executing Multi-Origin & Multi-Horizon Geological Value Study...")
+        t0 = time.perf_counter()
+        multi_orig_df = run_multi_origin_geological_value_study(
+            case_dict=case_dict,
+            unc_df=unc_df,
+            pseudo_fields=EVAL_PSEUDO_FIELDS,
+            seed=42,
+        )
+        multi_orig_df.to_csv(multi_orig_path, index=False)
+        
+        multi_orig_summary = multi_orig_df.groupby(["origin", "horizon_quarters"]).agg({
+            "macro_true": "mean",
+            "macro_pop": "mean",
+            "macro_diff": "mean",
+            "oil_true": "mean",
+            "oil_pop": "mean",
+            "oil_diff": "mean",
+            "wat_true": "mean",
+            "wat_pop": "mean",
+            "wat_diff": "mean",
+        }).reset_index()
+        multi_orig_summary.to_csv(multi_orig_summ_path, index=False)
+        print(f"  Completed in {time.perf_counter() - t0:.2f}s. Saved multi-origin study and summary tables.")
         
     # -------------------------------------------------------------------------
     # STAGE 3: Quantify Forward-Model Geological Sensitivity

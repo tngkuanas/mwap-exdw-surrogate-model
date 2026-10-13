@@ -177,14 +177,58 @@ def run_official_scenarios_variance_audit(
             "AqPV": float(prior_samples[i, 3]),
         })
         
+    # -------------------------------------------------------------------------
+    # 3b. GROUP 4: Case 0 Posterior Draws (Top 100 Historical Likelihood Matches)
+    # -------------------------------------------------------------------------
+    candidates_v4_path = Path("outputs/research/history_matching_iteration_4/tables/candidate_evaluations_600.csv")
+    if candidates_v4_path.exists():
+        cand_df = pd.read_csv(candidates_v4_path)
+        q_cand = cand_df[cand_df["passes_quality_filter"]].copy()
+        if len(q_cand) < 100:
+            q_cand = cand_df.copy()
+        top_cand = q_cand.sort_values(by="log_lik_l2", ascending=False).head(100)
+        
+        for idx, row in top_cand.iterrows():
+            u_ser = pd.Series({
+                "Fault Transmissibility": float(row["Ft"]),
+                "Porosity Multiplier": float(row["Poro"]),
+                "Permeability Multiplier": float(row["Perm"]),
+                "Aquifer Pore Volume": float(row["AqPV"]),
+            })
+            _, aud = generate_scenario_predictions(
+                models, weights, case0_anchor, u_ser, dates_80q, 1.0
+            )
+            records_eval.append({
+                "group": "4_Case0_Posterior_Candidate_Draws",
+                "case_id": f"Cand_{int(row['cand_id']):03d}",
+                "eur_oil_stb": float(aud["cum_oil"][-1]),
+                "eur_water_stb": float(aud["cum_water"][-1]),
+                "eur_gas_mscf": float(aud["cum_gas"][-1]),
+                "incremental_oil_stb": float(aud["cum_oil"][-1] - case0_anchor["Qo"]),
+                "terminal_oil_rate_stbd": float(aud["qo_rate"][-1]),
+                "terminal_water_rate_stbd": float(aud["qw_rate"][-1]),
+                "Ft": float(row["Ft"]),
+                "Poro": float(row["Poro"]),
+                "Perm": float(row["Perm"]),
+                "AqPV": float(row["AqPV"]),
+            })
+
     eval_df = pd.DataFrame(records_eval)
     
     # -------------------------------------------------------------------------
     # 4. Variance Decomposition across Groups and Architectures
     # -------------------------------------------------------------------------
-    grp_a = eval_df[eval_df["group"] == "1_Official_Strategy_A_Ten_Best"]["eur_oil_stb"]
-    grp_c = eval_df[eval_df["group"] == "2_Strategy_C_Quality_Quantiles"]["eur_oil_stb"]
-    grp_prior = eval_df[eval_df["group"] == "3_Full_Prior_Box_Samples"]["eur_oil_stb"]
+    grp_a_eur = eval_df[eval_df["group"] == "1_Official_Strategy_A_Ten_Best"]["eur_oil_stb"]
+    grp_a_incr = eval_df[eval_df["group"] == "1_Official_Strategy_A_Ten_Best"]["incremental_oil_stb"]
+    
+    grp_c_eur = eval_df[eval_df["group"] == "2_Strategy_C_Quality_Quantiles"]["eur_oil_stb"]
+    grp_c_incr = eval_df[eval_df["group"] == "2_Strategy_C_Quality_Quantiles"]["incremental_oil_stb"]
+    
+    grp_prior_eur = eval_df[eval_df["group"] == "3_Full_Prior_Box_Samples"]["eur_oil_stb"]
+    grp_prior_incr = eval_df[eval_df["group"] == "3_Full_Prior_Box_Samples"]["incremental_oil_stb"]
+    
+    grp_post_eur = eval_df[eval_df["group"] == "4_Case0_Posterior_Candidate_Draws"]["eur_oil_stb"]
+    grp_post_incr = eval_df[eval_df["group"] == "4_Case0_Posterior_Candidate_Draws"]["incremental_oil_stb"]
     
     # Architecture spread: evaluate standalone base models on default prior mean
     u_mean_ser = create_parameter_series(PRIOR_MEANS)
@@ -203,36 +247,73 @@ def run_official_scenarios_variance_audit(
     arch_values = list(eur_arch.values())
     arch_spread = max(arch_values) - min(arch_values)
     arch_var = float(np.var(arch_values))
+    incr_arch = [val - case0_anchor["Qo"] for val in arch_values]
+    arch_incr_spread = max(incr_arch) - min(incr_arch)
     
     decomp_records = [
         {
             "evaluation_scope": "Official Scenarios (Strategy A: 10 Best Matches)",
-            "min_eur_oil_stb": float(grp_a.min()),
-            "max_eur_oil_stb": float(grp_a.max()),
-            "spread_eur_oil_stb": float(grp_a.max() - grp_a.min()),
-            "std_eur_oil_stb": float(grp_a.std()),
-            "spread_rel_pct": float((grp_a.max() - grp_a.min()) / grp_a.mean() * 100.0),
-            "n_samples": len(grp_a),
+            "min_eur_oil_stb": float(grp_a_eur.min()),
+            "max_eur_oil_stb": float(grp_a_eur.max()),
+            "spread_eur_oil_stb": float(grp_a_eur.max() - grp_a_eur.min()),
+            "std_eur_oil_stb": float(grp_a_eur.std()),
+            "spread_rel_pct": float((grp_a_eur.max() - grp_a_eur.min()) / grp_a_eur.mean() * 100.0),
+            "min_incremental_oil_stb": float(grp_a_incr.min()),
+            "max_incremental_oil_stb": float(grp_a_incr.max()),
+            "spread_incremental_oil_stb": float(grp_a_incr.max() - grp_a_incr.min()),
+            "std_incremental_oil_stb": float(grp_a_incr.std()),
+            "spread_incremental_rel_pct": float((grp_a_incr.max() - grp_a_incr.min()) / grp_a_incr.mean() * 100.0),
+            "n_samples": len(grp_a_eur),
             "primary_driver": "Extreme posterior concentration of porosity (1.331 - 1.346) in top 10 point matches",
         },
         {
             "evaluation_scope": "Quality-Filtered Quantiles (Strategy C: P10 to P90)",
-            "min_eur_oil_stb": float(grp_c.min()),
-            "max_eur_oil_stb": float(grp_c.max()),
-            "spread_eur_oil_stb": float(grp_c.max() - grp_c.min()),
-            "std_eur_oil_stb": float(grp_c.std()),
-            "spread_rel_pct": float((grp_c.max() - grp_c.min()) / grp_c.mean() * 100.0),
-            "n_samples": len(grp_c),
+            "min_eur_oil_stb": float(grp_c_eur.min()),
+            "max_eur_oil_stb": float(grp_c_eur.max()),
+            "spread_eur_oil_stb": float(grp_c_eur.max() - grp_c_eur.min()),
+            "std_eur_oil_stb": float(grp_c_eur.std()),
+            "spread_rel_pct": float((grp_c_eur.max() - grp_c_eur.min()) / grp_c_eur.mean() * 100.0),
+            "min_incremental_oil_stb": float(grp_c_incr.min()),
+            "max_incremental_oil_stb": float(grp_c_incr.max()),
+            "spread_incremental_oil_stb": float(grp_c_incr.max() - grp_c_incr.min()),
+            "std_incremental_oil_stb": float(grp_c_incr.std()),
+            "spread_incremental_rel_pct": float((grp_c_incr.max() - grp_c_incr.min()) / grp_c_incr.mean() * 100.0),
+            "n_samples": len(grp_c_eur),
             "primary_driver": "Dispersion across historical candidate pool quality filters",
         },
+    ]
+    
+    if len(grp_post_eur) > 0:
+        decomp_records.append({
+            "evaluation_scope": "Case 0 Posterior Candidates (Top 100 Likelihood Matches)",
+            "min_eur_oil_stb": float(grp_post_eur.min()),
+            "max_eur_oil_stb": float(grp_post_eur.max()),
+            "spread_eur_oil_stb": float(grp_post_eur.max() - grp_post_eur.min()),
+            "std_eur_oil_stb": float(grp_post_eur.std()),
+            "spread_rel_pct": float((grp_post_eur.max() - grp_post_eur.min()) / grp_post_eur.mean() * 100.0),
+            "min_incremental_oil_stb": float(grp_post_incr.min()),
+            "max_incremental_oil_stb": float(grp_post_incr.max()),
+            "spread_incremental_oil_stb": float(grp_post_incr.max() - grp_post_incr.min()),
+            "std_incremental_oil_stb": float(grp_post_incr.std()),
+            "spread_incremental_rel_pct": float((grp_post_incr.max() - grp_post_incr.min()) / grp_post_incr.mean() * 100.0),
+            "n_samples": len(grp_post_eur),
+            "primary_driver": "Likelihood-constrained posterior parameter dispersion on Case 0 history",
+        })
+        
+    decomp_records.extend([
         {
             "evaluation_scope": "Full Prior Parameter Box (100 Random Samples)",
-            "min_eur_oil_stb": float(grp_prior.min()),
-            "max_eur_oil_stb": float(grp_prior.max()),
-            "spread_eur_oil_stb": float(grp_prior.max() - grp_prior.min()),
-            "std_eur_oil_stb": float(grp_prior.std()),
-            "spread_rel_pct": float((grp_prior.max() - grp_prior.min()) / grp_prior.mean() * 100.0),
-            "n_samples": len(grp_prior),
+            "min_eur_oil_stb": float(grp_prior_eur.min()),
+            "max_eur_oil_stb": float(grp_prior_eur.max()),
+            "spread_eur_oil_stb": float(grp_prior_eur.max() - grp_prior_eur.min()),
+            "std_eur_oil_stb": float(grp_prior_eur.std()),
+            "spread_rel_pct": float((grp_prior_eur.max() - grp_prior_eur.min()) / grp_prior_eur.mean() * 100.0),
+            "min_incremental_oil_stb": float(grp_prior_incr.min()),
+            "max_incremental_oil_stb": float(grp_prior_incr.max()),
+            "spread_incremental_oil_stb": float(grp_prior_incr.max() - grp_prior_incr.min()),
+            "std_incremental_oil_stb": float(grp_prior_incr.std()),
+            "spread_incremental_rel_pct": float((grp_prior_incr.max() - grp_prior_incr.min()) / grp_prior_incr.mean() * 100.0),
+            "n_samples": len(grp_prior_eur),
             "primary_driver": "Model architecture insensitivity: DCA coefficients on Perm and Aq are ~1e-4 and ~1e-6",
         },
         {
@@ -242,23 +323,31 @@ def run_official_scenarios_variance_audit(
             "spread_eur_oil_stb": float(arch_spread),
             "std_eur_oil_stb": float(np.std(arch_values)),
             "spread_rel_pct": float(arch_spread / np.mean(arch_values) * 100.0),
+            "min_incremental_oil_stb": float(min(incr_arch)),
+            "max_incremental_oil_stb": float(max(incr_arch)),
+            "spread_incremental_oil_stb": float(arch_incr_spread),
+            "std_incremental_oil_stb": float(np.std(incr_arch)),
+            "spread_incremental_rel_pct": float(arch_incr_spread / np.mean(incr_arch) * 100.0),
             "n_samples": len(arch_values),
             "primary_driver": "Divergence between Recursive ExtraTrees (62.2 MMSTB) and Exponential DCA (47.5 MMSTB)",
         },
-    ]
+    ])
     decomp_df = pd.DataFrame(decomp_records)
     
     # Quantitative variance share: Architecture vs Geological Prior vs Scenario Selection
-    total_system_var = arch_var + float(np.var(grp_prior))
+    total_system_var = arch_var + float(np.var(grp_prior_eur))
     arch_var_pct = (arch_var / total_system_var) * 100.0
-    geo_var_pct = (float(np.var(grp_prior)) / total_system_var) * 100.0
+    geo_var_pct = (float(np.var(grp_prior_eur)) / total_system_var) * 100.0
     
     audit_findings = {
         "shared_case0_anchor_cum_oil_stb": case0_anchor["Qo"],
-        "case0_anchor_fraction_of_eur": float(case0_anchor["Qo"] / grp_a.mean()),
-        "official_eur_spread_stb": float(grp_a.max() - grp_a.min()),
-        "full_prior_eur_spread_stb": float(grp_prior.max() - grp_prior.min()),
+        "case0_anchor_fraction_of_eur": float(case0_anchor["Qo"] / grp_a_eur.mean()),
+        "official_eur_spread_stb": float(grp_a_eur.max() - grp_a_eur.min()),
+        "official_incremental_spread_stb": float(grp_a_incr.max() - grp_a_incr.min()),
+        "full_prior_eur_spread_stb": float(grp_prior_eur.max() - grp_prior_eur.min()),
+        "full_prior_incremental_spread_stb": float(grp_prior_incr.max() - grp_prior_incr.min()),
         "architecture_eur_spread_stb": float(arch_spread),
+        "architecture_incremental_spread_stb": float(arch_incr_spread),
         "architecture_variance_share_pct": arch_var_pct,
         "geological_variance_share_pct": geo_var_pct,
         "dca_exponential_weight_oil": float(weights["oil"]["Learned_Exponential_DCA"]),

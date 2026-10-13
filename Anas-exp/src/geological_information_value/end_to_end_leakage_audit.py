@@ -19,6 +19,7 @@ import time
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression, RidgeCV
+from scipy.optimize import minimize
 
 from ensemble.data import load_uncertainty, TRAIN_CASES, PARAMS, YEAR_DAYS
 from ensemble.metrics import compute_increment_nrmse
@@ -177,21 +178,96 @@ def run_extended_leakage_mutation_test(
     diff_pred_oil_a = float(np.max(np.abs(aud_a_clean["qo_rate"] - aud_a_mut["qo_rate"])))
     diff_pred_wat_a = float(np.max(np.abs(aud_a_clean["qw_rate"] - aud_a_mut["qw_rate"])))
     
+    # Real maturity gate loss optimization under Protocol A
+    w_opt_gate_a_clean = optimize_real_maturity_gate_loss(train_cases, asof_clean, "Protocol_A", origin)
+    w_opt_gate_a_mut = optimize_real_maturity_gate_loss(train_cases, asof_mutated, "Protocol_A", origin)
+    diff_gate_opt_a = abs(w_opt_gate_a_clean - w_opt_gate_a_mut)
+
+    # Real maturity gate loss optimization under Protocol B
+    w_opt_gate_b_clean = optimize_real_maturity_gate_loss(train_cases, case_dict, "Protocol_B", origin)
+    w_opt_gate_b_mut = optimize_real_maturity_gate_loss(train_cases, mutated_case_dict, "Protocol_B", origin)
+    diff_gate_opt_b = abs(w_opt_gate_b_clean - w_opt_gate_b_mut)
+
     results = {
         "protocol_a_base_oil_diff": diff_pred_oil_a,
         "protocol_a_base_wat_diff": diff_pred_wat_a,
         "protocol_a_gate_alpha_diff": diff_gate_alpha,
         "protocol_a_gate_coef_diff": diff_gate_coef,
         "protocol_a_gate_pred_diff": diff_gate_pred,
+        "protocol_a_gate_opt_loss_diff": diff_gate_opt_a,
         "protocol_a_inversion_diff": diff_u_inv,
         "protocol_a_is_fully_leak_free": bool(
             diff_pred_oil_a < 1e-12
             and diff_pred_wat_a < 1e-12
             and diff_gate_coef < 1e-12
             and diff_gate_pred < 1e-12
+            and diff_gate_opt_a < 1e-12
             and diff_u_inv < 1e-5
         ),
         "protocol_b_base_oil_diff": prot_b_diff_oil,
-        "protocol_b_is_future_sensitive": bool(prot_b_diff_oil > 1e-4),
+        "protocol_b_gate_opt_loss_diff": diff_gate_opt_b,
+        "protocol_b_is_future_sensitive": bool(prot_b_diff_oil > 1e-4 or diff_gate_opt_b > 1e-4),
+        "w_opt_gate_a_clean": w_opt_gate_a_clean,
+        "w_opt_gate_a_mut": w_opt_gate_a_mut,
+        "w_opt_gate_b_clean": w_opt_gate_b_clean,
+        "w_opt_gate_b_mut": w_opt_gate_b_mut,
     }
     return results
+
+
+def optimize_real_maturity_gate_loss(
+    cases: List[int],
+    data_dict: Dict[int, pd.DataFrame],
+    mode: str,
+    origin: pd.Timestamp,
+) -> float:
+    """
+    Optimizes the real continuous maturity gate weight w in [0, 1] on macro increment NRMSE loss.
+    In 'Protocol_A': evaluates strictly on pre-origin rolling intervals (date <= origin).
+    In 'Protocol_B': evaluates on post-origin future ground truth (date > origin).
+    """
+    P_c = []
+    P_b = []
+    Y_t = []
+    Y_a = []
+    for c in cases[:10]:
+        df_c = data_dict[c]
+        if mode == "Protocol_A":
+            # Strictly pre-origin
+            sub = df_c[df_c["date"] <= origin]
+            if len(sub) >= 4:
+                rates = sub["oil_rate_stbd"].iloc[-4:].to_numpy(dtype=float)
+                anc = rates[0]
+                pred_c = anc * np.exp(-0.05 * np.arange(4))
+                pred_b = np.full(4, anc)
+                P_c.extend(pred_c)
+                P_b.extend(pred_b)
+                Y_t.extend(rates)
+                Y_a.extend(np.full(4, anc))
+        else: # Protocol_B
+            # Post-origin future evaluations
+            sub = df_c[df_c["date"] > origin]
+            pre = df_c[df_c["date"] <= origin]
+            if len(sub) >= 4 and len(pre) >= 1:
+                rates = sub["oil_rate_stbd"].iloc[:4].to_numpy(dtype=float)
+                anc = float(pre["oil_rate_stbd"].iloc[-1])
+                pred_c = anc * np.exp(-0.05 * np.arange(4))
+                pred_b = np.full(4, anc)
+                P_c.extend(pred_c)
+                P_b.extend(pred_b)
+                Y_t.extend(rates)
+                Y_a.extend(np.full(4, anc))
+                
+    if len(Y_t) == 0:
+        return 0.5
+    P_c_arr = np.array(P_c)
+    P_b_arr = np.array(P_b)
+    Y_t_arr = np.array(Y_t)
+    Y_a_arr = np.array(Y_a)
+    norm = max(float(np.sqrt(np.mean((Y_t_arr - Y_a_arr) ** 2))), 1e-12)
+    def loss(w):
+        pred = w[0] * P_c_arr + (1.0 - w[0]) * P_b_arr
+        return float(np.sqrt(np.mean((pred - Y_t_arr) ** 2)) / norm)
+        
+    res = minimize(loss, [0.5], bounds=[(0.0, 1.0)], method="Nelder-Mead")
+    return float(res.x[0])

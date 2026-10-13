@@ -1,385 +1,577 @@
-distribution,model_name,target,sample_size_N,parameter,short_name,first_order_Si,total_order_STi,target_variance
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_oil,128,Fault Transmissibility,Ft,0.023935876493018687,0.026927867678967966,178271525236.87103
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_oil,128,Porosity Multiplier,Poro,0.8761151200842733,0.8818201398739871,178271525236.87103
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_oil,128,Permeability Multiplier,Perm,-0.0008815182348408266,0.0015039390058034393,178271525236.87103
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_oil,128,Aquifer Pore Volume,AqPV,0.003983948477423843,0.0033108526193911325,178271525236.87103
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_oil,256,Fault Transmissibility,Ft,0.026532244077535322,0.026300422731495673,178708673325.81555
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_oil,256,Porosity Multiplier,Poro,0.9683061793897767,0.9694138778815572,178708673325.81555
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_oil,256,Permeability Multiplier,Perm,0.001242706778676585,0.0014998959876314072,178708673325.81555
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_oil,256,Aquifer Pore Volume,AqPV,0.0037438441386197195,0.0033062164531913337,178708673325.81555
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_oil,512,Fault Transmissibility,Ft,0.026174498308736673,0.026304231556664625,178745126832.5824
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_oil,512,Porosity Multiplier,Poro,0.9677726588689023,0.9690098864236535,178745126832.5824
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_oil,512,Permeability Multiplier,Perm,0.0016654617440149562,0.0014925505016417711,178745126832.5824
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_oil,512,Aquifer Pore Volume,AqPV,0.0034394325226889027,0.0034756786825454688,178745126832.5824
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_oil,1024,Fault Transmissibility,Ft,0.02620329801075075,0.026309746975468697,178746243223.6792
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_oil,1024,Porosity Multiplier,Poro,0.9690459369796649,0.9690253604121739,178746243223.6792
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_oil,1024,Permeability Multiplier,Perm,0.0014833704756575306,0.0014928047847387392,178746243223.6792
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_oil,1024,Aquifer Pore Volume,AqPV,0.003445521300115984,0.0034677133408071597,178746243223.6792
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_water,128,Fault Transmissibility,Ft,0.03732880698113884,0.035133806140665115,60313629272.23869
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_water,128,Porosity Multiplier,Poro,0.00846582309245868,0.01399369338929467,60313629272.23869
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_water,128,Permeability Multiplier,Perm,0.6689726123891796,0.6675272024191112,60313629272.23869
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_water,128,Aquifer Pore Volume,AqPV,0.27721147452286843,0.26563071167957075,60313629272.23869
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_water,256,Fault Transmissibility,Ft,0.036351851197851906,0.03416976859744337,60683264287.93182
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_water,256,Porosity Multiplier,Poro,0.015347106270969866,0.015347248395890764,60683264287.93182
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_water,256,Permeability Multiplier,Perm,0.6735237700822108,0.6634592503186206,60683264287.93182
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_water,256,Aquifer Pore Volume,AqPV,0.274006546307187,0.26401269758283785,60683264287.93182
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_water,512,Fault Transmissibility,Ft,0.0349757720335362,0.03451451599266034,60077141567.90954
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_water,512,Porosity Multiplier,Poro,0.015511193430351875,0.015502099006832866,60077141567.90954
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_water,512,Permeability Multiplier,Perm,0.6701673043182861,0.6701519810759791,60077141567.90954
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_water,512,Aquifer Pore Volume,AqPV,0.2798220146008945,0.2798218186932782,60077141567.90954
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_water,1024,Fault Transmissibility,Ft,0.03451532780141723,0.03451532810398013,60075641066.58591
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_water,1024,Porosity Multiplier,Poro,0.015502479134429863,0.015502479270556417,60075641066.58591
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_water,1024,Permeability Multiplier,Perm,0.6701533662707381,0.6701533812473054,60075641066.58591
-Uniform_Prior_Bounds,Learned_Exponential_DCA,eur_water,1024,Aquifer Pore Volume,AqPV,0.27982901155454526,0.2798288116810252,60075641066.58591
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qo,128,Fault Transmissibility,Ft,0.02701482679668073,0.02767234077347386,464.87903960656
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qo,128,Porosity Multiplier,Poro,0.8792831826555457,0.8843060154368441,464.87903960656
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qo,128,Permeability Multiplier,Perm,-0.00030343918953934057,0.0015588255161029876,464.87903960656
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qo,128,Aquifer Pore Volume,AqPV,0.0031989365812458937,0.003420866606755636,464.87903960656
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qo,256,Fault Transmissibility,Ft,0.02608420577480549,0.027033589782297314,466.20918124850516
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qo,256,Porosity Multiplier,Poro,0.9685076142600074,0.9699200366488965,466.20918124850516
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qo,256,Permeability Multiplier,Perm,0.001633741619496573,0.0015537810767213482,466.20918124850516
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qo,256,Aquifer Pore Volume,AqPV,0.003569469267752742,0.00342051499484498,466.20918124850516
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qo,512,Fault Transmissibility,Ft,0.026052551843612715,0.027054274206880176,466.44531001049546
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qo,512,Porosity Multiplier,Poro,0.9682176923856998,0.9690008190806636,466.44531001049546
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qo,512,Permeability Multiplier,Perm,0.00150884195380807,0.00153604322417325,466.44531001049546
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qo,512,Aquifer Pore Volume,AqPV,0.0034140169431736123,0.0036066975675940775,466.44531001049546
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qo,1024,Fault Transmissibility,Ft,0.02626360823942487,0.027073691803739246,466.4486258177052
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qo,1024,Porosity Multiplier,Poro,0.9681980548203012,0.9690504837962602,466.4486258177052
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qo,1024,Permeability Multiplier,Perm,0.0014084148534973914,0.001537668405977758,466.4486258177052
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qo,1024,Aquifer Pore Volume,AqPV,0.0034132705785811534,0.0035723434110003635,466.4486258177052
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qw,128,Fault Transmissibility,Ft,0.03732880698052456,0.03513380614066555,1882.7340218731142
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qw,128,Porosity Multiplier,Poro,0.008463122078334938,0.013993693389293235,1882.7340218731142
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qw,128,Permeability Multiplier,Perm,0.6701091741308706,0.6675272024190959,1882.7340218731142
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qw,128,Aquifer Pore Volume,AqPV,0.27721147452208295,0.2656307116795552,1882.7340218731142
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qw,256,Fault Transmissibility,Ft,0.036351851196810885,0.034169768597440316,1894.2724490597393
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qw,256,Porosity Multiplier,Poro,0.015344421709613133,0.015347248395889326,1894.2724490597393
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qw,256,Permeability Multiplier,Perm,0.6735237700793093,0.6634592503186164,1894.2724490597393
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qw,256,Aquifer Pore Volume,AqPV,0.27400654630410615,0.26401269758283147,1894.2724490597393
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qw,512,Fault Transmissibility,Ft,0.0349757720329293,0.0345145159926571,1875.3518853300054
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qw,512,Porosity Multiplier,Poro,0.015508481785107633,0.015502099006833242,1875.3518853300054
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qw,512,Permeability Multiplier,Perm,0.6701673043170512,0.670151981075975,1875.3518853300054
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qw,512,Aquifer Pore Volume,AqPV,0.2798220145988186,0.2798218186932762,1875.3518853300054
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qw,1024,Fault Transmissibility,Ft,0.03451532780111052,0.03451532810397841,1875.3050460844545
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qw,1024,Porosity Multiplier,Poro,0.015502479133399048,0.015502479270557092,1875.3050460844545
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qw,1024,Permeability Multiplier,Perm,0.670153366269481,0.6701533812473012,1875.3050460844545
-Uniform_Prior_Bounds,Learned_Exponential_DCA,term_qw,1024,Aquifer Pore Volume,AqPV,0.2798290115537266,0.27982881168102386,1875.3050460844545
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_oil,128,Fault Transmissibility,Ft,-0.05,9.404053017959058e-05,24863820502.262955
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_oil,128,Porosity Multiplier,Poro,-0.05,1.0201581680794938,24863820502.262955
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_oil,128,Permeability Multiplier,Perm,-0.05,0.0007833066597211626,24863820502.262955
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_oil,128,Aquifer Pore Volume,AqPV,-0.05,0.07740666182521844,24863820502.262955
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_oil,256,Fault Transmissibility,Ft,-0.05,7.937353877599085e-05,24760811821.47876
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_oil,256,Porosity Multiplier,Poro,-0.05,1.0043369228044496,24760811821.47876
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_oil,256,Permeability Multiplier,Perm,0.08680236414241294,0.0006908985763472724,24760811821.47876
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_oil,256,Aquifer Pore Volume,AqPV,-0.05,0.09135295326177019,24760811821.47876
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_oil,512,Fault Transmissibility,Ft,0.006918223648507995,7.370453156311115e-05,24585210453.47037
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_oil,512,Porosity Multiplier,Poro,-0.05,0.9887306966564514,24585210453.47037
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_oil,512,Permeability Multiplier,Perm,-0.05,0.009283981097518199,24585210453.47037
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_oil,512,Aquifer Pore Volume,AqPV,1.0,0.10048342662135734,24585210453.47037
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_oil,1024,Fault Transmissibility,Ft,-0.03180630775174093,7.899506085442718e-05,24459104810.242195
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_oil,1024,Porosity Multiplier,Poro,1.0,0.9800804709221275,24459104810.242195
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_oil,1024,Permeability Multiplier,Perm,-0.05,0.005019980980867006,24459104810.242195
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_oil,1024,Aquifer Pore Volume,AqPV,1.0,0.1251827169015134,24459104810.242195
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_water,128,Fault Transmissibility,Ft,-0.05,0.002021109102838109,40844061367.859985
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_water,128,Porosity Multiplier,Poro,1.0,0.10086657344276106,40844061367.859985
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_water,128,Permeability Multiplier,Perm,-0.05,0.880145077752342,40844061367.859985
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_water,128,Aquifer Pore Volume,AqPV,-0.05,0.09391543758104273,40844061367.859985
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_water,256,Fault Transmissibility,Ft,0.038489449621662494,0.0019685840727419767,41558678394.111206
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_water,256,Porosity Multiplier,Poro,1.0,0.09036281230211014,41558678394.111206
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_water,256,Permeability Multiplier,Perm,-0.05,0.8576432990296141,41558678394.111206
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_water,256,Aquifer Pore Volume,AqPV,-0.05,0.09432861807839865,41558678394.111206
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_water,512,Fault Transmissibility,Ft,-0.05,0.001953168928339759,41554065082.204544
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_water,512,Porosity Multiplier,Poro,0.36046851842153566,0.08948219532499936,41554065082.204544
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_water,512,Permeability Multiplier,Perm,-0.05,0.8356801045810602,41554065082.204544
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_water,512,Aquifer Pore Volume,AqPV,-0.05,0.09477972025707045,41554065082.204544
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_water,1024,Fault Transmissibility,Ft,-0.05,0.0018875563999657405,41531237648.09929
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_water,1024,Porosity Multiplier,Poro,0.7553196511745688,0.0913410037680926,41531237648.09929
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_water,1024,Permeability Multiplier,Perm,0.6698302325193459,0.8297446889922229,41531237648.09929
-Uniform_Prior_Bounds,Recursive_ExtraTrees,eur_water,1024,Aquifer Pore Volume,AqPV,-0.0011114802033964164,0.09617317933772819,41531237648.09929
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qo,128,Fault Transmissibility,Ft,-0.020224719189564627,0.00011731281099986297,536.1671558697066
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qo,128,Porosity Multiplier,Poro,-0.05,1.042722923194081,536.1671558697066
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qo,128,Permeability Multiplier,Perm,-0.05,0.0008589143829023829,536.1671558697066
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qo,128,Aquifer Pore Volume,AqPV,-0.05,0.10650513525002353,536.1671558697066
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qo,256,Fault Transmissibility,Ft,-0.020672456413069053,9.862655298870404e-05,537.3767725859994
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qo,256,Porosity Multiplier,Poro,-0.05,1.0247141554265071,537.3767725859994
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qo,256,Permeability Multiplier,Perm,0.027894786880001528,0.0007614508590553316,537.3767725859994
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qo,256,Aquifer Pore Volume,AqPV,-0.05,0.1268054120301674,537.3767725859994
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qo,512,Fault Transmissibility,Ft,0.006576738057771731,9.37779746247385e-05,535.5374138802482
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qo,512,Porosity Multiplier,Poro,-0.05,0.9952039329543142,535.5374138802482
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qo,512,Permeability Multiplier,Perm,-0.05,0.013118378309019942,535.5374138802482
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qo,512,Aquifer Pore Volume,AqPV,0.8364027315732407,0.13943187334091647,535.5374138802482
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qo,1024,Fault Transmissibility,Ft,-0.010251585535522533,0.00010196778046308886,534.1364211213045
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qo,1024,Porosity Multiplier,Poro,1.0,0.9889177846875757,534.1364211213045
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qo,1024,Permeability Multiplier,Perm,-0.05,0.0069625344364202405,534.1364211213045
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qo,1024,Aquifer Pore Volume,AqPV,1.0,0.17589716862570587,534.1364211213045
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qw,128,Fault Transmissibility,Ft,-0.05,0.0014663892349706458,3921.737451806183
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qw,128,Porosity Multiplier,Poro,0.9909501253639784,0.10559220189247355,3921.737451806183
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qw,128,Permeability Multiplier,Perm,-0.05,0.8765535564987544,3921.737451806183
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qw,128,Aquifer Pore Volume,AqPV,-0.05,0.09147470050969035,3921.737451806183
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qw,256,Fault Transmissibility,Ft,0.009515579677398993,0.0014367759164068785,3985.826195225819
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qw,256,Porosity Multiplier,Poro,1.0,0.09305608308857499,3985.826195225819
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qw,256,Permeability Multiplier,Perm,0.17104892131582702,0.8538415102554422,3985.826195225819
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qw,256,Aquifer Pore Volume,AqPV,-0.05,0.0917255564706175,3985.826195225819
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qw,512,Fault Transmissibility,Ft,-0.05,0.001431387277274038,3979.273884012507
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qw,512,Porosity Multiplier,Poro,0.23098506649035538,0.0915634845580057,3979.273884012507
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qw,512,Permeability Multiplier,Perm,-0.05,0.8336408074435611,3979.273884012507
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qw,512,Aquifer Pore Volume,AqPV,-0.05,0.09225466014911063,3979.273884012507
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qw,1024,Fault Transmissibility,Ft,-0.05,0.0013804435747500478,3978.693062753741
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qw,1024,Porosity Multiplier,Poro,0.3903237758511328,0.09347172257405341,3978.693062753741
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qw,1024,Permeability Multiplier,Perm,0.720259290862697,0.8277290675636355,3978.693062753741
-Uniform_Prior_Bounds,Recursive_ExtraTrees,term_qw,1024,Aquifer Pore Volume,AqPV,0.08186159189567827,0.09345861003111082,3978.693062753741
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_oil,128,Fault Transmissibility,Ft,0.022054267903929142,0.035290256502359854,69013434518.06448
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_oil,128,Porosity Multiplier,Poro,0.37420591096907624,0.8632126163645326,69013434518.06448
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_oil,128,Permeability Multiplier,Perm,-0.04499549738237704,0.0018241356067864392,69013434518.06448
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_oil,128,Aquifer Pore Volume,AqPV,-0.026369761408231874,0.008328280899923763,69013434518.06448
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_oil,256,Fault Transmissibility,Ft,0.02778574018352267,0.034395083315088434,69321616132.40756
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_oil,256,Porosity Multiplier,Poro,0.5905035341960123,0.9595486580550072,69321616132.40756
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_oil,256,Permeability Multiplier,Perm,0.008968464090569441,0.0018525087230592862,69321616132.40756
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_oil,256,Aquifer Pore Volume,AqPV,-0.05,0.008355596427083528,69321616132.40756
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_oil,512,Fault Transmissibility,Ft,0.03302355086252459,0.03438541812662891,69341032127.37457
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_oil,512,Porosity Multiplier,Poro,0.5458593543673279,0.9589270770038941,69341032127.37457
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_oil,512,Permeability Multiplier,Perm,-0.05,0.00202659370557538,69341032127.37457
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_oil,512,Aquifer Pore Volume,AqPV,0.15223331070691842,0.008851507730494352,69341032127.37457
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_oil,1024,Fault Transmissibility,Ft,0.03154726653594175,0.03434643345825252,69421230796.59656
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_oil,1024,Porosity Multiplier,Poro,1.0,0.9608295688823717,69421230796.59656
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_oil,1024,Permeability Multiplier,Perm,-0.05,0.0019276003696905605,69421230796.59656
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_oil,1024,Aquifer Pore Volume,AqPV,0.39498105285457213,0.008832069185028114,69421230796.59656
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_water,128,Fault Transmissibility,Ft,-0.05,0.03683117148343572,12665701873.594233
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_water,128,Porosity Multiplier,Poro,1.0,0.07913014556282058,12665701873.594233
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_water,128,Permeability Multiplier,Perm,-0.05,0.2673002383424733,12665701873.594233
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_water,128,Aquifer Pore Volume,AqPV,-0.05,0.6191923191283948,12665701873.594233
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_water,256,Fault Transmissibility,Ft,0.09520293983867012,0.03601550901026936,12857920793.379644
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_water,256,Porosity Multiplier,Poro,1.0,0.07623934275028307,12857920793.379644
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_water,256,Permeability Multiplier,Perm,-0.05,0.26309878802259246,12857920793.379644
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_water,256,Aquifer Pore Volume,AqPV,-0.05,0.6095185230416826,12857920793.379644
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_water,512,Fault Transmissibility,Ft,-0.05,0.03624468489188454,12737482717.486227
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_water,512,Porosity Multiplier,Poro,0.4726468593056981,0.07690249143223019,12737482717.486227
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_water,512,Permeability Multiplier,Perm,-0.05,0.2671451098387765,12737482717.486227
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_water,512,Aquifer Pore Volume,AqPV,-0.05,0.6395270884101973,12737482717.486227
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_water,1024,Fault Transmissibility,Ft,-0.05,0.036293526569081164,12751571024.895767
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_water,1024,Porosity Multiplier,Poro,1.0,0.07653851647149472,12751571024.895767
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_water,1024,Permeability Multiplier,Perm,0.0409590207994132,0.26615700352668176,12751571024.895767
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,eur_water,1024,Aquifer Pore Volume,AqPV,0.5052447509035852,0.6425769292721878,12751571024.895767
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qo,128,Fault Transmissibility,Ft,0.021787588005652895,0.02916601716187952,259.20685968458554
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qo,128,Porosity Multiplier,Poro,0.4563458272173876,0.8679729566302373,259.20685968458554
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qo,128,Permeability Multiplier,Perm,-0.023761615125546268,0.001553361202187752,259.20685968458554
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qo,128,Aquifer Pore Volume,AqPV,-0.019085051410202974,0.02024351461343596,259.20685968458554
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qo,256,Fault Transmissibility,Ft,0.024637949016267504,0.028359697031647695,261.0832688410121
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qo,256,Porosity Multiplier,Poro,0.683485960532331,0.9728779994043812,261.0832688410121
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qo,256,Permeability Multiplier,Perm,0.005428939001885155,0.001603537151179682,261.0832688410121
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qo,256,Aquifer Pore Volume,AqPV,-0.05,0.022045327615603696,261.0832688410121
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qo,512,Fault Transmissibility,Ft,0.025430983300078973,0.028352196741745498,261.2470636487084
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qo,512,Porosity Multiplier,Poro,0.6439924592880963,0.9692048895718106,261.2470636487084
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qo,512,Permeability Multiplier,Perm,-0.05,0.003079403759012095,261.2470636487084
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qo,512,Aquifer Pore Volume,AqPV,0.11640760168348734,0.023844921668114142,261.2470636487084
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qo,1024,Fault Transmissibility,Ft,0.02553346543780835,0.028274250460489536,262.0415982647281
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qo,1024,Porosity Multiplier,Poro,0.9906204561449341,0.9736831739696367,262.0415982647281
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qo,1024,Permeability Multiplier,Perm,-0.05,0.002317428659320759,262.0415982647281
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qo,1024,Aquifer Pore Volume,AqPV,0.30099494257726295,0.02677014713542296,262.0415982647281
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qw,128,Fault Transmissibility,Ft,-0.05,0.019427054450439105,740.5031525189373
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qw,128,Porosity Multiplier,Poro,1.0,0.11826140879227591,740.5031525189373
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qw,128,Permeability Multiplier,Perm,-0.05,0.4107551122100429,740.5031525189373
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qw,128,Aquifer Pore Volume,AqPV,-0.05,0.5041811860983961,740.5031525189373
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qw,256,Fault Transmissibility,Ft,0.04046795099338162,0.019126902243984525,755.5089244569422
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qw,256,Porosity Multiplier,Poro,1.0,0.1048863584459919,755.5089244569422
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qw,256,Permeability Multiplier,Perm,-0.05,0.3970757264824093,755.5089244569422
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qw,256,Aquifer Pore Volume,AqPV,-0.05,0.4947459670658777,755.5089244569422
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qw,512,Fault Transmissibility,Ft,-0.05,0.019152949357989908,750.6944159129491
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qw,512,Porosity Multiplier,Poro,0.39804035687932293,0.10400923538235671,750.6944159129491
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qw,512,Permeability Multiplier,Perm,-0.05,0.38926826821399274,750.6944159129491
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qw,512,Aquifer Pore Volume,AqPV,-0.05,0.5142262534449754,750.6944159129491
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qw,1024,Fault Transmissibility,Ft,-0.05,0.01918864675634454,751.4648115770583
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qw,1024,Porosity Multiplier,Poro,0.757378549325568,0.1049312504902191,751.4648115770583
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qw,1024,Permeability Multiplier,Perm,0.1655284841521637,0.3847197487155547,751.4648115770583
-Uniform_Prior_Bounds,Blend_Phase_Specific_Simplex,term_qw,1024,Aquifer Pore Volume,AqPV,0.5029430574860754,0.5173107643382102,751.4648115770583
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_oil,128,Fault Transmissibility,Ft,-0.0017956690804919269,0.00032190859711622743,165349492466.14264
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_oil,128,Porosity Multiplier,Poro,1.0,0.9012132764132493,165349492466.14264
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_oil,128,Permeability Multiplier,Perm,0.0035142438199714542,0.0014160323349755905,165349492466.14264
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_oil,128,Aquifer Pore Volume,AqPV,-0.0005525310073112793,0.0008985506362714375,165349492466.14264
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_oil,256,Fault Transmissibility,Ft,4.983102747531095e-06,0.0003146686103908509,165985462604.68597
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_oil,256,Porosity Multiplier,Poro,0.9376330307692964,0.9951836661705836,165985462604.68597
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_oil,256,Permeability Multiplier,Perm,0.0021499118020500813,0.0014144740870655837,165985462604.68597
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_oil,256,Aquifer Pore Volume,AqPV,0.0003878665547050702,0.00089610875040603,165985462604.68597
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_oil,512,Fault Transmissibility,Ft,0.0005054171190470617,0.0003152216516044832,165929267427.36868
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_oil,512,Porosity Multiplier,Poro,0.9882790006692473,0.996438452244971,165929267427.36868
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_oil,512,Permeability Multiplier,Perm,0.0010655816939273437,0.00140831507198348,165929267427.36868
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_oil,512,Aquifer Pore Volume,AqPV,0.0012275978103463104,0.0009480726597284491,165929267427.36868
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_oil,1024,Fault Transmissibility,Ft,0.00032364354910586785,0.00031504968610884533,165947586434.01077
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_oil,1024,Porosity Multiplier,Poro,0.9947965559867835,0.9968973664374865,165947586434.01077
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_oil,1024,Permeability Multiplier,Perm,0.0014170702908100584,0.0014108904013017051,165947586434.01077
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_oil,1024,Aquifer Pore Volume,AqPV,0.0011488778258139834,0.0009501612648437053,165947586434.01077
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_water,128,Fault Transmissibility,Ft,-0.008606217209218383,0.0005787633209074752,38900824487.23294
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_water,128,Porosity Multiplier,Poro,0.10814773748932045,0.019801976650975807,38900824487.23294
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_water,128,Permeability Multiplier,Perm,1.0,0.8649730745123252,38900824487.23294
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_water,128,Aquifer Pore Volume,AqPV,0.12243816327082324,0.09946923218885274,38900824487.23294
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_water,256,Fault Transmissibility,Ft,-0.0017910825547479354,0.0005644990034310008,39141084936.8785
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_water,256,Porosity Multiplier,Poro,-0.006810159618593767,0.021813901705872343,39141084936.8785
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_water,256,Permeability Multiplier,Perm,0.9849399450357963,0.8630720166627519,39141084936.8785
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_water,256,Aquifer Pore Volume,AqPV,0.07743546739988215,0.0987903555696924,39141084936.8785
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_water,512,Fault Transmissibility,Ft,0.0011021841054147073,0.0005690368514082791,38799580476.956635
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_water,512,Porosity Multiplier,Poro,0.01742633981559695,0.02202961029361138,38799580476.956635
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_water,512,Permeability Multiplier,Perm,0.8673497711778901,0.8706500256543809,38799580476.956635
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_water,512,Aquifer Pore Volume,AqPV,0.10655287843072597,0.10515780113459355,38799580476.956635
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_water,1024,Fault Transmissibility,Ft,0.0007959951691599706,0.000568628679193465,38813780559.42424
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_water,1024,Porosity Multiplier,Poro,0.021514609271921118,0.0220307634274393,38813780559.42424
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_water,1024,Permeability Multiplier,Perm,0.8761317630385944,0.8717834142053579,38813780559.42424
-Empirical_Training_Dist,Learned_Exponential_DCA,eur_water,1024,Aquifer Pore Volume,AqPV,0.10430802115218868,0.10555054687873848,38813780559.42424
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qo,128,Fault Transmissibility,Ft,0.0003894930468403182,0.0003314476358243519,452.9948088637111
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qo,128,Porosity Multiplier,Poro,0.9045882506185519,0.9017143658182738,452.9948088637111
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qo,128,Permeability Multiplier,Perm,-0.0003689986320573039,0.0014736283807152938,452.9948088637111
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qo,128,Aquifer Pore Volume,AqPV,0.00018804602174202713,0.0009283189079976988,452.9948088637111
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qo,256,Fault Transmissibility,Ft,0.0004542772409466531,0.0003237576312947304,454.963412372795
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qo,256,Porosity Multiplier,Poro,0.9907367820752677,0.9953411661458493,454.963412372795
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qo,256,Permeability Multiplier,Perm,0.0013152163911254377,0.0014687414292116243,454.963412372795
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qo,256,Aquifer Pore Volume,AqPV,0.001014780972854615,0.0009278023314677962,454.963412372795
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qo,512,Fault Transmissibility,Ft,0.00033556207172149617,0.00032544667657394906,454.80684636054104
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qo,512,Porosity Multiplier,Poro,0.9957638613078925,0.9964667792842027,454.80684636054104
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qo,512,Permeability Multiplier,Perm,0.0012494375005140958,0.0014535773971353664,454.80684636054104
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qo,512,Aquifer Pore Volume,AqPV,0.000948466965916628,0.0009845578426013386,454.80684636054104
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qo,1024,Fault Transmissibility,Ft,0.0003340582865775567,0.00032535932839507453,454.8541029873268
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qo,1024,Porosity Multiplier,Poro,0.9968451413823202,0.9971271429937569,454.8541029873268
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qo,1024,Permeability Multiplier,Perm,0.0013775726682900386,0.0014570604521712315,454.8541029873268
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qo,1024,Aquifer Pore Volume,AqPV,0.000995004204775799,0.000980711979553495,454.8541029873268
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qw,128,Fault Transmissibility,Ft,-0.00588424352304251,0.0005787633209073418,1214.3176695675484
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qw,128,Porosity Multiplier,Poro,0.08037960572602566,0.019801976650976136,1214.3176695675484
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qw,128,Permeability Multiplier,Perm,1.0,0.8649730745123234,1214.3176695675484
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qw,128,Aquifer Pore Volume,AqPV,0.11768269137290638,0.09946923218885724,1214.3176695675484
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qw,256,Fault Transmissibility,Ft,-0.0010427869261717376,0.0005644990034310945,1221.817575113217
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qw,256,Porosity Multiplier,Poro,0.0013368265631863658,0.02181390170587164,1221.817575113217
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qw,256,Permeability Multiplier,Perm,0.9513165102696334,0.8630720166627575,1221.817575113217
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qw,256,Aquifer Pore Volume,AqPV,0.08632591236320365,0.09879035556969608,1221.817575113217
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qw,512,Fault Transmissibility,Ft,0.000924405873472987,0.0005690368514083105,1211.1572637860072
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qw,512,Porosity Multiplier,Poro,0.018750669461510792,0.022029610293611997,1211.1572637860072
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qw,512,Permeability Multiplier,Perm,0.8680646945316338,0.8706500256543882,1211.1572637860072
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qw,512,Aquifer Pore Volume,AqPV,0.10647634461781519,0.10515780113459443,1211.1572637860072
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qw,1024,Fault Transmissibility,Ft,0.0007269808991092014,0.0005686286791936348,1211.6005297392976
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qw,1024,Porosity Multiplier,Poro,0.021676824896921486,0.022030763427440293,1211.6005297392976
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qw,1024,Permeability Multiplier,Perm,0.8748356959528529,0.8717834142053644,1211.6005297392976
-Empirical_Training_Dist,Learned_Exponential_DCA,term_qw,1024,Aquifer Pore Volume,AqPV,0.10466035708908479,0.10555054687873844,1211.6005297392976
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_oil,128,Fault Transmissibility,Ft,-0.015972654195390724,0.00033521376880911593,29606169738.98984
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_oil,128,Porosity Multiplier,Poro,1.0,0.9432742244250742,29606169738.98984
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_oil,128,Permeability Multiplier,Perm,-0.02754391533055077,0.0005207514565440375,29606169738.98984
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_oil,128,Aquifer Pore Volume,AqPV,1.0,0.035981904948473746,29606169738.98984
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_oil,256,Fault Transmissibility,Ft,-0.05,0.0003536015936002906,28956687857.257095
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_oil,256,Porosity Multiplier,Poro,1.0,0.9813410274496559,28956687857.257095
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_oil,256,Permeability Multiplier,Perm,-0.015593842036634954,0.0005143609420987455,28956687857.257095
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_oil,256,Aquifer Pore Volume,AqPV,1.0,0.02261656351189034,28956687857.257095
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_oil,512,Fault Transmissibility,Ft,-0.047848555108034596,0.00034427401650821167,28671821362.469994
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_oil,512,Porosity Multiplier,Poro,1.0,0.9988898849027974,28671821362.469994
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_oil,512,Permeability Multiplier,Perm,-0.05,0.0005286932806809806,28671821362.469994
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_oil,512,Aquifer Pore Volume,AqPV,1.0,0.028307219982899555,28671821362.469994
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_oil,1024,Fault Transmissibility,Ft,-0.05,0.0003491038117405652,28623246344.797607
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_oil,1024,Porosity Multiplier,Poro,1.0,1.004245141978743,28623246344.797607
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_oil,1024,Permeability Multiplier,Perm,-0.019474453570531437,0.000520862842760956,28623246344.797607
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_oil,1024,Aquifer Pore Volume,AqPV,1.0,0.05074599456818139,28623246344.797607
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_water,128,Fault Transmissibility,Ft,-0.05,0.008706385494891743,29072213843.358456
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_water,128,Porosity Multiplier,Poro,1.0,0.10778206205778856,29072213843.358456
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_water,128,Permeability Multiplier,Perm,1.0,0.7939475712258507,29072213843.358456
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_water,128,Aquifer Pore Volume,AqPV,-0.05,0.13370657841888967,29072213843.358456
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_water,256,Fault Transmissibility,Ft,0.9807453556528893,0.008093239458482891,28873812122.88147
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_water,256,Porosity Multiplier,Poro,1.0,0.10435503894878936,28873812122.88147
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_water,256,Permeability Multiplier,Perm,0.7730625988681359,0.809822243361459,28873812122.88147
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_water,256,Aquifer Pore Volume,AqPV,1.0,0.12797825605385113,28873812122.88147
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_water,512,Fault Transmissibility,Ft,-0.03138324722491822,0.007306576779472269,29443249713.68003
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_water,512,Porosity Multiplier,Poro,-0.05,0.10124264261107367,29443249713.68003
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_water,512,Permeability Multiplier,Perm,-0.05,0.7681855595131356,29443249713.68003
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_water,512,Aquifer Pore Volume,AqPV,-0.05,0.1348757193203003,29443249713.68003
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_water,1024,Fault Transmissibility,Ft,0.274862797133098,0.007402633897468099,29394489181.025887
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_water,1024,Porosity Multiplier,Poro,1.0,0.10134019379029882,29394489181.025887
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_water,1024,Permeability Multiplier,Perm,1.0,0.7709672037075557,29394489181.025887
-Empirical_Training_Dist,Recursive_ExtraTrees,eur_water,1024,Aquifer Pore Volume,AqPV,0.935027049699571,0.13624066966743842,29394489181.025887
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qo,128,Fault Transmissibility,Ft,-0.0030783277944111914,0.00046493106026324586,587.2514535070487
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qo,128,Porosity Multiplier,Poro,1.0,0.9898921762329242,587.2514535070487
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qo,128,Permeability Multiplier,Perm,-0.008283240418655958,0.000622175888105693,587.2514535070487
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qo,128,Aquifer Pore Volume,AqPV,1.0,0.05295466380924123,587.2514535070487
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qo,256,Fault Transmissibility,Ft,-0.03964737154477038,0.00048647764452342587,578.3301840760622
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qo,256,Porosity Multiplier,Poro,1.0,1.0028211462550856,578.3301840760622
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qo,256,Permeability Multiplier,Perm,-0.006611056118279204,0.0006196806708736487,578.3301840760622
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qo,256,Aquifer Pore Volume,AqPV,1.0,0.031546085805502985,578.3301840760622
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qo,512,Fault Transmissibility,Ft,-0.0170880823530523,0.0004710791270940387,574.7205793730327
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qo,512,Porosity Multiplier,Poro,1.0,1.0067306392826776,574.7205793730327
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qo,512,Permeability Multiplier,Perm,-0.022808901755650864,0.0006354327062162748,574.7205793730327
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qo,512,Aquifer Pore Volume,AqPV,0.7891801103514872,0.04078633461982499,574.7205793730327
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qo,1024,Fault Transmissibility,Ft,-0.01786466098431777,0.0004775600663416599,573.6094473216808
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qo,1024,Porosity Multiplier,Poro,1.0,1.0101869610550693,573.6094473216808
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qo,1024,Permeability Multiplier,Perm,-0.005439179657907994,0.000625286785333565,573.6094473216808
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qo,1024,Aquifer Pore Volume,AqPV,1.0,0.07672232528819686,573.6094473216808
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qw,128,Fault Transmissibility,Ft,-0.05,0.00675639721397501,2817.461524952684
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qw,128,Porosity Multiplier,Poro,1.0,0.11398482223896271,2817.461524952684
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qw,128,Permeability Multiplier,Perm,1.0,0.7954292582522662,2817.461524952684
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qw,128,Aquifer Pore Volume,AqPV,-0.05,0.13014917784350616,2817.461524952684
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qw,256,Fault Transmissibility,Ft,0.5468532690570216,0.006243852479058587,2804.7752170459426
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qw,256,Porosity Multiplier,Poro,1.0,0.10699886525819116,2804.7752170459426
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qw,256,Permeability Multiplier,Perm,0.7127310278476814,0.8093695891751553,2804.7752170459426
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qw,256,Aquifer Pore Volume,AqPV,1.0,0.1243668824406715,2804.7752170459426
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qw,512,Fault Transmissibility,Ft,-0.00519048972525497,0.005601911355209053,2856.4108344328542
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qw,512,Porosity Multiplier,Poro,-0.05,0.10345236495119879,2856.4108344328542
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qw,512,Permeability Multiplier,Perm,0.37180898654180244,0.7705221077453271,2856.4108344328542
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qw,512,Aquifer Pore Volume,AqPV,-0.05,0.1309879449206314,2856.4108344328542
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qw,1024,Fault Transmissibility,Ft,0.14477932384844622,0.00570575473235141,2853.1040848719895
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qw,1024,Porosity Multiplier,Poro,0.5662473863250765,0.10403074413835121,2853.1040848719895
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qw,1024,Permeability Multiplier,Perm,1.0,0.7723810610734789,2853.1040848719895
-Empirical_Training_Dist,Recursive_ExtraTrees,term_qw,1024,Aquifer Pore Volume,AqPV,0.5500313945141293,0.13201926640311204,2853.1040848719895
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_oil,128,Fault Transmissibility,Ft,-0.006412939648537882,0.00044007894247867095,60315574846.8
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_oil,128,Porosity Multiplier,Poro,1.0,0.90454724085788,60315574846.8
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_oil,128,Permeability Multiplier,Perm,0.005802898543107836,0.0017988623469634318,60315574846.8
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_oil,128,Aquifer Pore Volume,AqPV,0.7989286650255409,0.0034955091560361137,60315574846.8
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_oil,256,Fault Transmissibility,Ft,-0.010445041905510793,0.0004249445438277402,60843963617.159225
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_oil,256,Porosity Multiplier,Poro,1.0,1.000362778428266,60843963617.159225
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_oil,256,Permeability Multiplier,Perm,0.0023879137315029096,0.0018337425699481037,60843963617.159225
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_oil,256,Aquifer Pore Volume,AqPV,0.37477738601365707,0.003095482679881982,60843963617.159225
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_oil,512,Fault Transmissibility,Ft,-0.004524536638605469,0.00042608931531844046,60935167658.07833
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_oil,512,Porosity Multiplier,Poro,1.0,0.9962669408347933,60935167658.07833
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_oil,512,Permeability Multiplier,Perm,-0.006510891959292919,0.0018238523472842818,60935167658.07833
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_oil,512,Aquifer Pore Volume,AqPV,0.1701776306634192,0.003282966690706033,60935167658.07833
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_oil,1024,Fault Transmissibility,Ft,-0.005525623018573074,0.0004251547346643752,60943902795.70634
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_oil,1024,Porosity Multiplier,Poro,1.0,0.9959116726806905,60943902795.70634
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_oil,1024,Permeability Multiplier,Perm,-0.0005148915171608322,0.0018277461441890215,60943902795.70634
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_oil,1024,Aquifer Pore Volume,AqPV,0.2747853365615193,0.0036014209287761334,60943902795.70634
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_water,128,Fault Transmissibility,Ft,-0.05,0.005565265533675818,7231607136.520886
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_water,128,Porosity Multiplier,Poro,1.0,0.10930052645675688,7231607136.520886
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_water,128,Permeability Multiplier,Perm,1.0,0.39670081610699043,7231607136.520886
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_water,128,Aquifer Pore Volume,AqPV,-0.05,0.47208355303733374,7231607136.520886
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_water,256,Fault Transmissibility,Ft,1.0,0.005082095318491836,7236165097.698226
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_water,256,Porosity Multiplier,Poro,1.0,0.11785508799863097,7236165097.698226
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_water,256,Permeability Multiplier,Perm,0.723334696558938,0.40565325586876577,7236165097.698226
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_water,256,Aquifer Pore Volume,AqPV,1.0,0.4570503270286677,7236165097.698226
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_water,512,Fault Transmissibility,Ft,-0.05,0.0047062656405113795,7141889937.864538
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_water,512,Porosity Multiplier,Poro,-0.05,0.117505616418743,7141889937.864538
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_water,512,Permeability Multiplier,Perm,-0.05,0.406314708808446,7141889937.864538
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_water,512,Aquifer Pore Volume,AqPV,-0.05,0.49477565478574626,7141889937.864538
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_water,1024,Fault Transmissibility,Ft,0.5233055824454501,0.0048230231666386274,7087925837.128751
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_water,1024,Porosity Multiplier,Poro,1.0,0.11581287553067655,7087925837.128751
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_water,1024,Permeability Multiplier,Perm,1.0,0.40801174399550433,7087925837.128751
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,eur_water,1024,Aquifer Pore Volume,AqPV,1.0,0.5030251342623875,7087925837.128751
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qo,128,Fault Transmissibility,Ft,-0.001148266794199368,0.00040138751018743707,220.36861751542648
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qo,128,Porosity Multiplier,Poro,1.0,0.925169655860283,220.36861751542648
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qo,128,Permeability Multiplier,Perm,0.0014624279236033467,0.0015928954627531962,220.36861751542648
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qo,128,Aquifer Pore Volume,AqPV,0.6235876706142155,0.011462970782659437,220.36861751542648
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qo,256,Fault Transmissibility,Ft,-0.006462150889147732,0.0003830574348950943,223.8074643168663
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qo,256,Porosity Multiplier,Poro,1.0,1.016024351208824,223.8074643168663
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qo,256,Permeability Multiplier,Perm,0.0008297133561752329,0.0016611877934088822,223.8074643168663
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qo,256,Aquifer Pore Volume,AqPV,0.2962068401293502,0.008047561533867167,223.8074643168663
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qo,512,Fault Transmissibility,Ft,-0.0026100637666351834,0.0003845494067475567,224.68858441458318
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qo,512,Porosity Multiplier,Poro,1.0,1.0008490007355082,224.68858441458318
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qo,512,Permeability Multiplier,Perm,-0.0024823396305612235,0.0016469975734100762,224.68858441458318
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qo,512,Aquifer Pore Volume,AqPV,0.1376577816367513,0.009314579482244898,224.68858441458318
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qo,1024,Fault Transmissibility,Ft,-0.002920104555184627,0.00038389716061695573,224.79806345614517
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qo,1024,Porosity Multiplier,Poro,1.0,0.9985026012652378,224.79806345614517
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qo,1024,Permeability Multiplier,Perm,0.0007044907549906582,0.0016505772925660925,224.79806345614517
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qo,1024,Aquifer Pore Volume,AqPV,0.21423815295776058,0.013846951484828552,224.79806345614517
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qw,128,Fault Transmissibility,Ft,-0.05,0.008178291964149174,451.77050852670095
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qw,128,Porosity Multiplier,Poro,1.0,0.14908016115328765,451.77050852670095
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qw,128,Permeability Multiplier,Perm,1.0,0.42086946127041863,451.77050852670095
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qw,128,Aquifer Pore Volume,AqPV,-0.05,0.4501813882854287,451.77050852670095
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qw,256,Fault Transmissibility,Ft,1.0,0.007526575019147669,449.730329623884
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qw,256,Porosity Multiplier,Poro,1.0,0.14578097784078586,449.730329623884
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qw,256,Permeability Multiplier,Perm,0.3685141685707073,0.4357215597388359,449.730329623884
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qw,256,Aquifer Pore Volume,AqPV,1.0,0.4359960472588851,449.730329623884
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qw,512,Fault Transmissibility,Ft,-0.01632614312980172,0.006838226974453955,452.0997587843149
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qw,512,Porosity Multiplier,Poro,-0.05,0.14189740134763454,452.0997587843149
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qw,512,Permeability Multiplier,Perm,-0.05,0.41415715553788685,452.0997587843149
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qw,512,Aquifer Pore Volume,AqPV,-0.05,0.46367018730821796,452.0997587843149
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qw,1024,Fault Transmissibility,Ft,0.3787454079501509,0.007027707228977154,449.17505702428605
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qw,1024,Porosity Multiplier,Poro,1.0,0.14152659602778198,449.17505702428605
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qw,1024,Permeability Multiplier,Perm,1.0,0.41545772663807906,449.17505702428605
-Empirical_Training_Dist,Blend_Phase_Specific_Simplex,term_qw,1024,Aquifer Pore Volume,AqPV,1.0,0.470435589950915,449.17505702428605
+distribution,distribution_assumption,model_name,target,sample_size_N,parameter,short_name,first_order_Si,total_order_STi,target_variance
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_oil,128,Fault Transmissibility,Ft,0.11975513555619921,0.026822680695847,178970629257.40778
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_oil,128,Porosity Multiplier,Poro,0.9681030390046227,0.8783755299526044,178970629257.40778
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_oil,128,Permeability Multiplier,Perm,0.0924500169953314,0.0014980642440620196,178970629257.40778
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_oil,128,Aquifer Pore Volume,AqPV,0.09525023720580239,0.0032979196013466364,178970629257.40778
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_oil,256,Fault Transmissibility,Ft,0.027744267783549992,0.02624905471834822,179058396756.98154
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_oil,256,Porosity Multiplier,Poro,0.9689180755198934,0.9675204914013198,179058396756.98154
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_oil,256,Permeability Multiplier,Perm,0.0033160965250198515,0.0014969665032805645,179058396756.98154
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_oil,256,Aquifer Pore Volume,AqPV,0.005063692588783919,0.0032997589991811942,179058396756.98154
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_oil,512,Fault Transmissibility,Ft,0.026824995043557287,0.02627854383053507,178919853251.7736
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_oil,512,Porosity Multiplier,Poro,0.968914049891185,0.9680635877064429,178919853251.7736
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_oil,512,Permeability Multiplier,Perm,0.0021368721420713666,0.0014910929327925117,178919853251.7736
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_oil,512,Aquifer Pore Volume,AqPV,0.004165806303861541,0.0034722844650820453,178919853251.7736
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_oil,1024,Fault Transmissibility,Ft,0.026517500517094228,0.026296900419328327,178833564299.9976
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_oil,1024,Porosity Multiplier,Poro,0.9687493672116617,0.9685522034979099,178833564299.9976
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_oil,1024,Permeability Multiplier,Perm,0.0018427242852721015,0.0014920758761524406,178833564299.9976
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_oil,1024,Aquifer Pore Volume,AqPV,0.003832564697473506,0.003466020121402468,178833564299.9976
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_water,128,Fault Transmissibility,Ft,0.05260676226398575,0.03499656471042814,60550153308.60041
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_water,128,Porosity Multiplier,Poro,0.021583681685151346,0.013939030524492737,60550153308.60041
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_water,128,Permeability Multiplier,Perm,0.684934739436518,0.6649196742846616,60550153308.60041
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_water,128,Aquifer Pore Volume,AqPV,0.2886399069286112,0.2645930917120724,60550153308.60041
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_water,256,Fault Transmissibility,Ft,0.048986487489908526,0.03410303076815149,60802018229.78687
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_water,256,Porosity Multiplier,Poro,0.02803588162206394,0.01531727330136754,60802018229.78687
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_water,256,Permeability Multiplier,Perm,0.6870961724908206,0.6621634314703421,60802018229.78687
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_water,256,Aquifer Pore Volume,AqPV,0.28621192837405407,0.2634970477828714,60802018229.78687
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_water,512,Fault Transmissibility,Ft,0.03545704653552173,0.034480810410636255,60135868001.50476
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_water,512,Porosity Multiplier,Poro,0.016019052671877865,0.015486960238271506,60135868001.50476
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_water,512,Permeability Multiplier,Perm,0.670467021018704,0.6694975357819596,60135868001.50476
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_water,512,Aquifer Pore Volume,AqPV,0.28007389495248214,0.2795485551984605,60135868001.50476
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_water,1024,Fault Transmissibility,Ft,0.03498675586577149,0.03449847491642936,60104989205.84657
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_water,1024,Porosity Multiplier,Poro,0.015983190942713943,0.015494909700600091,60104989205.84657
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_water,1024,Permeability Multiplier,Perm,0.6703144392957523,0.6698261579166183,60104989205.84657
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,delta_cum_water,1024,Aquifer Pore Volume,AqPV,0.28018045760578925,0.2796921765190716,60104989205.84657
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_oil,128,Fault Transmissibility,Ft,0.11975513555619921,0.026822680695847,178970629257.40778
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_oil,128,Porosity Multiplier,Poro,0.9681030390046227,0.8783755299526044,178970629257.40778
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_oil,128,Permeability Multiplier,Perm,0.0924500169953314,0.0014980642440620196,178970629257.40778
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_oil,128,Aquifer Pore Volume,AqPV,0.09525023720580239,0.0032979196013466364,178970629257.40778
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_oil,256,Fault Transmissibility,Ft,0.027744267783549992,0.02624905471834822,179058396756.98154
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_oil,256,Porosity Multiplier,Poro,0.9689180755198934,0.9675204914013198,179058396756.98154
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_oil,256,Permeability Multiplier,Perm,0.0033160965250198515,0.0014969665032805645,179058396756.98154
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_oil,256,Aquifer Pore Volume,AqPV,0.005063692588783919,0.0032997589991811942,179058396756.98154
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_oil,512,Fault Transmissibility,Ft,0.026824995043557287,0.02627854383053507,178919853251.7736
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_oil,512,Porosity Multiplier,Poro,0.968914049891185,0.9680635877064429,178919853251.7736
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_oil,512,Permeability Multiplier,Perm,0.0021368721420713666,0.0014910929327925117,178919853251.7736
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_oil,512,Aquifer Pore Volume,AqPV,0.004165806303861541,0.0034722844650820453,178919853251.7736
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_oil,1024,Fault Transmissibility,Ft,0.026517500517094006,0.026296900419328334,178833564299.99756
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_oil,1024,Porosity Multiplier,Poro,0.9687493672116617,0.9685522034979102,178833564299.99756
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_oil,1024,Permeability Multiplier,Perm,0.0018427242852718795,0.0014920758761524408,178833564299.99756
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_oil,1024,Aquifer Pore Volume,AqPV,0.003832564697473284,0.0034660201214024686,178833564299.99756
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_water,128,Fault Transmissibility,Ft,0.05260676226398575,0.03499656471042814,60550153308.60041
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_water,128,Porosity Multiplier,Poro,0.021583681685151346,0.013939030524492737,60550153308.60041
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_water,128,Permeability Multiplier,Perm,0.684934739436518,0.6649196742846616,60550153308.60041
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_water,128,Aquifer Pore Volume,AqPV,0.2886399069286112,0.2645930917120724,60550153308.60041
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_water,256,Fault Transmissibility,Ft,0.048986487489908526,0.03410303076815149,60802018229.78687
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_water,256,Porosity Multiplier,Poro,0.02803588162206394,0.01531727330136754,60802018229.78687
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_water,256,Permeability Multiplier,Perm,0.6870961724908206,0.6621634314703421,60802018229.78687
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_water,256,Aquifer Pore Volume,AqPV,0.28621192837405407,0.2634970477828714,60802018229.78687
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_water,512,Fault Transmissibility,Ft,0.03545704653552173,0.034480810410636255,60135868001.50476
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_water,512,Porosity Multiplier,Poro,0.016019052671877865,0.015486960238271506,60135868001.50476
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_water,512,Permeability Multiplier,Perm,0.670467021018704,0.6694975357819596,60135868001.50476
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_water,512,Aquifer Pore Volume,AqPV,0.28007389495248214,0.2795485551984605,60135868001.50476
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_water,1024,Fault Transmissibility,Ft,0.03498675586577149,0.03449847491642936,60104989205.84657
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_water,1024,Porosity Multiplier,Poro,0.015983190942713943,0.015494909700600091,60104989205.84657
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_water,1024,Permeability Multiplier,Perm,0.6703144392957523,0.6698261579166183,60104989205.84657
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,eur_water,1024,Aquifer Pore Volume,AqPV,0.28018045760578925,0.2796921765190716,60104989205.84657
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qo,128,Fault Transmissibility,Ft,0.11809948005100657,0.02756424569232748,466.7020946638406
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qo,128,Porosity Multiplier,Poro,0.9672269839808989,0.8808516950640439,466.7020946638406
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qo,128,Permeability Multiplier,Perm,0.09072607269646737,0.0015527363539307104,466.7020946638406
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qo,128,Aquifer Pore Volume,AqPV,0.09326581338198214,0.003407503846572997,466.7020946638406
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qo,256,Fault Transmissibility,Ft,0.02727635060503575,0.026980789802253765,467.12152798284666
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qo,256,Porosity Multiplier,Poro,0.9681200028507877,0.9680256615773166,467.12152798284666
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qo,256,Permeability Multiplier,Perm,0.0029789628438273708,0.0015507463480558766,467.12152798284666
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qo,256,Aquifer Pore Volume,AqPV,0.004784852375053661,0.0034138343014956736,467.12152798284666
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qo,512,Fault Transmissibility,Ft,0.026588925044843226,0.02702785401722502,466.9012682803004
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qo,512,Porosity Multiplier,Poro,0.9682237571129152,0.9680545292182802,466.9012682803004
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qo,512,Permeability Multiplier,Perm,0.001838127432056913,0.0015345431819621432,466.9012682803004
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qo,512,Aquifer Pore Volume,AqPV,0.003987724529169401,0.003603175402000724,466.9012682803004
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qo,1024,Fault Transmissibility,Ft,0.026474419107284874,0.0270604722276632,466.67649520012714
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qo,1024,Porosity Multiplier,Poro,0.9678465165173835,0.9685773146147191,466.67649520012714
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qo,1024,Permeability Multiplier,Perm,0.0016459400084990472,0.0015369175913264015,466.67649520012714
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qo,1024,Aquifer Pore Volume,AqPV,0.0036702352315809428,0.003570599102694211,466.67649520012714
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qw,128,Fault Transmissibility,Ft,0.052606762263975426,0.03499656471042857,1890.1172925471265
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qw,128,Porosity Multiplier,Poro,0.021583681685132916,0.013939030524491308,1890.1172925471265
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qw,128,Permeability Multiplier,Perm,0.6849347394365295,0.6649196742846463,1890.1172925471265
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qw,128,Aquifer Pore Volume,AqPV,0.2886399069286004,0.26459309171205697,1890.1172925471265
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qw,256,Fault Transmissibility,Ft,0.04898648748988965,0.03410303076814844,1897.9794401537897
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qw,256,Porosity Multiplier,Poro,0.028035881622043624,0.015317273301366103,1897.9794401537897
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qw,256,Permeability Multiplier,Perm,0.6870961724908202,0.6621634314703378,1897.9794401537897
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qw,256,Aquifer Pore Volume,AqPV,0.28621192837404585,0.26349704778286503,1897.9794401537897
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qw,512,Fault Transmissibility,Ft,0.035457046535512626,0.03448081041063302,1877.185073878715
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qw,512,Porosity Multiplier,Poro,0.01601905267186965,0.015486960238271882,1877.185073878715
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qw,512,Permeability Multiplier,Perm,0.6704670210187013,0.6694975357819555,1877.185073878715
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qw,512,Aquifer Pore Volume,AqPV,0.28007389495248025,0.27954855519845856,1877.185073878715
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qw,1024,Fault Transmissibility,Ft,0.034986755865762165,0.03449847491642764,1876.2211697024732
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qw,1024,Porosity Multiplier,Poro,0.01598319094270606,0.015494909700600766,1876.2211697024732
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qw,1024,Permeability Multiplier,Perm,0.6703144392957476,0.669826157916614,1876.2211697024732
+Uniform_Prior_Bounds,Independent Prior Product Measure,Learned_Exponential_DCA,term_qw,1024,Aquifer Pore Volume,AqPV,0.280180457605787,0.27969217651907025,1876.2211697024732
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_oil,128,Fault Transmissibility,Ft,-0.034770039995196456,9.367318435857655e-05,24961325680.7032
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_oil,128,Porosity Multiplier,Poro,0.8688190740756471,1.0161731752354333,24961325680.7032
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_oil,128,Permeability Multiplier,Perm,-0.038780656085730225,0.0007802468680816267,24961325680.7032
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_oil,128,Aquifer Pore Volume,AqPV,-0.04293450993647885,0.07710429205246368,24961325680.7032
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_oil,256,Fault Transmissibility,Ft,-0.038939368509274486,7.9218512333069e-05,24809267421.91218
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_oil,256,Porosity Multiplier,Poro,0.8650625307128477,1.0023753272520972,24809267421.91218
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_oil,256,Permeability Multiplier,Perm,-0.04126275627891163,0.0006895491650653442,24809267421.91218
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_oil,256,Aquifer Pore Volume,AqPV,-0.03207638605015939,0.0911745295249308,24809267421.91218
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_oil,512,Fault Transmissibility,Ft,-0.00638913490112758,7.363255448150656e-05,24609242917.256756
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_oil,512,Porosity Multiplier,Poro,0.8841605888566705,0.9877651393354978,24609242917.256756
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_oil,512,Permeability Multiplier,Perm,-0.006360023330737263,0.009274914709727652,24609242917.256756
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_oil,512,Aquifer Pore Volume,AqPV,-0.01539249183780056,0.10038529827504741,24609242917.256756
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_oil,1024,Fault Transmissibility,Ft,0.014756798813262195,7.895648904736935e-05,24471053566.866642
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_oil,1024,Porosity Multiplier,Poro,0.892141400622575,0.979601916004685,24471053566.866642
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_oil,1024,Permeability Multiplier,Perm,0.015276687465515915,0.005017529818278692,24471053566.866642
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_oil,1024,Aquifer Pore Volume,AqPV,0.014333147089455767,0.12512159252802632,24471053566.866642
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_water,128,Fault Transmissibility,Ft,0.00721665754031775,0.0020132141454051477,41004234157.537865
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_water,128,Porosity Multiplier,Poro,0.08652387609986578,0.10047256339025029,41004234157.537865
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_water,128,Permeability Multiplier,Perm,0.8170016274479507,0.876707011042372,41004234157.537865
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_water,128,Aquifer Pore Volume,AqPV,0.06128588086069109,0.0935485804029918,41004234157.537865
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_water,256,Fault Transmissibility,Ft,-0.0015535863922981896,0.0019647391819749027,41640006531.86876
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_water,256,Porosity Multiplier,Poro,0.07268448459553467,0.0901863224343326,41640006531.86876
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_water,256,Permeability Multiplier,Perm,0.8229458351449637,0.855968214461197,41640006531.86876
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_water,256,Aquifer Pore Volume,AqPV,0.06761766635146171,0.09414438249621429,41640006531.86876
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_water,512,Fault Transmissibility,Ft,0.0026879752303264892,0.0019512615368081773,41594684891.66907
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_water,512,Porosity Multiplier,Poro,0.08325053080483968,0.08939481036862729,41594684891.66907
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_water,512,Permeability Multiplier,Perm,0.8173526299534895,0.8348640107289302,41594684891.66907
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_water,512,Aquifer Pore Volume,AqPV,0.07028598259390284,0.09468716193650689,41594684891.66907
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_water,1024,Fault Transmissibility,Ft,0.007242722552798009,0.0018866347415673198,41551526479.388054
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_water,1024,Porosity Multiplier,Poro,0.08350677669124762,0.09129640366859645,41551526479.388054
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_water,1024,Permeability Multiplier,Perm,0.8182422962574063,0.8293395402183008,41551526479.388054
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,delta_cum_water,1024,Aquifer Pore Volume,AqPV,0.08544507582814664,0.09612621977750468,41551526479.388054
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_oil,128,Fault Transmissibility,Ft,-0.034770039995196456,9.367318435857655e-05,24961325680.7032
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_oil,128,Porosity Multiplier,Poro,0.8688190740756471,1.0161731752354333,24961325680.7032
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_oil,128,Permeability Multiplier,Perm,-0.038780656085730225,0.0007802468680816267,24961325680.7032
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_oil,128,Aquifer Pore Volume,AqPV,-0.04293450993647885,0.07710429205246368,24961325680.7032
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_oil,256,Fault Transmissibility,Ft,-0.038939368509274486,7.9218512333069e-05,24809267421.91218
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_oil,256,Porosity Multiplier,Poro,0.8650625307128477,1.0023753272520972,24809267421.91218
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_oil,256,Permeability Multiplier,Perm,-0.04126275627891163,0.0006895491650653442,24809267421.91218
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_oil,256,Aquifer Pore Volume,AqPV,-0.03207638605015939,0.0911745295249308,24809267421.91218
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_oil,512,Fault Transmissibility,Ft,-0.00638913490112758,7.363255448150656e-05,24609242917.256756
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_oil,512,Porosity Multiplier,Poro,0.8841605888566705,0.9877651393354978,24609242917.256756
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_oil,512,Permeability Multiplier,Perm,-0.006360023330737263,0.009274914709727652,24609242917.256756
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_oil,512,Aquifer Pore Volume,AqPV,-0.01539249183780056,0.10038529827504741,24609242917.256756
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_oil,1024,Fault Transmissibility,Ft,0.014756798813262195,7.895648904736935e-05,24471053566.866642
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_oil,1024,Porosity Multiplier,Poro,0.892141400622575,0.979601916004685,24471053566.866642
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_oil,1024,Permeability Multiplier,Perm,0.015276687465515915,0.005017529818278692,24471053566.866642
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_oil,1024,Aquifer Pore Volume,AqPV,0.014333147089455767,0.12512159252802632,24471053566.866642
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_water,128,Fault Transmissibility,Ft,0.00721665754031775,0.0020132141454051477,41004234157.537865
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_water,128,Porosity Multiplier,Poro,0.08652387609986578,0.10047256339025029,41004234157.537865
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_water,128,Permeability Multiplier,Perm,0.8170016274479507,0.876707011042372,41004234157.537865
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_water,128,Aquifer Pore Volume,AqPV,0.06128588086069109,0.0935485804029918,41004234157.537865
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_water,256,Fault Transmissibility,Ft,-0.0015535863922981896,0.0019647391819749027,41640006531.86876
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_water,256,Porosity Multiplier,Poro,0.07268448459553467,0.0901863224343326,41640006531.86876
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_water,256,Permeability Multiplier,Perm,0.8229458351449637,0.855968214461197,41640006531.86876
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_water,256,Aquifer Pore Volume,AqPV,0.06761766635146171,0.09414438249621429,41640006531.86876
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_water,512,Fault Transmissibility,Ft,0.0026879752303264892,0.0019512615368081773,41594684891.66907
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_water,512,Porosity Multiplier,Poro,0.08325053080483968,0.08939481036862729,41594684891.66907
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_water,512,Permeability Multiplier,Perm,0.8173526299534895,0.8348640107289302,41594684891.66907
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_water,512,Aquifer Pore Volume,AqPV,0.07028598259390284,0.09468716193650689,41594684891.66907
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_water,1024,Fault Transmissibility,Ft,0.007242722552798009,0.0018866347415673198,41551526479.388054
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_water,1024,Porosity Multiplier,Poro,0.08350677669124762,0.09129640366859645,41551526479.388054
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_water,1024,Permeability Multiplier,Perm,0.8182422962574063,0.8293395402183008,41551526479.388054
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,eur_water,1024,Aquifer Pore Volume,AqPV,0.08544507582814664,0.09612621977750468,41551526479.388054
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qo,128,Fault Transmissibility,Ft,-0.058678340258988104,0.00011685455783189476,538.2697721672348
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qo,128,Porosity Multiplier,Poro,0.8118301236114978,1.0386497867753544,538.2697721672348
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qo,128,Permeability Multiplier,Perm,-0.06078957432960119,0.0008555592485941704,538.2697721672348
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qo,128,Aquifer Pore Volume,AqPV,-0.07414838048908323,0.10608909956545312,538.2697721672348
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qo,256,Fault Transmissibility,Ft,-0.060285100845829165,9.843392300239797e-05,538.4283905362656
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qo,256,Porosity Multiplier,Poro,0.8084299349747063,1.0227127605916897,538.4283905362656
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qo,256,Permeability Multiplier,Perm,-0.06292465493030464,0.0007599636503462392,538.4283905362656
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qo,256,Aquifer Pore Volume,AqPV,-0.053519289930619385,0.12655774520979596,538.4283905362656
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qo,512,Fault Transmissibility,Ft,0.0065684043818589055,9.368639457139403e-05,536.0609108635134
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qo,512,Porosity Multiplier,Poro,0.8382524349836793,0.9942320541135383,536.0609108635134
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qo,512,Permeability Multiplier,Perm,0.003525669924969055,0.013105567392702537,536.0609108635134
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qo,512,Aquifer Pore Volume,AqPV,-0.006764185095514019,0.13929570940210698,536.0609108635134
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qo,1024,Fault Transmissibility,Ft,0.010929235034461748,0.00010191799150778461,534.3973573309387
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qo,1024,Porosity Multiplier,Poro,0.8501400364222271,0.9884349146755214,534.3973573309387
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qo,1024,Permeability Multiplier,Perm,0.010558563774277108,0.006959134761402457,534.3973573309387
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qo,1024,Aquifer Pore Volume,AqPV,0.010044232469606729,0.17581128133633786,534.3973573309387
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qw,128,Fault Transmissibility,Ft,0.0021995573052110418,0.0014606611520215419,3937.1168143622854
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qw,128,Porosity Multiplier,Poro,0.09188684746011122,0.10517973235383109,3937.1168143622854
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qw,128,Permeability Multiplier,Perm,0.8126814585251143,0.8731295191686812,3937.1168143622854
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qw,128,Aquifer Pore Volume,AqPV,0.06070712314790583,0.09111737746082438,3937.1168143622854
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qw,256,Fault Transmissibility,Ft,-0.00035219052735535605,0.0014339697134451463,3993.6262464884917
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qw,256,Porosity Multiplier,Poro,0.07912036474953266,0.09287433292629263,3993.6262464884917
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qw,256,Permeability Multiplier,Perm,0.8222967230713362,0.8521738510557245,3993.6262464884917
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qw,256,Aquifer Pore Volume,AqPV,0.070992321833097,0.09154640499313584,3993.6262464884917
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qw,512,Fault Transmissibility,Ft,0.003837816197225452,0.0014299894381360752,3983.1636923057745
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qw,512,Porosity Multiplier,Poro,0.08767835868924012,0.09147406709261702,3983.1636923057745
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qw,512,Permeability Multiplier,Perm,0.8183032625191239,0.832826705092542,3983.1636923057745
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qw,512,Aquifer Pore Volume,AqPV,0.07173181635584969,0.09216456770755876,3983.1636923057745
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qw,1024,Fault Transmissibility,Ft,0.007431869285598025,0.0013797695300358142,3980.6367330335424
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qw,1024,Porosity Multiplier,Poro,0.08761163967624963,0.0934260820845153,3980.6367330335424
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qw,1024,Permeability Multiplier,Perm,0.818057982591592,0.8273249029798643,3980.6367330335424
+Uniform_Prior_Bounds,Independent Prior Product Measure,Recursive_ExtraTrees,term_qw,1024,Aquifer Pore Volume,AqPV,0.08533580134109553,0.09341297594418156,3980.6367330335424
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_oil,128,Fault Transmissibility,Ft,0.13855799861622475,0.036378057278823706,61621773245.87774
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_oil,128,Porosity Multiplier,Poro,0.9521947513365713,0.857818671947488,61621773245.87774
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_oil,128,Permeability Multiplier,Perm,0.10283774921055344,0.0018705381013918885,61621773245.87774
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_oil,128,Aquifer Pore Volume,AqPV,0.10437628101375063,0.008935053148334971,61621773245.87774
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_oil,256,Fault Transmissibility,Ft,0.03938554797036897,0.035519573141337496,61783939048.82386
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_oil,256,Porosity Multiplier,Poro,0.9536915098161469,0.9560688461889247,61783939048.82386
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_oil,256,Permeability Multiplier,Perm,0.004941814023757041,0.001905934619975781,61783939048.82386
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_oil,256,Aquifer Pore Volume,AqPV,0.008708810415728907,0.008988882847183315,61783939048.82386
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_oil,512,Fault Transmissibility,Ft,0.040710471380255076,0.03554473830145299,61739109071.15039
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_oil,512,Porosity Multiplier,Poro,0.9542664105114372,0.9563635637230516,61739109071.15039
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_oil,512,Permeability Multiplier,Perm,0.0067320214528615585,0.0021035639242186046,61739109071.15039
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_oil,512,Aquifer Pore Volume,AqPV,0.01366424630540053,0.009535320060302424,61739109071.15039
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_oil,1024,Fault Transmissibility,Ft,0.03331092987914197,0.035518805200048346,61784785111.951
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_oil,1024,Porosity Multiplier,Poro,0.9533356936141725,0.9588803957428121,61784785111.951
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_oil,1024,Permeability Multiplier,Perm,-0.0007037844928785564,0.0019938104381652453,61784785111.951
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_oil,1024,Aquifer Pore Volume,AqPV,0.0065228918300132,0.009537743140441084,61784785111.951
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_water,128,Fault Transmissibility,Ft,0.08704521206816085,0.036687299719828544,12715371292.706367
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_water,128,Porosity Multiplier,Poro,0.13354345231350262,0.07882104343171581,12715371292.706367
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_water,128,Permeability Multiplier,Perm,0.2667622087140008,0.26625609678644796,12715371292.706367
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_water,128,Aquifer Pore Volume,AqPV,0.637482540857097,0.6167735991317994,12715371292.706367
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_water,256,Fault Transmissibility,Ft,0.05717239242950356,0.03594516621923368,12883083064.990955
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_water,256,Porosity Multiplier,Poro,0.10365961317453454,0.07609043778397392,12883083064.990955
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_water,256,Permeability Multiplier,Perm,0.28027569947264963,0.2625849232022358,12883083064.990955
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_water,256,Aquifer Pore Volume,AqPV,0.6070128944075108,0.6083280571763668,12883083064.990955
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_water,512,Fault Transmissibility,Ft,0.03435012780662561,0.036209289691794815,12749933824.736946
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_water,512,Porosity Multiplier,Poro,0.062388293059004396,0.0768273913429409,12749933824.736946
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_water,512,Permeability Multiplier,Perm,0.2509617895917614,0.26688422594244954,12749933824.736946
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_water,512,Aquifer Pore Volume,AqPV,0.616776421806202,0.6389025502379218,12749933824.736946
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_water,1024,Fault Transmissibility,Ft,0.0350910982753494,0.036275805120561104,12757800419.631916
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_water,1024,Porosity Multiplier,Poro,0.05712418806632702,0.07650114414899888,12757800419.631916
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_water,1024,Permeability Multiplier,Perm,0.25291779543060755,0.2660270440523035,12757800419.631916
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,delta_cum_water,1024,Aquifer Pore Volume,AqPV,0.6246751625485991,0.6422631710059415,12757800419.631916
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_oil,128,Fault Transmissibility,Ft,0.13855799861622464,0.03637805727882371,61621773245.87773
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_oil,128,Porosity Multiplier,Poro,0.9521947513365713,0.8578186719474881,61621773245.87773
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_oil,128,Permeability Multiplier,Perm,0.10283774921055333,0.0018705381013918887,61621773245.87773
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_oil,128,Aquifer Pore Volume,AqPV,0.10437628101375052,0.008935053148334973,61621773245.87773
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_oil,256,Fault Transmissibility,Ft,0.03938554797036897,0.035519573141337496,61783939048.82386
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_oil,256,Porosity Multiplier,Poro,0.9536915098161469,0.9560688461889247,61783939048.82386
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_oil,256,Permeability Multiplier,Perm,0.004941814023757041,0.001905934619975781,61783939048.82386
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_oil,256,Aquifer Pore Volume,AqPV,0.008708810415728907,0.008988882847183315,61783939048.82386
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_oil,512,Fault Transmissibility,Ft,0.040710471380255076,0.03554473830145299,61739109071.15039
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_oil,512,Porosity Multiplier,Poro,0.9542664105114372,0.9563635637230516,61739109071.15039
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_oil,512,Permeability Multiplier,Perm,0.0067320214528615585,0.0021035639242186046,61739109071.15039
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_oil,512,Aquifer Pore Volume,AqPV,0.01366424630540053,0.009535320060302424,61739109071.15039
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_oil,1024,Fault Transmissibility,Ft,0.03331092987914197,0.035518805200048346,61784785111.951
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_oil,1024,Porosity Multiplier,Poro,0.9533356936141725,0.9588803957428121,61784785111.951
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_oil,1024,Permeability Multiplier,Perm,-0.0007037844928785564,0.0019938104381652453,61784785111.951
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_oil,1024,Aquifer Pore Volume,AqPV,0.0065228918300132,0.009537743140441084,61784785111.951
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_water,128,Fault Transmissibility,Ft,0.08704521206816085,0.036687299719828544,12715371292.706367
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_water,128,Porosity Multiplier,Poro,0.13354345231350262,0.07882104343171581,12715371292.706367
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_water,128,Permeability Multiplier,Perm,0.2667622087140008,0.26625609678644796,12715371292.706367
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_water,128,Aquifer Pore Volume,AqPV,0.637482540857097,0.6167735991317994,12715371292.706367
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_water,256,Fault Transmissibility,Ft,0.05717239242950356,0.03594516621923368,12883083064.990955
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_water,256,Porosity Multiplier,Poro,0.10365961317453454,0.07609043778397392,12883083064.990955
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_water,256,Permeability Multiplier,Perm,0.28027569947264963,0.2625849232022358,12883083064.990955
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_water,256,Aquifer Pore Volume,AqPV,0.6070128944075108,0.6083280571763668,12883083064.990955
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_water,512,Fault Transmissibility,Ft,0.03435012780662561,0.036209289691794815,12749933824.736946
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_water,512,Porosity Multiplier,Poro,0.062388293059004396,0.0768273913429409,12749933824.736946
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_water,512,Permeability Multiplier,Perm,0.2509617895917614,0.26688422594244954,12749933824.736946
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_water,512,Aquifer Pore Volume,AqPV,0.616776421806202,0.6389025502379218,12749933824.736946
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_water,1024,Fault Transmissibility,Ft,0.0350910982753494,0.036275805120561104,12757800419.631916
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_water,1024,Porosity Multiplier,Poro,0.05712418806632702,0.07650114414899888,12757800419.631916
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_water,1024,Permeability Multiplier,Perm,0.25291779543060755,0.2660270440523035,12757800419.631916
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,eur_water,1024,Aquifer Pore Volume,AqPV,0.6246751625485991,0.6422631710059415,12757800419.631916
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qo,128,Fault Transmissibility,Ft,0.13254908420222822,0.02921376442897549,205.0183251879082
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qo,128,Porosity Multiplier,Poro,0.9346899429262182,0.8648502430915694,205.0183251879082
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qo,128,Permeability Multiplier,Perm,0.10647476260113586,0.001560001926731731,205.0183251879082
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qo,128,Aquifer Pore Volume,AqPV,0.09771274006699004,0.024187209300068676,205.0183251879082
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qo,256,Fault Transmissibility,Ft,0.028448153174434276,0.028446491671490916,206.2017865085161
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qo,256,Porosity Multiplier,Poro,0.9364967940992459,0.9716361726099749,206.2017865085161
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qo,256,Permeability Multiplier,Perm,-0.00021187218816454134,0.001619320670139157,206.2017865085161
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qo,256,Aquifer Pore Volume,AqPV,0.002870323211704884,0.026574892089744118,206.2017865085161
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qo,512,Fault Transmissibility,Ft,0.04195010510907626,0.02846739284385135,206.11063491246486
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qo,512,Porosity Multiplier,Poro,0.9418401719527815,0.968098345823253,206.11063491246486
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qo,512,Permeability Multiplier,Perm,0.014375742819956683,0.0034919533754121405,206.11063491246486
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qo,512,Aquifer Pore Volume,AqPV,0.024152515055061885,0.028814642448714272,206.11063491246486
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qo,1024,Fault Transmissibility,Ft,0.021350234584588734,0.02839315970318412,206.70172955310235
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qo,1024,Porosity Multiplier,Poro,0.9408893721637299,0.9735020011205318,206.70172955310235
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qo,1024,Permeability Multiplier,Perm,-0.005992229584738551,0.0025309700051472945,206.70172955310235
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qo,1024,Aquifer Pore Volume,AqPV,0.006038574706468736,0.03270272162367172,206.70172955310235
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qw,128,Fault Transmissibility,Ft,0.05448551099821308,0.01935116751899208,743.4070864503841
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qw,128,Porosity Multiplier,Poro,0.15529671404946865,0.1177994501641811,743.4070864503841
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qw,128,Permeability Multiplier,Perm,0.3657484514321595,0.4091506000529725,743.4070864503841
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qw,128,Aquifer Pore Volume,AqPV,0.4908148082901701,0.5022117283401992,743.4070864503841
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qw,256,Fault Transmissibility,Ft,0.03385277070046022,0.019089545013039243,756.9874155028461
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qw,256,Porosity Multiplier,Poro,0.11941004363204011,0.10468150227715207,756.9874155028461
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qw,256,Permeability Multiplier,Perm,0.3873108934722277,0.39630018795412336,756.9874155028461
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qw,256,Aquifer Pore Volume,AqPV,0.4750868834253854,0.49377966634895215,756.9874155028461
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qw,512,Fault Transmissibility,Ft,0.020895686547248382,0.019134245305882494,751.4282325462951
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qw,512,Porosity Multiplier,Poro,0.09053812381361881,0.10390766386342863,751.4282325462951
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qw,512,Permeability Multiplier,Perm,0.36841924699881345,0.38888812342081497,751.4282325462951
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qw,512,Aquifer Pore Volume,AqPV,0.484199943456056,0.5137240793693455,751.4282325462951
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qw,1024,Fault Transmissibility,Ft,0.02202145300574998,0.01917927729992054,751.8319170052836
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qw,1024,Porosity Multiplier,Poro,0.08571710737096239,0.10488001452806567,751.8319170052836
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qw,1024,Permeability Multiplier,Perm,0.36851664596348277,0.38453189727575215,751.8319170052836
+Uniform_Prior_Bounds,Independent Prior Product Measure,Blend_Phase_Specific_Simplex,term_qw,1024,Aquifer Pore Volume,AqPV,0.49847916369827705,0.5170581711915607,751.8319170052836
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_oil,128,Fault Transmissibility,Ft,0.1022463991243363,0.00032065114165874206,165997921848.36285
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_oil,128,Porosity Multiplier,Poro,0.9973477102738832,0.8976929120522599,165997921848.36285
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_oil,128,Permeability Multiplier,Perm,0.10133283808673066,0.0014105009586670915,165997921848.36285
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_oil,128,Aquifer Pore Volume,AqPV,0.10218250357706515,0.0008950406728485019,165997921848.36285
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_oil,256,Fault Transmissibility,Ft,0.004617539958353567,0.0003140540232611813,166310287384.73428
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_oil,256,Porosity Multiplier,Poro,0.9973592184610797,0.9932399480725942,166310287384.73428
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_oil,256,Permeability Multiplier,Perm,0.0053282267020587915,0.0014117114423642838,166310287384.73428
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_oil,256,Aquifer Pore Volume,AqPV,0.005102375975282625,0.0008943585380028933,166310287384.73428
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_oil,512,Fault Transmissibility,Ft,0.002295919817132286,0.0003149138179603382,166091466124.75613
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_oil,512,Porosity Multiplier,Poro,0.9973537654348802,0.9954653678189505,166091466124.75613
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_oil,512,Permeability Multiplier,Perm,0.0031891775078528584,0.0014069397642959961,166091466124.75613
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_oil,512,Aquifer Pore Volume,AqPV,0.002859553533658188,0.000947146807521683,166091466124.75613
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_oil,1024,Fault Transmissibility,Ft,0.0012382182110196593,0.00031489585325430005,166028655113.2653
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_oil,1024,Porosity Multiplier,Poro,0.9973427318753717,0.9964106001452807,166028655113.2653
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_oil,1024,Permeability Multiplier,Perm,0.0023135791971008457,0.0014102014899729446,166028655113.2653
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_oil,1024,Aquifer Pore Volume,AqPV,0.0018761419371920995,0.0009496973189136059,166028655113.2653
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_water,128,Fault Transmissibility,Ft,0.019153452547445937,0.0005765025266851803,39053376740.124054
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_water,128,Porosity Multiplier,Poro,0.03069963583694124,0.01972462517968293,39053376740.124054
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_water,128,Permeability Multiplier,Perm,0.8811540670058458,0.8615942734400114,39053376740.124054
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_water,128,Aquifer Pore Volume,AqPV,0.12411933696904054,0.09908068050061503,39053376740.124054
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_water,256,Fault Transmissibility,Ft,0.010003410028137316,0.0005633964663149246,39217681971.98003
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_water,256,Porosity Multiplier,Poro,0.030202153764461892,0.02177129642910306,39217681971.98003
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_water,256,Permeability Multiplier,Perm,0.879158527918484,0.8613863291302074,39217681971.98003
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_water,256,Aquifer Pore Volume,AqPV,0.11663524771571443,0.09859740565647035,39217681971.98003
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_water,512,Fault Transmissibility,Ft,0.002267756579452218,0.0005684811513580756,38837507730.59981
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_water,512,Porosity Multiplier,Poro,0.02325460518940492,0.022008097002309022,38837507730.59981
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_water,512,Permeability Multiplier,Perm,0.872637898029481,0.8697997814887026,38837507730.59981
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_water,512,Aquifer Pore Volume,AqPV,0.10800156626440305,0.10505510796942304,38837507730.59981
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_water,1024,Fault Transmissibility,Ft,0.0010231681307216745,0.0005683510284712025,38832741859.16016
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_water,1024,Porosity Multiplier,Poro,0.02254067923066838,0.022020006218734497,38832741859.16016
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_water,1024,Permeability Multiplier,Perm,0.8719181233392276,0.8713577387101404,38832741859.16016
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,delta_cum_water,1024,Aquifer Pore Volume,AqPV,0.10599969438381296,0.10549900852577035,38832741859.16016
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_oil,128,Fault Transmissibility,Ft,0.10224639912433597,0.00032065114165874217,165997921848.3628
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_oil,128,Porosity Multiplier,Poro,0.9973477102738832,0.8976929120522602,165997921848.3628
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_oil,128,Permeability Multiplier,Perm,0.10133283808673033,0.001410500958667092,165997921848.3628
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_oil,128,Aquifer Pore Volume,AqPV,0.10218250357706482,0.0008950406728485022,165997921848.3628
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_oil,256,Fault Transmissibility,Ft,0.004617539958353567,0.0003140540232611813,166310287384.73428
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_oil,256,Porosity Multiplier,Poro,0.9973592184610797,0.9932399480725942,166310287384.73428
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_oil,256,Permeability Multiplier,Perm,0.0053282267020587915,0.0014117114423642838,166310287384.73428
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_oil,256,Aquifer Pore Volume,AqPV,0.005102375975282625,0.0008943585380028933,166310287384.73428
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_oil,512,Fault Transmissibility,Ft,0.002295919817132286,0.0003149138179603382,166091466124.75613
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_oil,512,Porosity Multiplier,Poro,0.9973537654348802,0.9954653678189505,166091466124.75613
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_oil,512,Permeability Multiplier,Perm,0.0031891775078528584,0.0014069397642959961,166091466124.75613
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_oil,512,Aquifer Pore Volume,AqPV,0.002859553533658188,0.000947146807521683,166091466124.75613
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_oil,1024,Fault Transmissibility,Ft,0.0012382182110196593,0.00031489585325430005,166028655113.2653
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_oil,1024,Porosity Multiplier,Poro,0.9973427318753717,0.9964106001452807,166028655113.2653
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_oil,1024,Permeability Multiplier,Perm,0.0023135791971008457,0.0014102014899729446,166028655113.2653
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_oil,1024,Aquifer Pore Volume,AqPV,0.0018761419371920995,0.0009496973189136059,166028655113.2653
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_water,128,Fault Transmissibility,Ft,0.019153452547445937,0.0005765025266851803,39053376740.124054
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_water,128,Porosity Multiplier,Poro,0.03069963583694124,0.01972462517968293,39053376740.124054
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_water,128,Permeability Multiplier,Perm,0.8811540670058458,0.8615942734400114,39053376740.124054
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_water,128,Aquifer Pore Volume,AqPV,0.12411933696904054,0.09908068050061503,39053376740.124054
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_water,256,Fault Transmissibility,Ft,0.010003410028137316,0.0005633964663149246,39217681971.98003
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_water,256,Porosity Multiplier,Poro,0.030202153764461892,0.02177129642910306,39217681971.98003
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_water,256,Permeability Multiplier,Perm,0.879158527918484,0.8613863291302074,39217681971.98003
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_water,256,Aquifer Pore Volume,AqPV,0.11663524771571443,0.09859740565647035,39217681971.98003
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_water,512,Fault Transmissibility,Ft,0.002267756579451996,0.0005684811513580757,38837507730.5998
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_water,512,Porosity Multiplier,Poro,0.023254605189404698,0.022008097002309025,38837507730.5998
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_water,512,Permeability Multiplier,Perm,0.872637898029481,0.8697997814887027,38837507730.5998
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_water,512,Aquifer Pore Volume,AqPV,0.10800156626440283,0.10505510796942305,38837507730.5998
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_water,1024,Fault Transmissibility,Ft,0.0010231681307216745,0.0005683510284712025,38832741859.16016
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_water,1024,Porosity Multiplier,Poro,0.02254067923066838,0.022020006218734497,38832741859.16016
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_water,1024,Permeability Multiplier,Perm,0.8719181233392276,0.8713577387101404,38832741859.16016
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,eur_water,1024,Aquifer Pore Volume,AqPV,0.10599969438381296,0.10549900852577035,38832741859.16016
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qo,128,Fault Transmissibility,Ft,0.10185054867050136,0.00033015291849691303,454.7712590945492
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qo,128,Porosity Multiplier,Poro,0.9972821495713651,0.8981920440767962,454.7712590945492
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qo,128,Permeability Multiplier,Perm,0.10083186189019488,0.0014678720198531246,454.7712590945492
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qo,128,Aquifer Pore Volume,AqPV,0.10183169634957412,0.0009246926622633328,454.7712590945492
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qo,256,Fault Transmissibility,Ft,0.0043729721514588205,0.0003231252921711079,455.8537517316459
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qo,256,Porosity Multiplier,Poro,0.9972911153035962,0.9933971404307207,455.8537517316459
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qo,256,Permeability Multiplier,Perm,0.005036189952067116,0.0014658727936076954,455.8537517316459
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qo,256,Aquifer Pore Volume,AqPV,0.004955581715212709,0.0009259902175391481,455.8537517316459
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qo,512,Fault Transmissibility,Ft,0.0021196071764012503,0.0003251288575538573,455.25142783303426
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qo,512,Porosity Multiplier,Poro,0.9972927567774931,0.9954936671950579,455.25142783303426
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qo,512,Permeability Multiplier,Perm,0.002895362463834261,0.0014521578879584762,455.25142783303426
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qo,512,Aquifer Pore Volume,AqPV,0.0027155146921071793,0.0009835963603331732,455.25142783303426
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qo,1024,Fault Transmissibility,Ft,0.0009983192415836672,0.00032520046153550663,455.0763082159479
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qo,1024,Porosity Multiplier,Poro,0.9972774468148616,0.996640264505967,455.0763082159479
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qo,1024,Permeability Multiplier,Perm,0.0020452928132289605,0.0014563489968723198,455.0763082159479
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qo,1024,Aquifer Pore Volume,AqPV,0.0016422805468342405,0.0009802331162822287,455.0763082159479
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qw,128,Fault Transmissibility,Ft,0.019153452547457595,0.0005765025266850475,1219.079699644284
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qw,128,Porosity Multiplier,Poro,0.03069963583694113,0.01972462517968326,1219.079699644284
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qw,128,Permeability Multiplier,Perm,0.8811540670058422,0.8615942734400096,1219.079699644284
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qw,128,Aquifer Pore Volume,AqPV,0.12411933696903454,0.09908068050061951,1219.079699644284
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qw,256,Fault Transmissibility,Ft,0.010003410028135207,0.000563396466315018,1224.2086075498378
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qw,256,Porosity Multiplier,Poro,0.03020215376445734,0.021771296429102357,1224.2086075498378
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qw,256,Permeability Multiplier,Perm,0.8791585279184857,0.861386329130213,1224.2086075498378
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qw,256,Aquifer Pore Volume,AqPV,0.1166352477157162,0.098597405656474,1224.2086075498378
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qw,512,Fault Transmissibility,Ft,0.002267756579446334,0.0005684811513581072,1212.3411907300795
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qw,512,Porosity Multiplier,Poro,0.023254605189398703,0.022008097002309643,1212.3411907300795
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qw,512,Permeability Multiplier,Perm,0.8726378980294824,0.8697997814887102,1212.3411907300795
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qw,512,Aquifer Pore Volume,AqPV,0.10800156626440505,0.10505510796942394,1212.3411907300795
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qw,1024,Fault Transmissibility,Ft,0.0010231681307268925,0.0005683510284713723,1212.192420569654
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qw,1024,Porosity Multiplier,Poro,0.02254067923067138,0.022020006218735486,1212.192420569654
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qw,1024,Permeability Multiplier,Perm,0.8719181233392299,0.871357738710147,1212.192420569654
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Learned_Exponential_DCA,term_qw,1024,Aquifer Pore Volume,AqPV,0.10599969438382206,0.1054990085257703,1212.192420569654
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_oil,128,Fault Transmissibility,Ft,0.07065882412414337,0.00033390434002470527,29722272365.417255
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_oil,128,Porosity Multiplier,Poro,0.9650900311853429,0.9395895594859137,29722272365.417255
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_oil,128,Permeability Multiplier,Perm,0.07142870418191316,0.0005187172711669122,29722272365.417255
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_oil,128,Aquifer Pore Volume,AqPV,0.04216037652689941,0.035841350632268766,29722272365.417255
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_oil,256,Fault Transmissibility,Ft,-0.001600947550290277,0.00035291096548779004,29013354565.392628
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_oil,256,Porosity Multiplier,Poro,0.9388157029770765,0.9794243457554184,29013354565.392628
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_oil,256,Permeability Multiplier,Perm,-0.002056035002174106,0.000513356330883709,29013354565.392628
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_oil,256,Aquifer Pore Volume,AqPV,-0.01724515772439994,0.022572390536281177,29013354565.392628
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_oil,512,Fault Transmissibility,Ft,0.0018587182031174487,0.00034393781141396537,28699848558.327736
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_oil,512,Porosity Multiplier,Poro,0.9442941231314134,0.997914406499572,28699848558.327736
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_oil,512,Permeability Multiplier,Perm,0.0025063810848644508,0.0005281769786490655,28699848558.327736
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_oil,512,Aquifer Pore Volume,AqPV,-0.003472814047715378,0.028279576213385005,28699848558.327736
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_oil,1024,Fault Transmissibility,Ft,0.0005056658986160034,0.0003489333508949887,28637229366.94944
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_oil,1024,Porosity Multiplier,Poro,0.9469133026480195,1.0037547879055113,28637229366.94944
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_oil,1024,Permeability Multiplier,Perm,0.0008137008842842297,0.0005206085152010141,28637229366.94944
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_oil,1024,Aquifer Pore Volume,AqPV,0.010389617408430918,0.050721216250521145,28637229366.94944
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_water,128,Fault Transmissibility,Ft,0.029776501079462725,0.008672376176552322,29186222525.097115
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_water,128,Porosity Multiplier,Poro,0.10075967820550491,0.10736103837787533,29186222525.097115
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_water,128,Permeability Multiplier,Perm,0.7632610322628405,0.7908462135257497,29186222525.097115
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_water,128,Aquifer Pore Volume,AqPV,0.13068542668076488,0.13318428709694088,29186222525.097115
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_water,256,Fault Transmissibility,Ft,0.0014382705079835079,0.008077432350165541,28930316647.583782
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_water,256,Porosity Multiplier,Poro,0.07136827413967439,0.10415122051334251,28930316647.583782
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_water,256,Permeability Multiplier,Perm,0.7795842248403609,0.8082405592923937,28930316647.583782
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_water,256,Aquifer Pore Volume,AqPV,0.11213769994536338,0.12772829852249595,28930316647.583782
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_water,512,Fault Transmissibility,Ft,0.014047985135210661,0.007299441450586065,29472030993.94756
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_water,512,Porosity Multiplier,Poro,0.09932162208733908,0.10114377284289879,29472030993.94756
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_water,512,Permeability Multiplier,Perm,0.7671938460816474,0.7674353783026735,29472030993.94756
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_water,512,Aquifer Pore Volume,AqPV,0.13111848111211755,0.13474400475065154,29472030993.94756
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_water,1024,Fault Transmissibility,Ft,0.0046688833626145065,0.00739901933013535,29408848970.562294
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_water,1024,Porosity Multiplier,Poro,0.09533454038444333,0.10129071127379966,29408848970.562294
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_water,1024,Permeability Multiplier,Perm,0.7647191287300068,0.7705907548776203,29408848970.562294
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,delta_cum_water,1024,Aquifer Pore Volume,AqPV,0.12500969069818424,0.13617414590295238,29408848970.562294
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_oil,128,Fault Transmissibility,Ft,0.07065882412414326,0.0003339043400247053,29722272365.41725
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_oil,128,Porosity Multiplier,Poro,0.9650900311853429,0.9395895594859138,29722272365.41725
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_oil,128,Permeability Multiplier,Perm,0.07142870418191305,0.0005187172711669123,29722272365.41725
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_oil,128,Aquifer Pore Volume,AqPV,0.0421603765268993,0.03584135063226877,29722272365.41725
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_oil,256,Fault Transmissibility,Ft,-0.001600947550290277,0.00035291096548779004,29013354565.392628
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_oil,256,Porosity Multiplier,Poro,0.9388157029770765,0.9794243457554184,29013354565.392628
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_oil,256,Permeability Multiplier,Perm,-0.002056035002174106,0.000513356330883709,29013354565.392628
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_oil,256,Aquifer Pore Volume,AqPV,-0.01724515772439994,0.022572390536281177,29013354565.392628
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_oil,512,Fault Transmissibility,Ft,0.0018587182031174487,0.00034393781141396537,28699848558.327736
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_oil,512,Porosity Multiplier,Poro,0.9442941231314134,0.997914406499572,28699848558.327736
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_oil,512,Permeability Multiplier,Perm,0.0025063810848644508,0.0005281769786490655,28699848558.327736
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_oil,512,Aquifer Pore Volume,AqPV,-0.003472814047715378,0.028279576213385005,28699848558.327736
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_oil,1024,Fault Transmissibility,Ft,0.0005056658986160034,0.0003489333508949887,28637229366.94944
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_oil,1024,Porosity Multiplier,Poro,0.9469133026480195,1.0037547879055113,28637229366.94944
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_oil,1024,Permeability Multiplier,Perm,0.0008137008842842297,0.0005206085152010141,28637229366.94944
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_oil,1024,Aquifer Pore Volume,AqPV,0.010389617408430918,0.050721216250521145,28637229366.94944
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_water,128,Fault Transmissibility,Ft,0.029776501079462725,0.008672376176552322,29186222525.097115
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_water,128,Porosity Multiplier,Poro,0.10075967820550491,0.10736103837787533,29186222525.097115
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_water,128,Permeability Multiplier,Perm,0.7632610322628405,0.7908462135257497,29186222525.097115
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_water,128,Aquifer Pore Volume,AqPV,0.13068542668076488,0.13318428709694088,29186222525.097115
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_water,256,Fault Transmissibility,Ft,0.0014382705079835079,0.008077432350165541,28930316647.583782
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_water,256,Porosity Multiplier,Poro,0.07136827413967439,0.10415122051334251,28930316647.583782
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_water,256,Permeability Multiplier,Perm,0.7795842248403609,0.8082405592923937,28930316647.583782
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_water,256,Aquifer Pore Volume,AqPV,0.11213769994536338,0.12772829852249595,28930316647.583782
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_water,512,Fault Transmissibility,Ft,0.014047985135210661,0.007299441450586065,29472030993.94756
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_water,512,Porosity Multiplier,Poro,0.09932162208733908,0.10114377284289879,29472030993.94756
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_water,512,Permeability Multiplier,Perm,0.7671938460816474,0.7674353783026735,29472030993.94756
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_water,512,Aquifer Pore Volume,AqPV,0.13111848111211755,0.13474400475065154,29472030993.94756
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_water,1024,Fault Transmissibility,Ft,0.0046688833626145065,0.00739901933013535,29408848970.562294
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_water,1024,Porosity Multiplier,Poro,0.09533454038444333,0.10129071127379966,29408848970.562294
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_water,1024,Permeability Multiplier,Perm,0.7647191287300068,0.7705907548776203,29408848970.562294
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,eur_water,1024,Aquifer Pore Volume,AqPV,0.12500969069818424,0.13617414590295238,29408848970.562294
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qo,128,Fault Transmissibility,Ft,0.03914516555266612,0.0004631149233090926,589.554400383547
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qo,128,Porosity Multiplier,Poro,0.9485053517540344,0.9860254099195143,589.554400383547
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qo,128,Permeability Multiplier,Perm,0.04071736441895313,0.0006197455135427801,589.554400383547
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qo,128,Aquifer Pore Volume,AqPV,0.008102455791197505,0.05274780965373638,589.554400383547
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qo,256,Fault Transmissibility,Ft,-0.0025057692211420957,0.000485527492873966,579.4619456887356
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qo,256,Porosity Multiplier,Poro,0.9064336644179523,1.000862511203806,579.4619456887356
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qo,256,Permeability Multiplier,Perm,-0.0033331041829673946,0.0006184703570633486,579.4619456887356
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qo,256,Aquifer Pore Volume,AqPV,-0.02064509975423845,0.03148447235666411,579.4619456887356
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qo,512,Fault Transmissibility,Ft,0.006230456935443551,0.0004706190888839859,575.2823785708558
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qo,512,Porosity Multiplier,Poro,0.9160091722402999,1.005747503892753,575.2823785708558
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qo,512,Permeability Multiplier,Perm,0.006819402565282795,0.0006348121664641105,575.2823785708558
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qo,512,Aquifer Pore Volume,AqPV,0.0027809341680130606,0.04074650421492282,575.2823785708558
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qo,1024,Fault Transmissibility,Ft,0.0029465643516274342,0.0004773268827155165,573.8896668855898
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qo,1024,Porosity Multiplier,Poro,0.9203215215709075,1.0096937057029918,573.8896668855898
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qo,1024,Permeability Multiplier,Perm,0.00333593118250608,0.0006249814695204138,573.8896668855898
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qo,1024,Aquifer Pore Volume,AqPV,0.01465164514914774,0.07668486321530223,573.8896668855898
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qw,128,Fault Transmissibility,Ft,0.024594043824471834,0.00673000503735792,2828.5103936779888
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qw,128,Porosity Multiplier,Poro,0.10243694953334981,0.11353956902709177,2828.5103936779888
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qw,128,Permeability Multiplier,Perm,0.7592914909645223,0.7923221127122182,2828.5103936779888
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qw,128,Aquifer Pore Volume,AqPV,0.12482129078262949,0.12964078261755496,2828.5103936779888
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qw,256,Fault Transmissibility,Ft,0.0033754021689639258,0.006231657454685426,2810.264013948185
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qw,256,Porosity Multiplier,Poro,0.07688422470824474,0.10678988309948376,2810.264013948185
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qw,256,Permeability Multiplier,Perm,0.7778092103131089,0.8077887891962976,2810.264013948185
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qw,256,Aquifer Pore Volume,AqPV,0.1130312028802195,0.12412397837340455,2810.264013948185
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qw,512,Fault Transmissibility,Ft,0.01222016208684884,0.005596440738651232,2859.2030248868455
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qw,512,Porosity Multiplier,Poro,0.10125846152342077,0.10335133725105113,2859.2030248868455
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qw,512,Permeability Multiplier,Perm,0.768482820765271,0.7697696447494821,2859.2030248868455
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qw,512,Aquifer Pore Volume,AqPV,0.1278428680030691,0.13086002700566984,2859.2030248868455
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qw,1024,Fault Transmissibility,Ft,0.0027226743718912205,0.0057029687192985045,2854.49788266626
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qw,1024,Porosity Multiplier,Poro,0.09892824135685696,0.10397994787656492,2854.49788266626
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qw,1024,Permeability Multiplier,Perm,0.7665064073375882,0.7720039218835016,2854.49788266626
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Recursive_ExtraTrees,term_qw,1024,Aquifer Pore Volume,AqPV,0.12164893882342076,0.13195480387068864,2854.49788266626
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_oil,128,Fault Transmissibility,Ft,0.09954553694866752,0.00045897160420745655,53580786981.80034
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_oil,128,Porosity Multiplier,Poro,0.9940059581327612,0.9011128578034219,53580786981.80034
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_oil,128,Permeability Multiplier,Perm,0.09904742092863805,0.0018507401649292372,53580786981.80034
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_oil,128,Aquifer Pore Volume,AqPV,0.10578993279384208,0.003823259361017202,53580786981.80034
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_oil,256,Fault Transmissibility,Ft,0.006014120427608405,0.00044376263183796286,53962239281.22674
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_oil,256,Porosity Multiplier,Poro,0.9940284324775941,0.9985642712991023,53962239281.22674
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_oil,256,Permeability Multiplier,Perm,0.006950485172427134,0.0018931767732209028,53962239281.22674
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_oil,256,Aquifer Pore Volume,AqPV,0.010331393074330286,0.0033774486429476837,53962239281.22674
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_oil,512,Fault Transmissibility,Ft,0.00356162045918873,0.00044534048234875557,53997143191.52597
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_oil,512,Porosity Multiplier,Poro,0.9939492796078284,0.9951394691218511,53997143191.52597
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_oil,512,Permeability Multiplier,Perm,0.004918796824605498,0.0018844499806032805,53997143191.52597
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_oil,512,Aquifer Pore Volume,AqPV,0.007406826550514722,0.0035879508029145017,53997143191.52597
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_oil,1024,Fault Transmissibility,Ft,0.0017487777600906362,0.0004445349466501663,53977973334.02297
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_oil,1024,Porosity Multiplier,Poro,0.9937069311992592,0.9952415162055119,53977973334.02297
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_oil,1024,Permeability Multiplier,Perm,0.0032342572243123646,0.0018894802925520074,53977973334.02297
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_oil,1024,Aquifer Pore Volume,AqPV,0.0038062747537098707,0.003958061598012762,53977973334.02297
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_water,128,Fault Transmissibility,Ft,0.032518380285777804,0.005543526215184896,7259966380.193518
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_water,128,Porosity Multiplier,Poro,0.13692517325639442,0.10887357127528516,7259966380.193518
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_water,128,Permeability Multiplier,Perm,0.4137352933057836,0.39515120354407246,7259966380.193518
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_water,128,Aquifer Pore Volume,AqPV,0.5202055860737194,0.4702394766582816,7259966380.193518
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_water,256,Fault Transmissibility,Ft,0.012121486365531231,0.0050721693510729065,7250325890.453017
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_water,256,Porosity Multiplier,Poro,0.11382420868917142,0.11762490227988363,7250325890.453017
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_water,256,Permeability Multiplier,Perm,0.42956769304335596,0.4048609643533971,7250325890.453017
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_water,256,Aquifer Pore Volume,AqPV,0.4766332597108319,0.4561576506086898,7250325890.453017
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_water,512,Fault Transmissibility,Ft,0.007021542933347447,0.004701669677971817,7148871257.451894
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_water,512,Porosity Multiplier,Poro,0.09261121591509969,0.11739086484020908,7148871257.451894
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_water,512,Permeability Multiplier,Perm,0.39836351258385394,0.40591791710062525,7148871257.451894
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_water,512,Aquifer Pore Volume,AqPV,0.47978419422856866,0.4942924754353695,7148871257.451894
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_water,1024,Fault Transmissibility,Ft,-0.007552410339715543,0.004820668174858042,7091388429.135164
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_water,1024,Porosity Multiplier,Poro,0.08492925585064792,0.11575632627504635,7091388429.135164
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_water,1024,Permeability Multiplier,Perm,0.3893052271352915,0.40781251951113157,7091388429.135164
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,delta_cum_water,1024,Aquifer Pore Volume,AqPV,0.4730896094552759,0.5027795165210485,7091388429.135164
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_oil,128,Fault Transmissibility,Ft,0.09954553694866752,0.00045897160420745655,53580786981.80034
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_oil,128,Porosity Multiplier,Poro,0.9940059581327612,0.9011128578034219,53580786981.80034
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_oil,128,Permeability Multiplier,Perm,0.09904742092863805,0.0018507401649292372,53580786981.80034
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_oil,128,Aquifer Pore Volume,AqPV,0.10578993279384208,0.003823259361017202,53580786981.80034
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_oil,256,Fault Transmissibility,Ft,0.006014120427608405,0.00044376263183796286,53962239281.22674
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_oil,256,Porosity Multiplier,Poro,0.9940284324775941,0.9985642712991023,53962239281.22674
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_oil,256,Permeability Multiplier,Perm,0.006950485172427134,0.0018931767732209028,53962239281.22674
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_oil,256,Aquifer Pore Volume,AqPV,0.010331393074330286,0.0033774486429476837,53962239281.22674
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_oil,512,Fault Transmissibility,Ft,0.00356162045918873,0.00044534048234875557,53997143191.52597
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_oil,512,Porosity Multiplier,Poro,0.9939492796078284,0.9951394691218511,53997143191.52597
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_oil,512,Permeability Multiplier,Perm,0.004918796824605498,0.0018844499806032805,53997143191.52597
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_oil,512,Aquifer Pore Volume,AqPV,0.007406826550514722,0.0035879508029145017,53997143191.52597
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_oil,1024,Fault Transmissibility,Ft,0.0017487777600906362,0.0004445349466501663,53977973334.02297
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_oil,1024,Porosity Multiplier,Poro,0.9937069311992592,0.9952415162055119,53977973334.02297
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_oil,1024,Permeability Multiplier,Perm,0.0032342572243123646,0.0018894802925520074,53977973334.02297
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_oil,1024,Aquifer Pore Volume,AqPV,0.0038062747537098707,0.003958061598012762,53977973334.02297
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_water,128,Fault Transmissibility,Ft,0.032518380285777804,0.005543526215184896,7259966380.193518
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_water,128,Porosity Multiplier,Poro,0.13692517325639442,0.10887357127528516,7259966380.193518
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_water,128,Permeability Multiplier,Perm,0.4137352933057836,0.39515120354407246,7259966380.193518
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_water,128,Aquifer Pore Volume,AqPV,0.5202055860737194,0.4702394766582816,7259966380.193518
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_water,256,Fault Transmissibility,Ft,0.012121486365531231,0.0050721693510729065,7250325890.453017
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_water,256,Porosity Multiplier,Poro,0.11382420868917142,0.11762490227988363,7250325890.453017
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_water,256,Permeability Multiplier,Perm,0.42956769304335596,0.4048609643533971,7250325890.453017
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_water,256,Aquifer Pore Volume,AqPV,0.4766332597108319,0.4561576506086898,7250325890.453017
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_water,512,Fault Transmissibility,Ft,0.007021542933347447,0.004701669677971817,7148871257.451894
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_water,512,Porosity Multiplier,Poro,0.09261121591509969,0.11739086484020908,7148871257.451894
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_water,512,Permeability Multiplier,Perm,0.39836351258385394,0.40591791710062525,7148871257.451894
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_water,512,Aquifer Pore Volume,AqPV,0.47978419422856866,0.4942924754353695,7148871257.451894
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_water,1024,Fault Transmissibility,Ft,-0.007552410339715543,0.004820668174858042,7091388429.135164
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_water,1024,Porosity Multiplier,Poro,0.08492925585064792,0.11575632627504635,7091388429.135164
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_water,1024,Permeability Multiplier,Perm,0.3893052271352915,0.40781251951113157,7091388429.135164
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,eur_water,1024,Aquifer Pore Volume,AqPV,0.4730896094552759,0.5027795165210485,7091388429.135164
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qo,128,Fault Transmissibility,Ft,0.08198236265583059,0.00042080332909720617,171.8917984005854
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qo,128,Porosity Multiplier,Poro,0.9846227832185155,0.9265162495236323,171.8917984005854
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qo,128,Permeability Multiplier,Perm,0.0822175381093091,0.001609618946003992,171.8917984005854
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qo,128,Aquifer Pore Volume,AqPV,0.09602384103697825,0.01414977696385651,171.8917984005854
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qo,256,Fault Transmissibility,Ft,0.006082524083231622,0.00040196236773480356,174.41699116458713
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qo,256,Porosity Multiplier,Poro,0.9789398520120501,1.0168066472817592,174.41699116458713
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qo,256,Permeability Multiplier,Perm,0.0063834221892075105,0.0016926085681593676,174.41699116458713
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qo,256,Aquifer Pore Volume,AqPV,0.014525006531758589,0.009776436669949243,174.41699116458713
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qo,512,Fault Transmissibility,Ft,0.0058994923556195955,0.00040343812797242296,175.00767356474302
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qo,512,Porosity Multiplier,Poro,0.9803206154931835,1.0005818024929831,175.00767356474302
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qo,512,Permeability Multiplier,Perm,0.007326647016885457,0.0016802938512411637,175.00767356474302
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qo,512,Aquifer Pore Volume,AqPV,0.014008032432499262,0.011407010366392002,175.00767356474302
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qo,1024,Fault Transmissibility,Ft,0.0029951740249619663,0.00040302168132217564,175.00723584261132
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qo,1024,Porosity Multiplier,Poro,0.980334078309071,0.9984106160715012,175.00723584261132
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qo,1024,Permeability Multiplier,Perm,0.004426710580337834,0.0016846365871157104,175.00723584261132
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qo,1024,Aquifer Pore Volume,AqPV,0.007078433986580923,0.01733076387408088,175.00723584261132
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qw,128,Fault Transmissibility,Ft,0.030098865357944038,0.008146345511164216,453.54215757974686
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qw,128,Porosity Multiplier,Poro,0.1561513929702174,0.1484978167737826,453.54215757974686
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qw,128,Permeability Multiplier,Perm,0.3979458361228413,0.4192254399373311,453.54215757974686
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qw,128,Aquifer Pore Volume,AqPV,0.4695779370298411,0.44842286723743874,453.54215757974686
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qw,256,Fault Transmissibility,Ft,0.009231204865690401,0.007511874677313396,450.61042811629864
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qw,256,Porosity Multiplier,Poro,0.12100709867271253,0.1454962493684406,450.61042811629864
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qw,256,Permeability Multiplier,Perm,0.425697931369419,0.43487054106747103,450.61042811629864
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qw,256,Aquifer Pore Volume,AqPV,0.43880118535748536,0.4351444924790826,450.61042811629864
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qw,512,Fault Transmissibility,Ft,0.011458784040191183,0.006831549018424215,452.54169403239337
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qw,512,Porosity Multiplier,Poro,0.12039985702717615,0.14175882966663098,452.54169403239337
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qw,512,Permeability Multiplier,Perm,0.40398709739897953,0.4137527051906819,452.54169403239337
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qw,512,Aquifer Pore Volume,AqPV,0.44801923598831817,0.4632173843909248,452.54169403239337
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qw,1024,Fault Transmissibility,Ft,-0.005462245916055153,0.007024275731306755,449.39448792659397
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qw,1024,Porosity Multiplier,Poro,0.1139163821890512,0.14145749124456528,449.39448792659397
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qw,1024,Permeability Multiplier,Perm,0.39634352416532104,0.41525486641999404,449.39448792659397
+Empirical_Training_Dist,Empirical Training Marginals (Cases 1-70),Blend_Phase_Specific_Simplex,term_qw,1024,Aquifer Pore Volume,AqPV,0.43969275981622047,0.47020588507300926,449.39448792659397

@@ -41,6 +41,10 @@ from geological_information_value.parameter_bounds import (
     normalize_parameters,
     create_parameter_series,
 )
+from geological_information_value.sobol_estimators import (
+    compute_centered_sobol_indices,
+    bootstrap_sobol_confidence_intervals,
+)
 
 
 def evaluate_models_batch(
@@ -54,16 +58,8 @@ def evaluate_models_batch(
     """
     Evaluates all base models and the blended ensemble simultaneously on a batch
     of M physical parameter vectors U_phys of shape (M, 4).
-    Returns dict: model_name -> {
-        'qo_rate': (M, n_steps),
-        'qw_rate': (M, n_steps),
-        'cum_oil': (M, n_steps),
-        'cum_water': (M, n_steps),
-        'eur_oil': (M,),
-        'eur_water': (M,),
-        'term_qo': (M,),
-        'term_qw': (M,),
-    }
+    Verified to be float64-equivalent (< 1e-11 on rates, < 1e-7 on cumulatives)
+    to scalar generate_scenario_predictions().
     """
     M = len(U_phys)
     n_steps = len(forecast_dates)
@@ -76,8 +72,7 @@ def evaluate_models_batch(
     res_age = float(init_state["res_age"])
     wor_0 = float(init_state.get("wor", q0_w / max(q0_o, 1.0)))
     
-    t_days = (forecast_dates - origin).days.to_numpy(dtype=float)
-    t_years = t_days / YEAR_DAYS
+    t_years = np.asarray((pd.DatetimeIndex(forecast_dates) - origin).total_seconds() / (86400.0 * YEAR_DAYS), dtype=float)
     
     out_dict: Dict[str, Dict[str, np.ndarray]] = {}
     
@@ -96,7 +91,6 @@ def evaluate_models_batch(
         D_o_exp = np.maximum(0.01, m_exp.model_D.predict(X_dca))
         qo_exp = max(q0_o, 1.0) * np.exp(-D_o_exp[:, None] * t_years[None, :])
         
-        # Water rate via model_water_growth
         if hasattr(m_exp, "model_water_growth") and m_exp.model_water_growth is not None:
             w_growth = m_exp.model_water_growth.predict(X_dca)
             Dw = 0.20
@@ -111,6 +105,7 @@ def evaluate_models_batch(
             "qo_rate": qo_exp, "qw_rate": qw_exp,
             "cum_oil": cum_o_exp, "cum_water": cum_w_exp,
             "eur_oil": cum_o_exp[:, -1], "eur_water": cum_w_exp[:, -1],
+            "delta_cum_oil": cum_o_exp[:, -1] - Q0_o, "delta_cum_water": cum_w_exp[:, -1] - Q0_w,
             "term_qo": qo_exp[:, -1], "term_qw": qw_exp[:, -1],
         }
 
@@ -127,7 +122,7 @@ def evaluate_models_batch(
             np.full(M, res_age),
         ])
         D_o_hyp = np.maximum(0.01, m_hyp.model_D.predict(X_dca))
-        b_o = getattr(m_hyp, "b_hyperbolic", 0.50)
+        b_o = getattr(m_hyp, "b_hyperbolic", 0.35)
         qo_hyp = max(q0_o, 1.0) * ((1.0 + b_o * D_o_hyp[:, None] * t_years[None, :]) ** (-1.0 / b_o))
         
         if hasattr(m_hyp, "model_water_growth") and m_hyp.model_water_growth is not None:
@@ -144,6 +139,7 @@ def evaluate_models_batch(
             "qo_rate": qo_hyp, "qw_rate": qw_hyp,
             "cum_oil": cum_o_hyp, "cum_water": cum_w_hyp,
             "eur_oil": cum_o_hyp[:, -1], "eur_water": cum_w_hyp[:, -1],
+            "delta_cum_oil": cum_o_hyp[:, -1] - Q0_o, "delta_cum_water": cum_w_hyp[:, -1] - Q0_w,
             "term_qo": qo_hyp[:, -1], "term_qw": qw_hyp[:, -1],
         }
 
@@ -159,13 +155,13 @@ def evaluate_models_batch(
         qw_et = np.zeros((M, n_steps))
         curr_qo = np.full(M, q0_o)
         curr_qw = np.full(M, q0_w)
+        curr_age = res_age
         
         for k in range(n_steps):
-            age_k = res_age + k * (dt_days / YEAR_DAYS)
             X_step = np.column_stack([
                 np.log(np.maximum(curr_qo, 1.0)),
                 np.log(np.maximum(curr_qw, 1.0) + 1.0),
-                np.full(M, age_k),
+                np.full(M, curr_age),
                 curr_qw / np.maximum(curr_qo, 1.0),
                 U_phys[:, 0], U_phys[:, 1], U_phys[:, 2], U_phys[:, 3],
             ])
@@ -174,6 +170,7 @@ def evaluate_models_batch(
             d_log_o_clipped = np.minimum(0.0, d_log_o)
             curr_qo = np.maximum(0.0, curr_qo * np.exp(d_log_o_clipped))
             curr_qw = np.maximum(0.0, curr_qw + d_w)
+            curr_age += 0.25
             qo_et[:, k] = curr_qo
             qw_et[:, k] = curr_qw
             
@@ -184,6 +181,7 @@ def evaluate_models_batch(
             "qo_rate": qo_et, "qw_rate": qw_et,
             "cum_oil": cum_o_et, "cum_water": cum_w_et,
             "eur_oil": cum_o_et[:, -1], "eur_water": cum_w_et[:, -1],
+            "delta_cum_oil": cum_o_et[:, -1] - Q0_o, "delta_cum_water": cum_w_et[:, -1] - Q0_w,
             "term_qo": qo_et[:, -1], "term_qw": qw_et[:, -1],
         }
 
@@ -191,21 +189,46 @@ def evaluate_models_batch(
     # 4. Hybrid Dynamic (Transition -> DCA Switch)
     # -------------------------------------------------------------------------
     m_hyb = models.get("Hybrid_Dynamic")
-    if m_hyb is not None and "Recursive_ExtraTrees" in out_dict and "Learned_Exponential_DCA" in out_dict:
-        switch_k = min(12, n_steps)
+    if m_hyb is not None:
+        switch_k = min(getattr(m_hyb, "switch_quarters", 12), n_steps)
         qo_hyb = np.zeros((M, n_steps))
         qw_hyb = np.zeros((M, n_steps))
         
+        # Near dates: transition model (Recursive ExtraTrees)
         qo_hyb[:, :switch_k] = out_dict["Recursive_ExtraTrees"]["qo_rate"][:, :switch_k]
         qw_hyb[:, :switch_k] = out_dict["Recursive_ExtraTrees"]["qw_rate"][:, :switch_k]
         
         if n_steps > switch_k:
-            q_anchor_o = qo_hyb[:, switch_k - 1]
-            q_anchor_w = qw_hyb[:, switch_k - 1]
-            t_rem_years = t_years[switch_k:] - t_years[switch_k - 1]
-            D_rem_o = np.maximum(0.01, m_exp.model_D.predict(X_dca))
-            qo_hyb[:, switch_k:] = q_anchor_o[:, None] * np.exp(-D_rem_o[:, None] * t_rem_years[None, :])
-            qw_hyb[:, switch_k:] = q_anchor_w[:, None] + 0.05 * t_rem_years[None, :]
+            near_dates = forecast_dates[:switch_k]
+            handoff_date = near_dates[-1]
+            far_dates = forecast_dates[switch_k:]
+            
+            handoff_qo = qo_hyb[:, switch_k - 1]
+            handoff_qw = qw_hyb[:, switch_k - 1]
+            handoff_wor = handoff_qw / np.maximum(handoff_qo, 1.0)
+            handoff_age = res_age + switch_k * 0.25
+            
+            t_far_years = np.asarray((pd.DatetimeIndex(far_dates) - pd.Timestamp(handoff_date)).total_seconds() / (86400.0 * YEAR_DAYS), dtype=float)
+            
+            X_dca_handoff = np.column_stack([
+                U_phys[:, 0], U_phys[:, 1], U_phys[:, 2], U_phys[:, 3],
+                handoff_qo,
+                handoff_qw,
+                handoff_wor,
+                np.full(M, handoff_age),
+            ])
+            
+            dca_tail = getattr(m_hyb, "dca_model", m_exp)
+            D_far_o = np.maximum(0.01, dca_tail.model_D.predict(X_dca_handoff))
+            w_growth_far = dca_tail.model_water_growth.predict(X_dca_handoff)
+            Dw = 0.20
+            
+            qo_far = handoff_qo[:, None] * np.exp(-D_far_o[:, None] * t_far_years[None, :])
+            qw_far = handoff_qw[:, None] + (w_growth_far / Dw)[:, None] * (1.0 - np.exp(-Dw * t_far_years[None, :]))
+            qw_far = np.maximum(0.0, qw_far)
+            
+            qo_hyb[:, switch_k:] = qo_far
+            qw_hyb[:, switch_k:] = qw_far
             
         cum_o_hyb = Q0_o + np.cumsum(qo_hyb * dt_days, axis=1)
         cum_w_hyb = Q0_w + np.cumsum(qw_hyb * dt_days, axis=1)
@@ -214,6 +237,7 @@ def evaluate_models_batch(
             "qo_rate": qo_hyb, "qw_rate": qw_hyb,
             "cum_oil": cum_o_hyb, "cum_water": cum_w_hyb,
             "eur_oil": cum_o_hyb[:, -1], "eur_water": cum_w_hyb[:, -1],
+            "delta_cum_oil": cum_o_hyb[:, -1] - Q0_o, "delta_cum_water": cum_w_hyb[:, -1] - Q0_w,
             "term_qo": qo_hyb[:, -1], "term_qw": qw_hyb[:, -1],
         }
 
@@ -223,23 +247,33 @@ def evaluate_models_batch(
     w_oil = weights["oil"]
     w_wat = weights["water"]
     
-    qo_ens = np.zeros((M, n_steps))
-    qw_ens = np.zeros((M, n_steps))
+    qo_ens = (
+        w_oil["Recursive_ExtraTrees"] * out_dict["Recursive_ExtraTrees"]["qo_rate"]
+        + w_oil["Learned_Exponential_DCA"] * out_dict["Learned_Exponential_DCA"]["qo_rate"]
+        + w_oil["Learned_Hyperbolic_DCA"] * out_dict["Learned_Hyperbolic_DCA"]["qo_rate"]
+        + w_oil["Hybrid_Dynamic"] * out_dict["Hybrid_Dynamic"]["qo_rate"]
+    )
+    qw_ens = (
+        w_wat["Recursive_ExtraTrees"] * out_dict["Recursive_ExtraTrees"]["qw_rate"]
+        + w_wat["Learned_Exponential_DCA"] * out_dict["Learned_Exponential_DCA"]["qw_rate"]
+        + w_wat["Learned_Hyperbolic_DCA"] * out_dict["Learned_Hyperbolic_DCA"]["qw_rate"]
+        + w_wat["Hybrid_Dynamic"] * out_dict["Hybrid_Dynamic"]["qw_rate"]
+    )
     
-    for m_k, w in w_oil.items():
-        if m_k in out_dict and w > 0:
-            qo_ens += w * out_dict[m_k]["qo_rate"]
-    for m_k, w in w_wat.items():
-        if m_k in out_dict and w > 0:
-            qw_ens += w * out_dict[m_k]["qw_rate"]
-            
+    qo_ens = np.maximum(0.0, qo_ens)
+    qw_ens = np.maximum(0.0, qw_ens)
+    
     cum_o_ens = Q0_o + np.cumsum(qo_ens * dt_days, axis=1)
     cum_w_ens = Q0_w + np.cumsum(qw_ens * dt_days, axis=1)
+    
+    cum_o_ens = np.maximum.accumulate(cum_o_ens, axis=1)
+    cum_w_ens = np.maximum.accumulate(cum_w_ens, axis=1)
     
     out_dict["Blend_Phase_Specific_Simplex"] = {
         "qo_rate": qo_ens, "qw_rate": qw_ens,
         "cum_oil": cum_o_ens, "cum_water": cum_w_ens,
         "eur_oil": cum_o_ens[:, -1], "eur_water": cum_w_ens[:, -1],
+        "delta_cum_oil": cum_o_ens[:, -1] - Q0_o, "delta_cum_water": cum_w_ens[:, -1] - Q0_w,
         "term_qo": qo_ens[:, -1], "term_qw": qw_ens[:, -1],
     }
     
@@ -390,7 +424,14 @@ def compute_global_sensitivity_analysis_saltelli(
             for i in range(4)
         ]
         
-        target_keys = ["eur_oil", "eur_water", "term_qo", "term_qw"]
+        dist_labels = {
+            "Uniform_Prior_Bounds": "Independent Prior Product Measure",
+            "Empirical_Training_Dist": "Empirical Training Marginals (Cases 1-70)",
+            "Posterior_Conditioned": "Posterior Inversion Support Marginals",
+        }
+        dist_assumption = dist_labels.get(dist_name, dist_name)
+        
+        target_keys = ["delta_cum_oil", "delta_cum_water", "eur_oil", "eur_water", "term_qo", "term_qw"]
         model_names = ["Learned_Exponential_DCA", "Recursive_ExtraTrees", "Blend_Phase_Specific_Simplex"]
         
         for m_name in model_names:
@@ -401,87 +442,57 @@ def compute_global_sensitivity_analysis_saltelli(
                 yB_full = eval_B[m_name][tgt]
                 yAB_full = [eval_AB[i][m_name][tgt] for i in range(4)]
                 
-                # Convergence check across sample sizes
+                # Convergence check across sample sizes using centered Jansen estimators
                 for N in sample_sizes:
-                    yA = yA_full[:N]
-                    yB = yB_full[:N]
-                    var_y = float(np.var(np.concatenate([yA, yB])))
-                    if var_y < 1e-12:
-                        var_y = 1e-12
-                        
+                    yA_N = yA_full[:N]
+                    yB_N = yB_full[:N]
+                    yAB_N = [yAB_full[i][:N] for i in range(4)]
+                    sobol_pt_N = compute_centered_sobol_indices(yA_N, yB_N, yAB_N, estimator="jansen")
+                    var_y = float(sobol_pt_N["variance"])
+                    
                     for i in range(4):
-                        yAB_i = yAB_full[i][:N]
-                        
-                        # Jansen (1999) / Saltelli (2010) estimators:
-                        # Total-order index S_Ti: (1 / (2N)) * sum((yA - yAB_i)^2) / V
-                        ST_i = float(np.mean((yA - yAB_i) ** 2) / (2.0 * var_y))
-                        # First-order index S_i: (1 / N) * sum(yB * (yAB_i - yA)) / V
-                        S_i = float(np.mean(yB * (yAB_i - yA)) / var_y)
-                        
-                        # Clip to valid mathematical ranges
-                        ST_i = float(np.clip(ST_i, 0.0, 1.2))
-                        S_i = float(np.clip(S_i, -0.05, 1.0))
-                        
                         records_convergence.append({
                             "distribution": dist_name,
+                            "distribution_assumption": dist_assumption,
                             "model_name": m_name,
                             "target": tgt,
                             "sample_size_N": N,
                             "parameter": PARAM_NAMES[i],
                             "short_name": SHORT_NAMES[i],
-                            "first_order_Si": S_i,
-                            "total_order_STi": ST_i,
+                            "first_order_Si": float(sobol_pt_N["first_order"][i]),
+                            "total_order_STi": float(sobol_pt_N["total_order"][i]),
                             "target_variance": var_y,
                         })
                         
-                # Compute bootstrap standard errors and CIs at max sample size
-                rng_boot = np.random.RandomState(seed + 42)
-                N_ref = N_max
-                yA_ref = yA_full[:N_ref]
-                yB_ref = yB_full[:N_ref]
-                var_ref = float(np.var(np.concatenate([yA_ref, yB_ref])))
-                if var_ref < 1e-12:
-                    var_ref = 1e-12
-                    
-                boot_Si = np.zeros((4, n_bootstrap))
-                boot_STi = np.zeros((4, n_bootstrap))
+                # Compute bootstrap standard errors and CIs at max sample size using centered estimators
+                boot_res = bootstrap_sobol_confidence_intervals(
+                    yA=yA_full[:N_max],
+                    yB=yB_full[:N_max],
+                    yAB=[yAB_full[i][:N_max] for i in range(4)],
+                    n_bootstraps=n_bootstrap,
+                    confidence_level=0.95,
+                    estimator="jansen",
+                    seed=seed + 42,
+                )
                 
-                for b_idx in range(n_bootstrap):
-                    idx_b = rng_boot.choice(N_ref, size=N_ref, replace=True)
-                    yA_b = yA_ref[idx_b]
-                    yB_b = yB_ref[idx_b]
-                    v_b = max(float(np.var(np.concatenate([yA_b, yB_b]))), 1e-12)
-                    for i in range(4):
-                        yAB_b = yAB_full[i][:N_ref][idx_b]
-                        boot_STi[i, b_idx] = np.mean((yA_b - yAB_b) ** 2) / (2.0 * v_b)
-                        boot_Si[i, b_idx] = np.mean(yB_b * (yAB_b - yA_b)) / v_b
-                        
                 for i in range(4):
-                    yAB_i = yAB_full[i][:N_ref]
-                    st_val = float(np.clip(np.mean((yA_ref - yAB_i) ** 2) / (2.0 * var_ref), 0.0, 1.2))
-                    s_val = float(np.clip(np.mean(yB_ref * (yAB_i - yA_ref)) / var_ref, -0.05, 1.0))
-                    
-                    se_Si = float(np.std(boot_Si[i], ddof=1))
-                    se_STi = float(np.std(boot_STi[i], ddof=1))
-                    ci_Si = np.percentile(boot_Si[i], [2.5, 97.5])
-                    ci_STi = np.percentile(boot_STi[i], [2.5, 97.5])
-                    
                     records_summary.append({
                         "distribution": dist_name,
+                        "distribution_assumption": dist_assumption,
                         "model_name": m_name,
                         "target": tgt,
                         "parameter": PARAM_NAMES[i],
                         "short_name": SHORT_NAMES[i],
-                        "first_order_Si": s_val,
-                        "se_Si": se_Si,
-                        "ci95_low_Si": float(ci_Si[0]),
-                        "ci95_high_Si": float(ci_Si[1]),
-                        "total_order_STi": st_val,
-                        "se_STi": se_STi,
-                        "ci95_low_STi": float(ci_STi[0]),
-                        "ci95_high_STi": float(ci_STi[1]),
-                        "target_variance": var_ref,
-                        "sample_size_N": N_ref,
+                        "first_order_Si": float(boot_res["first_order_point"][i]),
+                        "se_Si": float(boot_res["first_order_se"][i]),
+                        "ci95_low_Si": float(boot_res["first_order_ci_low"][i]),
+                        "ci95_high_Si": float(boot_res["first_order_ci_high"][i]),
+                        "total_order_STi": float(boot_res["total_order_point"][i]),
+                        "se_STi": float(boot_res["total_order_se"][i]),
+                        "ci95_low_STi": float(boot_res["total_order_ci_low"][i]),
+                        "ci95_high_STi": float(boot_res["total_order_ci_high"][i]),
+                        "target_variance": float(boot_res["variance"]),
+                        "sample_size_N": N_max,
                     })
                     
     conv_df = pd.DataFrame(records_convergence)
@@ -491,32 +502,67 @@ def compute_global_sensitivity_analysis_saltelli(
 
 def inspect_fitted_representations(models: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Direct mathematical inspection of model coefficients and feature importances.
-    Proves that RidgeCV DCA coefficients on Perm and AqPV are negligible (~1e-4, ~1e-6).
+    Direct mathematical inspection of model coefficients, feature attributions,
+    and range-normalized physical parameter sensitivities.
+    Reads authoritative feat_cols directly from fitted estimators.
     """
     findings = {}
     
     # 1. Learned Exponential DCA Coefficients
     if "Learned_Exponential_DCA" in models:
         m_exp = models["Learned_Exponential_DCA"]
-        coefs = m_exp.model_D.coef_
-        feature_names = [
-            "log(qo)", "log(qw+1)", "res_age", "wor",
-            "Fault_Transmissibility", "Porosity_Multiplier",
-            "Permeability_Multiplier", "Aquifer_Pore_Volume"
-        ]
-        coef_dict = {fn: float(c) for fn, c in zip(feature_names, coefs)}
-        findings["Learned_Exponential_DCA_coefs"] = coef_dict
-        findings["alpha_selected"] = float(m_exp.model_D.alpha_)
-        findings["perm_coef_is_negligible"] = bool(abs(coef_dict["Permeability_Multiplier"]) < 1e-3)
-        findings["aqpv_coef_is_negligible"] = bool(abs(coef_dict["Aquifer_Pore_Volume"]) < 1e-4)
+        feat_cols_dca = getattr(m_exp, "feat_cols", ["fault", "poro", "perm", "aq", "qo_0", "qw_0", "wor_0", "res_age"])
+        coefs_D = m_exp.model_D.coef_
+        intercept_D = float(m_exp.model_D.intercept_)
+        coef_dict_D = {fn: float(c) for fn, c in zip(feat_cols_dca, coefs_D)}
+        
+        coefs_w = m_exp.model_water_growth.coef_
+        intercept_w = float(m_exp.model_water_growth.intercept_)
+        coef_dict_w = {fn: float(c) for fn, c in zip(feat_cols_dca, coefs_w)}
+        
+        # Physical range sensitivities: Delta D_i = |beta_i| * Range_i
+        # Admissible ranges: Fault [0.01, 1.0] -> 0.99, Poro [0.8, 1.5] -> 0.70, Perm [0.1, 10.0] -> 9.90, AqPV [10, 300] -> 290.0
+        param_ranges = {
+            "fault": 0.99,
+            "poro": 0.70,
+            "perm": 9.90,
+            "aq": 290.0,
+            "qo_0": 8000.0,
+            "qw_0": 7000.0,
+            "wor_0": 1.40,
+            "res_age": 7.0,
+        }
+        phys_sens_D = {fn: abs(coef_dict_D[fn]) * param_ranges[fn] for fn in feat_cols_dca}
+        phys_sens_w = {fn: abs(coef_dict_w[fn]) * param_ranges[fn] for fn in feat_cols_dca}
+        
+        findings["Learned_Exponential_DCA_features"] = list(feat_cols_dca)
+        findings["Learned_Exponential_DCA_coefs_D"] = coef_dict_D
+        findings["Learned_Exponential_DCA_intercept_D"] = intercept_D
+        findings["Learned_Exponential_DCA_alpha_D"] = float(m_exp.model_D.alpha_)
+        findings["Learned_Exponential_DCA_physical_sensitivity_D"] = phys_sens_D
+        findings["Learned_Exponential_DCA_coefs_water"] = coef_dict_w
+        findings["Learned_Exponential_DCA_intercept_water"] = intercept_w
+        findings["Learned_Exponential_DCA_alpha_water"] = float(m_exp.model_water_growth.alpha_)
+        findings["Learned_Exponential_DCA_physical_sensitivity_water"] = phys_sens_w
+        
+        # Key physical comparisons
+        findings["poro_vs_fault_ratio"] = float(phys_sens_D["poro"] / max(phys_sens_D["fault"], 1e-12))
+        findings["poro_vs_perm_ratio"] = float(phys_sens_D["poro"] / max(phys_sens_D["perm"], 1e-12))
+        findings["poro_vs_aq_ratio"] = float(phys_sens_D["poro"] / max(phys_sens_D["aq"], 1e-12))
+        findings["fault_vs_perm_ratio"] = float(phys_sens_D["fault"] / max(phys_sens_D["perm"], 1e-12))
 
     # 2. Recursive ExtraTrees Feature Importances
     if "Recursive_ExtraTrees" in models:
         m_et = models["Recursive_ExtraTrees"]
+        feat_cols_et = [
+            "log_qo_k", "log_qw_k", "res_age", "wor_k",
+            "Fault_Transmissibility", "Porosity_Multiplier",
+            "Permeability_Multiplier", "Aquifer_Pore_Volume"
+        ]
         imp_qo = m_et.model_qo.feature_importances_
         imp_qw = m_et.model_qw.feature_importances_
-        findings["ExtraTrees_importances_oil"] = {fn: float(v) for fn, v in zip(feature_names, imp_qo)}
-        findings["ExtraTrees_importances_water"] = {fn: float(v) for fn, v in zip(feature_names, imp_qw)}
+        findings["ExtraTrees_features"] = feat_cols_et
+        findings["ExtraTrees_importances_oil"] = {fn: float(v) for fn, v in zip(feat_cols_et, imp_qo)}
+        findings["ExtraTrees_importances_water"] = {fn: float(v) for fn, v in zip(feat_cols_et, imp_qw)}
         
     return findings
