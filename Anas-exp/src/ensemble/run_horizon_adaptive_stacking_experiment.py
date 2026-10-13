@@ -297,6 +297,9 @@ class LearnedDCARateForecaster:
                 fit_water = post["water_rate_stbd"].values
             else:
                 decline_hist = pre[pre["date"] >= "2002-01-01"]
+                if len(decline_hist) < 4:
+                    pos_prod = pre[pre["oil_rate_stbd"] > 0]
+                    decline_hist = pos_prod.iloc[-min(len(pos_prod), 6):]
                 t_fit_y = (decline_hist["date"] - decline_hist["date"].iloc[0]).dt.total_seconds() / (86400.0 * YEAR_DAYS)
                 fit_rates = decline_hist["oil_rate_stbd"].values
                 fit_water = decline_hist["water_rate_stbd"].values
