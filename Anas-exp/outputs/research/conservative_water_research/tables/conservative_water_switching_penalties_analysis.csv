@@ -1,0 +1,3 @@
+candidate_id,total_evaluations,switched_evaluations,switching_rate,n_gains,n_penalties,n_neutral,mean_gain,mean_penalty,max_penalty,asymmetry_ratio
+Candidate_Shrinkage_Blend,255,141,0.5529411764705883,141,0,0,-0.004201388871074312,0.0,0.0,0.0
+Candidate_Corrected_Water_Blend,255,101,0.396078431372549,101,0,0,-0.003367086077665619,0.0,0.0,0.0

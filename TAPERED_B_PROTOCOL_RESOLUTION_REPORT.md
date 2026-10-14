@@ -177,8 +177,8 @@ Cases 71–85 have served across previous sprints as secondary validation eviden
 | **Protocol B (Forward Supervised)** | Candidate_B_Tapered_Exp | **0.01819** | **0.03188** | 0.00451 | **-0.00936 ± 0.00130** | **-0.01873 ± 0.00260** | **0.000004** | Artificial forward supervision win |
 
 ### 4.2 Resolving the Discrepancy
-1. Under **Protocol B**, the baseline oil model scored poorly (0.05061) because 80Q future simulator DCA fitting distorted the local 3-year slope. This artificial baseline penalty made Candidate B appear vastly superior (0.01819 vs 0.02756).
-2. Under **Protocol A** (the true deployment protocol), the baseline oil model correctly calibrates to the local 2002–2005 decline window, achieving **0.03680**. Pure ExtraTrees oil fails to transfer smoothly to unseen validation cases, scoring **0.04228**.
+1. Under **Protocol B**, the baseline oil model scored poorly (0.05061) because 12Q post-origin future simulator supervision (3 years through 2008-01-01) distorted DCA decline targets relative to historical-only decline trends. This artificial baseline penalty made Candidate B appear vastly superior (0.01819 vs 0.02756).
+2. Under **Protocol A** (the true deployment protocol), the baseline oil model correctly calibrates to the local 2002–2005 decline window, achieving **0.03680**. Recursive ExtraTrees oil—even with an exponential tail taper ($t_{\text{supp}} = 9.75\text{ yr}, \tau = 1.0\text{ yr}$)—fails to transfer smoothly to unseen validation cases, scoring **0.04228** (while standalone ExtraTrees oil without tapering scored **0.05214**).
 3. Therefore, under deployment-faithful conditions, Candidate B Tapered Exp degrades performance on Cases 71–85 by **+7.1% relative error** ($p = 0.0083$).
 
 ---
