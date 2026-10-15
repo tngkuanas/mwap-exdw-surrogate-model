@@ -52,16 +52,40 @@ from ensemble.submission_pipeline import (
     format_deliverable_forecast,
     validate_deliverable_workbook,
     audit_rate_reconciliation,
+    resolve_template_path,
     TEMPLATE_PATH,
 )
 
-CONFIG_PATH_DEFAULT = Path("src/ensemble/locked_ensemble_config.json")
+def resolve_locked_config_path() -> Path:
+    """Finds the locked ensemble configuration dynamically and CWD-independently."""
+    search_dirs = [Path.cwd(), Path.cwd() / "Anas-exp"]
+    try:
+        file_dir = Path(__file__).resolve().parent  # src/ensemble
+        search_dirs.extend([file_dir, file_dir.parent.parent, file_dir.parent.parent / "Anas-exp"])
+    except Exception:
+        pass
+    for root in search_dirs:
+        candidate = root / "locked_ensemble_config.json"
+        if candidate.exists():
+            return candidate
+        candidate2 = root / "src" / "ensemble" / "locked_ensemble_config.json"
+        if candidate2.exists():
+            return candidate2
+        candidate3 = root / "Anas-exp" / "src" / "ensemble" / "locked_ensemble_config.json"
+        if candidate3.exists():
+            return candidate3
+    return Path("src/ensemble/locked_ensemble_config.json")
+
+
+CONFIG_PATH_DEFAULT = resolve_locked_config_path()
 OUTPUT_PATH_DEFAULT = Path("outputs/submission/09_Template_Deliverable_Submission.xlsx")
 SMOKE_TEST_PATH_DEFAULT = Path("outputs/submission/smoke_test_dev_cases_1_to_10.xlsx")
 
 
-def load_locked_config(config_path: Path = CONFIG_PATH_DEFAULT) -> Dict[str, Any]:
+def load_locked_config(config_path: Optional[Path] = None) -> Dict[str, Any]:
     """Loads and validates the locked ensemble configuration."""
+    if config_path is None or not Path(config_path).exists():
+        config_path = resolve_locked_config_path()
     with open(config_path, "r") as f:
         config = json.load(f)
     assert config["status"] == "FROZEN", "Configuration is not frozen!"
@@ -184,15 +208,24 @@ def generate_scenario_predictions(
 
 
 def run_pipeline(
-    config_path: Path = CONFIG_PATH_DEFAULT,
+    config_path: Optional[Path] = None,
     mode: str = "history_matched",
-    output_path: Path = OUTPUT_PATH_DEFAULT,
-    smoke_test_path: Path = SMOKE_TEST_PATH_DEFAULT,
-    template_path: Path = TEMPLATE_PATH,
+    output_path: Optional[Path] = None,
+    smoke_test_path: Optional[Path] = None,
+    template_path: Optional[Path] = None,
 ) -> Dict[str, Any]:
     """
     Executes the entire end-to-end competition generation and validation pipeline.
     """
+    if config_path is None or not Path(config_path).exists():
+        config_path = resolve_locked_config_path()
+    if template_path is None or not Path(template_path).exists():
+        template_path = resolve_template_path()
+    if output_path is None:
+        output_path = OUTPUT_PATH_DEFAULT
+    if smoke_test_path is None:
+        smoke_test_path = SMOKE_TEST_PATH_DEFAULT
+
     print("=" * 80)
     print("EXXONMOBIL DATAWORKS CHALLENGE 2026 — SUBMISSION PIPELINE")
     print(f"Locked Architecture: Blend_Phase_Specific_Simplex | Mode: {mode}")
@@ -389,7 +422,11 @@ def run_pipeline(
         },
     }
     
-    audit_report_path = Path("outputs/submission/submission_audit_report.json")
+    if output_path.name == "09_Template_Deliverable_Submission.xlsx":
+        audit_report_path = output_path.parent / "submission_audit_report.json"
+    else:
+        audit_report_path = output_path.parent / "regeneration_audit_report.json"
+    audit_report_path.parent.mkdir(parents=True, exist_ok=True)
     with open(audit_report_path, "w") as f:
         json.dump(audit_report, f, indent=2)
     print(f"\nComplete Audit Report saved to: {audit_report_path}")

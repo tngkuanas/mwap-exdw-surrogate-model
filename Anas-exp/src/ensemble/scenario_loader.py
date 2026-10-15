@@ -79,6 +79,21 @@ class ProductionScenarioConfig:
             )
 
 
+def resolve_default_research_scenario_path() -> Path:
+    """Dynamically resolves the Iteration 4 scenario artifact independently of CWD."""
+    search_dirs = [Path.cwd(), Path.cwd() / "Anas-exp"]
+    try:
+        file_dir = Path(__file__).resolve().parents[2]  # Anas-exp root
+        search_dirs.extend([file_dir, file_dir.parent / "Anas-exp"])
+    except Exception:
+        pass
+    for root in search_dirs:
+        candidate = root / "outputs" / "research" / "history_matching_iteration_4" / "tables" / "selected_scenarios_v4.csv"
+        if candidate.exists():
+            return candidate
+    return DEFAULT_RESEARCH_SCENARIO_PATH
+
+
 def load_production_scenarios(
     source_path: Optional[Path] = None,
     strategy: str = "Strategy A: Ten Best Matches",
@@ -88,7 +103,7 @@ def load_production_scenarios(
     verified research scenario artifact.
     """
     if source_path is None:
-        source_path = DEFAULT_RESEARCH_SCENARIO_PATH
+        source_path = resolve_default_research_scenario_path()
         
     if not source_path.exists():
         raise FileNotFoundError(f"Research scenario artifact not found at: {source_path}")

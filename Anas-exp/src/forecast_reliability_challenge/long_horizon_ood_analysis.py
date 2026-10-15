@@ -38,10 +38,21 @@ from ensemble.run_horizon_adaptive_stacking_experiment import (
     RS_SOLUTION,
 )
 
-OUTPUT_TABLE_DIR = Path("outputs/research/forecast_reliability_challenge/tables")
+def _resolve_rel(rel_str: str) -> Path:
+    candidates = [
+        Path(rel_str),
+        Path("Anas-exp") / rel_str,
+        Path(__file__).resolve().parent.parent.parent / rel_str,
+    ]
+    for c in candidates:
+        if c.exists():
+            return c
+    return Path(__file__).resolve().parent.parent.parent / rel_str
+
+OUTPUT_TABLE_DIR = _resolve_rel("outputs/research/forecast_reliability_challenge/tables")
 OUTPUT_TABLE_DIR.mkdir(parents=True, exist_ok=True)
 
-CONFIG_PATH = Path("src/ensemble/locked_ensemble_config.json")
+CONFIG_PATH = _resolve_rel("src/ensemble/locked_ensemble_config.json")
 with open(CONFIG_PATH) as f:
     LOCKED_CONFIG = json.load(f)
 LOCKED_WEIGHTS = LOCKED_CONFIG["weights"]

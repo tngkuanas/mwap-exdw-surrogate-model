@@ -16,9 +16,23 @@ from ensemble.submission_pipeline import (
 )
 
 
+def _resolve_test_file(rel_path: str) -> Path:
+    """Resolves test artifacts dynamically regardless of current working directory."""
+    candidates = [
+        Path(rel_path),
+        Path("Anas-exp") / rel_path,
+        Path(__file__).resolve().parent.parent / rel_path,
+        Path(__file__).resolve().parent.parent.parent / rel_path,
+    ]
+    for c in candidates:
+        if c.exists():
+            return c
+    return Path(rel_path)
+
+
 def test_locked_config_integrity():
-    config_path = Path("src/ensemble/locked_ensemble_config.json")
-    assert config_path.exists(), "locked_ensemble_config.json does not exist!"
+    config_path = _resolve_test_file("src/ensemble/locked_ensemble_config.json")
+    assert config_path.exists(), f"locked_ensemble_config.json does not exist at {config_path}!"
     
     with open(config_path) as f:
         config = json.load(f)
@@ -54,8 +68,8 @@ def test_locked_config_integrity():
 
 
 def test_official_deliverable_workbook_verification():
-    file_path = Path("outputs/submission/09_Template_Deliverable_Submission.xlsx")
-    assert file_path.exists(), "Official deliverable file missing!"
+    file_path = _resolve_test_file("outputs/submission/09_Template_Deliverable_Submission.xlsx")
+    assert file_path.exists(), f"Official deliverable file missing at {file_path}!"
     
     audit = validate_deliverable_workbook(file_path)
     assert audit["all_checks_passed"] is True
@@ -82,8 +96,8 @@ def test_official_deliverable_workbook_verification():
 
 
 def test_smoke_test_deliverable_verification():
-    file_path = Path("outputs/submission/smoke_test_dev_cases_1_to_10.xlsx")
-    assert file_path.exists(), "Smoke test deliverable file missing!"
+    file_path = _resolve_test_file("outputs/submission/smoke_test_dev_cases_1_to_10.xlsx")
+    assert file_path.exists(), f"Smoke test deliverable file missing at {file_path}!"
     
     audit = validate_deliverable_workbook(file_path)
     assert audit["all_checks_passed"] is True
@@ -104,8 +118,8 @@ def test_rate_reconciliation_exactness():
 
 
 def test_submission_audit_report_contents():
-    report_path = Path("outputs/submission/submission_audit_report.json")
-    assert report_path.exists(), "submission_audit_report.json missing!"
+    report_path = _resolve_test_file("outputs/submission/submission_audit_report.json")
+    assert report_path.exists(), f"submission_audit_report.json missing at {report_path}!"
     
     with open(report_path) as f:
         report = json.load(f)
@@ -187,7 +201,8 @@ def test_scenario_loader_contract():
 
 
 def test_submission_deliverable_consistency_with_research():
-    wb = openpyxl.load_workbook("outputs/submission/09_Template_Deliverable_Submission.xlsx", data_only=True)
+    deliverable_path = _resolve_test_file("outputs/submission/09_Template_Deliverable_Submission.xlsx")
+    wb = openpyxl.load_workbook(deliverable_path, data_only=True)
     
     # Case 1 should have 40 rows of forecast
     ws1 = wb["Case 1"]

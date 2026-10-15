@@ -47,7 +47,25 @@ def load_clean_simulation_quarterly() -> pd.DataFrame:
     Loads quarterly simulation records strictly for Cases 1 to 85.
     Guarantees no access or leak of Cases 86-100.
     """
-    sim_path = Path("../data/simulation_timeseries.parquet")
+    search_dirs = [Path.cwd(), Path.cwd().parent]
+    try:
+        proj_root = Path(__file__).resolve().parents[3]  # repo root
+        search_dirs.extend([proj_root, proj_root / "data"])
+    except Exception:
+        pass
+    sim_path = None
+    for root in search_dirs:
+        candidate = root / "data" / "simulation_timeseries.parquet"
+        if candidate.exists():
+            sim_path = candidate
+            break
+        candidate2 = root / "simulation_timeseries.parquet"
+        if candidate2.exists():
+            sim_path = candidate2
+            break
+    if sim_path is None:
+        sim_path = Path("../data/simulation_timeseries.parquet")
+        
     df = pd.read_parquet(sim_path)
     
     # Enforce strict case boundary

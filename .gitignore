@@ -3,6 +3,8 @@
 *.xls
 *.parquet
 *.pptx
+*.zip
+outputs/regeneration/
 
 # Python
 __pycache__/
