@@ -33,10 +33,15 @@ DEV_CASES = list(range(1, 86))
 TEST_CASES = list(range(86, 101))
 
 def resolve_shared_dir() -> Path:
-    """Finds the shared data directory dynamically."""
-    curr = Path.cwd()
-    for parent in [curr] + list(curr.parents):
-        p = parent / "data" / "shared"
+    """Finds the shared data directory dynamically and CWD-independently."""
+    search_roots = [Path.cwd()] + list(Path.cwd().parents)
+    try:
+        file_root = Path(__file__).resolve()
+        search_roots.extend([file_root] + list(file_root.parents))
+    except Exception:
+        pass
+    for root in search_roots:
+        p = root / "data" / "shared"
         if p.exists() and (p / "uncertainty_params.parquet").exists():
             return p
     raise FileNotFoundError("Could not resolve data/shared directory.")

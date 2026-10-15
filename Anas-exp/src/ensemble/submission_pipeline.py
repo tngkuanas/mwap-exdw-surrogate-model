@@ -21,7 +21,25 @@ EXPECTED_COLUMNS = [
     "Water production cumulative [STB]",
 ]
 
-TEMPLATE_PATH = Path("../TestCases/09 Template Deliverable.xlsx")
+def resolve_template_path() -> Path:
+    """Finds the official empty template workbook dynamically and CWD-independently."""
+    search_dirs = [Path.cwd(), Path.cwd().parent]
+    try:
+        proj_root = Path(__file__).resolve().parents[3]  # repo root
+        search_dirs.extend([proj_root, proj_root / "TestCases"])
+    except Exception:
+        pass
+    for root in search_dirs:
+        candidate = root / "TestCases" / "09 Template Deliverable.xlsx"
+        if candidate.exists():
+            return candidate
+        candidate2 = root / "09 Template Deliverable.xlsx"
+        if candidate2.exists():
+            return candidate2
+    return Path("../TestCases/09 Template Deliverable.xlsx")
+
+
+TEMPLATE_PATH = resolve_template_path()
 
 
 def inspect_template_spec(template_path: Path = TEMPLATE_PATH) -> Dict[str, Any]:

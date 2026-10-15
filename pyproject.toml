@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mwap-energy-analytics"
+version = "1.0.0"
+description = "ExxonMobil DataWorks Challenge 2026 — Production Forecasting & History Matching Solution"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy==2.5.3",
+    "pandas==3.0.6",
+    "scipy==1.18.1",
+    "scikit-learn==1.9.1",
+    "openpyxl==3.1.5",
+    "pyarrow==25.0.1",
+    "matplotlib==3.11.2",
+    "seaborn==0.13.2",
+    "pytest==9.1.1",
+]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = [
+    "Anas-exp/tests/test_submission_readiness.py",
+    "Anas-exp/tests/test_constraints_and_physics.py",
+    "Anas-exp/tests/test_learned_dynamics.py",
+]
+pythonpath = ["Anas-exp/src", "src"]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::FutureWarning",
+]

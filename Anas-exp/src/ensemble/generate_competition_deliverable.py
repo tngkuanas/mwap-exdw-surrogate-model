@@ -36,6 +36,7 @@ from ensemble.data import (
     VAL_CASES,
     PARAMS,
 )
+from ensemble.scenario_loader import load_production_scenarios
 from ensemble.run_horizon_adaptive_stacking_experiment import (
     load_clean_simulation_quarterly,
     build_case_quarterly_trajectories,
@@ -51,16 +52,40 @@ from ensemble.submission_pipeline import (
     format_deliverable_forecast,
     validate_deliverable_workbook,
     audit_rate_reconciliation,
+    resolve_template_path,
     TEMPLATE_PATH,
 )
 
-CONFIG_PATH_DEFAULT = Path("src/ensemble/locked_ensemble_config.json")
+def resolve_locked_config_path() -> Path:
+    """Finds the locked ensemble configuration dynamically and CWD-independently."""
+    search_dirs = [Path.cwd(), Path.cwd() / "Anas-exp"]
+    try:
+        file_dir = Path(__file__).resolve().parent  # src/ensemble
+        search_dirs.extend([file_dir, file_dir.parent.parent, file_dir.parent.parent / "Anas-exp"])
+    except Exception:
+        pass
+    for root in search_dirs:
+        candidate = root / "locked_ensemble_config.json"
+        if candidate.exists():
+            return candidate
+        candidate2 = root / "src" / "ensemble" / "locked_ensemble_config.json"
+        if candidate2.exists():
+            return candidate2
+        candidate3 = root / "Anas-exp" / "src" / "ensemble" / "locked_ensemble_config.json"
+        if candidate3.exists():
+            return candidate3
+    return Path("src/ensemble/locked_ensemble_config.json")
+
+
+CONFIG_PATH_DEFAULT = resolve_locked_config_path()
 OUTPUT_PATH_DEFAULT = Path("outputs/submission/09_Template_Deliverable_Submission.xlsx")
 SMOKE_TEST_PATH_DEFAULT = Path("outputs/submission/smoke_test_dev_cases_1_to_10.xlsx")
 
 
-def load_locked_config(config_path: Path = CONFIG_PATH_DEFAULT) -> Dict[str, Any]:
+def load_locked_config(config_path: Optional[Path] = None) -> Dict[str, Any]:
     """Loads and validates the locked ensemble configuration."""
+    if config_path is None or not Path(config_path).exists():
+        config_path = resolve_locked_config_path()
     with open(config_path, "r") as f:
         config = json.load(f)
     assert config["status"] == "FROZEN", "Configuration is not frozen!"
@@ -183,15 +208,24 @@ def generate_scenario_predictions(
 
 
 def run_pipeline(
-    config_path: Path = CONFIG_PATH_DEFAULT,
+    config_path: Optional[Path] = None,
     mode: str = "history_matched",
-    output_path: Path = OUTPUT_PATH_DEFAULT,
-    smoke_test_path: Path = SMOKE_TEST_PATH_DEFAULT,
-    template_path: Path = TEMPLATE_PATH,
+    output_path: Optional[Path] = None,
+    smoke_test_path: Optional[Path] = None,
+    template_path: Optional[Path] = None,
 ) -> Dict[str, Any]:
     """
     Executes the entire end-to-end competition generation and validation pipeline.
     """
+    if config_path is None or not Path(config_path).exists():
+        config_path = resolve_locked_config_path()
+    if template_path is None or not Path(template_path).exists():
+        template_path = resolve_template_path()
+    if output_path is None:
+        output_path = OUTPUT_PATH_DEFAULT
+    if smoke_test_path is None:
+        smoke_test_path = SMOKE_TEST_PATH_DEFAULT
+
     print("=" * 80)
     print("EXXONMOBIL DATAWORKS CHALLENGE 2026 — SUBMISSION PIPELINE")
     print(f"Locked Architecture: Blend_Phase_Specific_Simplex | Mode: {mode}")
@@ -245,145 +279,23 @@ def run_pipeline(
     # -------------------------------------------------------------------------
     print("\n[Pipeline Step 1] Generating Official Deliverable (Probabilistic Scenarios)...")
     
-    # Posterior parameter representations from history matching
-    # Case 1: P10 (Optimistic, 40Q)
-    # Case 2: P50 (Base Case, 80Q)
-    # Case 3: P90 (Pessimistic, 80Q)
-    # Cases 4-10: 7 representative posterior realization samples across uncertainty space (80Q)
-    scenario_specs = {
-        "Case 1": {
-            "name": "P10 (Optimistic Scenario)",
-            "horizon": 40,
-            "dates": dates_40q,
-            "params": pd.Series({
-                "Fault Transmissibility": 0.1420,
-                "Porosity Multiplier": 1.3477,
-                "Permeability Multiplier": 8.7500,
-                "Aquifer Pore Volume": 165.000,
-            }),
-            "sensitivity": 0.85,  # Slower decline rate -> higher recovery
-        },
-        "Case 2": {
-            "name": "P50 (Base Case Scenario)",
-            "horizon": 80,
-            "dates": dates_80q,
-            "params": pd.Series({
-                "Fault Transmissibility": 0.1078,
-                "Porosity Multiplier": 1.3242,
-                "Permeability Multiplier": 6.8400,
-                "Aquifer Pore Volume": 138.200,
-            }),
-            "sensitivity": 1.00,  # Base decline rate
-        },
-        "Case 3": {
-            "name": "P90 (Pessimistic Scenario)",
-            "horizon": 80,
-            "dates": dates_80q,
-            "params": pd.Series({
-                "Fault Transmissibility": 0.0678,
-                "Porosity Multiplier": 1.2920,
-                "Permeability Multiplier": 4.8200,
-                "Aquifer Pore Volume": 105.000,
-            }),
-            "sensitivity": 1.18,  # Faster decline rate -> lower recovery
-        },
-        "Case 4": {
-            "name": "Posterior Sample 1 (P20)",
-            "horizon": 80,
-            "dates": dates_80q,
-            "params": pd.Series({
-                "Fault Transmissibility": 0.1291,
-                "Porosity Multiplier": 1.3390,
-                "Permeability Multiplier": 7.9500,
-                "Aquifer Pore Volume": 155.000,
-            }),
-            "sensitivity": 0.90,
-        },
-        "Case 5": {
-            "name": "Posterior Sample 2 (P30)",
-            "horizon": 80,
-            "dates": dates_80q,
-            "params": pd.Series({
-                "Fault Transmissibility": 0.1205,
-                "Porosity Multiplier": 1.3320,
-                "Permeability Multiplier": 7.4200,
-                "Aquifer Pore Volume": 148.000,
-            }),
-            "sensitivity": 0.94,
-        },
-        "Case 6": {
-            "name": "Posterior Sample 3 (P40)",
-            "horizon": 80,
-            "dates": dates_80q,
-            "params": pd.Series({
-                "Fault Transmissibility": 0.1140,
-                "Porosity Multiplier": 1.3280,
-                "Permeability Multiplier": 7.1000,
-                "Aquifer Pore Volume": 142.000,
-            }),
-            "sensitivity": 0.97,
-        },
-        "Case 7": {
-            "name": "Posterior Sample 4 (P60)",
-            "horizon": 80,
-            "dates": dates_80q,
-            "params": pd.Series({
-                "Fault Transmissibility": 0.1010,
-                "Porosity Multiplier": 1.3190,
-                "Permeability Multiplier": 6.4500,
-                "Aquifer Pore Volume": 132.000,
-            }),
-            "sensitivity": 1.03,
-        },
-        "Case 8": {
-            "name": "Posterior Sample 5 (P70)",
-            "horizon": 80,
-            "dates": dates_80q,
-            "params": pd.Series({
-                "Fault Transmissibility": 0.0930,
-                "Porosity Multiplier": 1.3110,
-                "Permeability Multiplier": 5.9200,
-                "Aquifer Pore Volume": 124.000,
-            }),
-            "sensitivity": 1.07,
-        },
-        "Case 9": {
-            "name": "Posterior Sample 6 (P80)",
-            "horizon": 80,
-            "dates": dates_80q,
-            "params": pd.Series({
-                "Fault Transmissibility": 0.0820,
-                "Porosity Multiplier": 1.3030,
-                "Permeability Multiplier": 5.3800,
-                "Aquifer Pore Volume": 115.000,
-            }),
-            "sensitivity": 1.12,
-        },
-        "Case 10": {
-            "name": "Posterior Sample 7 (P85)",
-            "horizon": 80,
-            "dates": dates_80q,
-            "params": pd.Series({
-                "Fault Transmissibility": 0.0750,
-                "Porosity Multiplier": 1.2980,
-                "Permeability Multiplier": 5.0500,
-                "Aquifer Pore Volume": 110.000,
-            }),
-            "sensitivity": 1.15,
-        },
-    }
+    # Load validated production scenarios from research iteration 4 acceptance gate
+    scenarios = load_production_scenarios()
+    print(f"Loaded {len(scenarios)} validated production scenarios from research gate.")
     
     official_predictions = {}
     official_audit_data = {}
     
-    for case_sheet, spec in scenario_specs.items():
+    for sc in scenarios:
+        case_sheet = sc.case_id
+        dates = dates_40q if sc.horizon_quarters == 40 else dates_80q
         df_pred, aud = generate_scenario_predictions(
             models=models,
             weights=weights,
             init_state=field_anchor,
-            params=spec["params"],
-            forecast_dates=spec["dates"],
-            decline_sensitivity=spec["sensitivity"],
+            params=sc.params,
+            forecast_dates=dates,
+            decline_sensitivity=sc.decline_sensitivity,  # strictly 1.0 un-skewed physics
         )
         official_predictions[case_sheet] = df_pred
         official_audit_data[case_sheet] = aud
@@ -392,11 +304,13 @@ def run_pipeline(
         r_rec_err_o = audit_rate_reconciliation(aud["qo_rate"], aud["cum_oil"], field_anchor["Qo"])
         r_rec_err_w = audit_rate_reconciliation(aud["qw_rate"], aud["cum_water"], field_anchor["Qw"])
         r_rec_err_g = audit_rate_reconciliation(aud["qg_rate"], aud["cum_gas"], field_anchor["Qg"])
-        assert max(r_rec_err_o, r_rec_err_w, r_rec_err_g) < 1e-6, (
+        case_recon_err = float(max(r_rec_err_o, r_rec_err_w, r_rec_err_g))
+        assert case_recon_err < 1e-6, (
             f"Rate reconciliation failed for {case_sheet}!"
         )
+        aud["recon_error"] = case_recon_err
         
-        print(f"  {case_sheet:8s} | {spec['name']:<28s} | Qtrs: {spec['horizon']:2d} | "
+        print(f"  {case_sheet:8s} | Cand {sc.candidate_id:3d} ({sc.target_role:<22s}) | Qtrs: {sc.horizon_quarters:2d} | "
               f"Oil Final: {df_pred['cum_oil_stb'].iloc[-1]:>12,.0f} STB | "
               f"Gas Final: {df_pred['cum_gas_mscf'].iloc[-1]:>12,.0f} MSCF | "
               f"Water Final: {df_pred['cum_water_stb'].iloc[-1]:>12,.0f} STB")
@@ -474,6 +388,12 @@ def run_pipeline(
     print(f"  Late-Horizon Tail Difference:         {tail_divergence_pct:>15.2f}%")
     print(f"  Tail Stabilization: Preserved (Exponential DCA anchoring prevents hyperbolic runaway).")
     
+    # Calculate actual maximum physical and reconciliation residuals
+    actual_rate_recon_max = float(max(aud["recon_error"] for aud in official_audit_data.values()))
+    actual_gor_residual_max = float(max(s["max_gor_residual"] for s in official_audit_summary["sheets"].values()))
+    print(f"  Rate Reconciliation Max Absolute Error: {actual_rate_recon_max:>15.2e}")
+    print(f"  Solution GOR Max Absolute Residual:     {actual_gor_residual_max:>15.2e}")
+    
     # Generate complete audit report
     audit_report = {
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
@@ -486,8 +406,20 @@ def run_pipeline(
             "average_quarter_days": 91.3125,
         },
         "locked_weights": weights,
-        "rate_reconciliation_max_error": 0.0,
-        "solution_gor_residual_max": 0.0,
+        "scenarios": [
+            {
+                "case_id": sc.case_id,
+                "candidate_id": sc.candidate_id,
+                "target_role": sc.target_role,
+                "horizon_quarters": sc.horizon_quarters,
+                "decline_sensitivity": sc.decline_sensitivity,
+                "parameters": sc.params.to_dict(),
+                "history_match_metrics": sc.history_match_metrics,
+            }
+            for sc in scenarios
+        ],
+        "rate_reconciliation_max_error": actual_rate_recon_max,
+        "solution_gor_residual_max": actual_gor_residual_max,
         "official_audit": official_audit_summary,
         "smoke_test_audit": smoke_audit_summary,
         "tail_stabilization_audit": {
@@ -498,7 +430,11 @@ def run_pipeline(
         },
     }
     
-    audit_report_path = Path("outputs/submission/submission_audit_report.json")
+    if output_path.name == "09_Template_Deliverable_Submission.xlsx":
+        audit_report_path = output_path.parent / "submission_audit_report.json"
+    else:
+        audit_report_path = output_path.parent / "regeneration_audit_report.json"
+    audit_report_path.parent.mkdir(parents=True, exist_ok=True)
     with open(audit_report_path, "w") as f:
         json.dump(audit_report, f, indent=2)
     print(f"\nComplete Audit Report saved to: {audit_report_path}")
