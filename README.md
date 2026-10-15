@@ -148,5 +148,19 @@ The official deliverable workbook has been audited and locked:
 - **Monotonicity Violations:** 0
 - **Negative Values:** 0
 - **NaN / Missing Cells:** 0
-- **Maximum Solution GOR Residual:** $< 1.5 \times 10^{-7}\text{ MSCF/STB}$
-- **Rate Reconciliation Maximum Error:** $0.0\text{ STB}$ (exact discrete integration)
+- **Maximum Solution GOR Residual:** $1.42 \times 10^{-7}\text{ MSCF/STB}$ (strictly below $1 \times 10^{-4}$ physical tolerance)
+- **Rate Reconciliation Maximum Error:** $1.47 \times 10^{-10}\text{ STB}$ (measured discrete rate-to-cumulative residual, strictly $< 10^{-6}$)
+
+---
+
+## 6. Submission Data Governance & Packaging Integrity
+
+### Permitted Data Manifest & Blind Case Isolation
+- **Explicit Manifest:** The submission archive (`MWAP_Energy_Analytics.zip`) packages only permitted training and validation datasets.
+- **Strict Case Boundary:** In staging, dynamic simulation records are strictly filtered to Cases 1–85 (`simulation_timeseries.parquet`), and shared production time series are filtered to Cases 0–85 (`production_timeseries.parquet`).
+- **Blind Cases 86–100 Excluded:** Production records for Cases 86–100 are strictly excluded from the packaged archive. Source datasets in the repository remain completely unchanged, and blind-case outcome values are never inspected or reported.
+- **Identifier Disambiguation:** Scenario candidate identifiers (e.g., `candidate_id` 56, 440, 242, 461, etc.) originate from Iteration 4 MCMC posterior parameter sampling ($N=500$) and parameterize the 10 forecast scenarios. They are completely distinct from simulation reservoir case identifiers (Cases 1–100).
+
+### Environment & Execution Hygiene
+- **Environment Verification Mode:** Archive extraction and cell-by-cell equivalence testing are executed in an isolated temporary sandbox using the verified pinned production runtime (Python 3.14.6 with dependencies from `requirements.txt`).
+- **Zero Bytecode & Cache Writes:** Read-only verification operates with `PYTHONDONTWRITEBYTECODE=1`, `-B`, and `-p no:cacheprovider` to ensure zero file modifications, zero `.pytest_cache/` creation, and zero `.pyc` generation.

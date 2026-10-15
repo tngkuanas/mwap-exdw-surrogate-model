@@ -29,6 +29,10 @@ import time
 from pathlib import Path
 from typing import Dict, Any, Tuple, List
 
+# Strict execution hygiene: disable bytecode caching
+sys.dont_write_bytecode = True
+os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
+
 # Ensure Anas-exp/src is on sys.path regardless of execution directory
 REPO_ROOT = Path(__file__).resolve().parent
 ANAS_EXP_SRC = REPO_ROOT / "Anas-exp" / "src"
@@ -96,11 +100,21 @@ def run_readonly_verification(deliverable_path: Path = OFFICIAL_DELIVERABLE_PATH
         print("[FAIL] Audit checks failed!")
         return False
         
-    # Run test_submission_readiness suite via pytest
-    print("\nRunning authorative submission test suite (test_submission_readiness.py)...")
+    # Run test_submission_readiness suite via pytest (strictly read-only: no cache, no bytecode)
+    print("\nRunning authoritative submission test suite (test_submission_readiness.py)...")
     test_file = REPO_ROOT / "Anas-exp" / "tests" / "test_submission_readiness.py"
-    cmd = [sys.executable, "-m", "pytest", str(test_file), "-q"]
-    res = subprocess.run(cmd, cwd=REPO_ROOT, capture_output=True, text=True)
+    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+    cmd = [
+        sys.executable,
+        "-B",
+        "-m",
+        "pytest",
+        str(test_file),
+        "-p",
+        "no:cacheprovider",
+        "-q",
+    ]
+    res = subprocess.run(cmd, cwd=REPO_ROOT, env=env, capture_output=True, text=True)
     
     if res.returncode == 0:
         print(res.stdout.strip())
@@ -203,8 +217,11 @@ def run_regeneration(output_path: Path = DEFAULT_REGEN_OUTPUT, force_overwrite: 
 def build_submission_archive(output_dir: Path = REPO_ROOT / "outputs" / "submission") -> Path:
     """
     Builds clean, self-contained {team_name}.zip archive using an explicit manifest
-    and an isolated staging directory.
+    and an isolated staging directory. Enforces permitted-data filtering for simulation
+    and production records (Cases 86-100 strictly excluded).
     """
+    import pandas as pd
+    
     print("=" * 80)
     print(f"BUILDING CLEAN SUBMISSION ARCHIVE: {TEAM_NAME}.zip")
     print("=" * 80)
@@ -221,15 +238,22 @@ def build_submission_archive(output_dir: Path = REPO_ROOT / "outputs" / "submiss
         ("DATA_CONTRACT.md", "DATA_CONTRACT.md"),
         ("DATA_DOCUMENTATION.md", "DATA_DOCUMENTATION.md"),
         ("TestCases/09 Template Deliverable.xlsx", "TestCases/09 Template Deliverable.xlsx"),
-        ("data", "data"),
+        # Explicit permitted static metadata and training inputs
+        ("data/cases_metadata.parquet", "data/cases_metadata.parquet"),
+        ("data/field_history.parquet", "data/field_history.parquet"),
+        ("data/shared/uncertainty_params.parquet", "data/shared/uncertainty_params.parquet"),
+        # Source code and test suite
         ("Anas-exp/src", "Anas-exp/src"),
         ("Anas-exp/tests", "Anas-exp/tests"),
+        # Research reports and governance documentation
         ("Anas-exp/RESEARCH_FOUNDATIONS.md", "Anas-exp/RESEARCH_FOUNDATIONS.md"),
         ("Anas-exp/RESEARCH_ITERATION_4_REPORT.md", "Anas-exp/RESEARCH_ITERATION_4_REPORT.md"),
         ("Anas-exp/PRODUCTION_INTEGRATION_REPORT.md", "Anas-exp/PRODUCTION_INTEGRATION_REPORT.md"),
         ("Anas-exp/FORECAST_RELIABILITY_CHALLENGE_REPORT.md", "Anas-exp/FORECAST_RELIABILITY_CHALLENGE_REPORT.md"),
+        # Verified Iteration 4 scenarios artifact
         ("Anas-exp/outputs/research/history_matching_iteration_4",
          "Anas-exp/outputs/research/history_matching_iteration_4"),
+        # Protected official competition deliverable and audit materials
         ("Anas-exp/outputs/submission/09_Template_Deliverable_Submission.xlsx",
          "Anas-exp/outputs/submission/09_Template_Deliverable_Submission.xlsx"),
         ("Anas-exp/outputs/submission/smoke_test_dev_cases_1_to_10.xlsx",
@@ -244,26 +268,18 @@ def build_submission_archive(output_dir: Path = REPO_ROOT / "outputs" / "submiss
          "Anas-exp/outputs/submission/seven_minute_video_link.txt"),
     ]
     
-    # Exclude pattern list
-    exclude_patterns = [
-        "*.pyc", "__pycache__", ".DS_Store", "*.venv*", ".pytest_cache",
-        "*.git*", "*mlflow.db*", "*backup_legacy*", "*test_regen*",
-        "03 Train Cases 1.xlsx", "04 Train Cases 2.xlsx", "05 Train Cases 3.xlsx",
-        "06 Train Cases 4.xlsx", "07  Validation Cases.xlsx", "08 Test Cases.xlsx",
-    ]
-    
     with tempfile.TemporaryDirectory() as staging_dir:
         staging_root = Path(staging_dir) / TEAM_NAME
         staging_root.mkdir(parents=True)
         print(f"Staging files in clean directory: {staging_root}...")
         
+        # 1. Process explicit manifest items (missing files are fatal)
         for src_rel, dest_rel in manifest_items:
             src_path = REPO_ROOT / src_rel
             dest_path = staging_root / dest_rel
             
             if not src_path.exists():
-                print(f"[WARNING] Manifest item not found: {src_path}")
-                continue
+                raise FileNotFoundError(f"FATAL: Required submission manifest item missing: {src_path}")
                 
             dest_path.parent.mkdir(parents=True, exist_ok=True)
             if src_path.is_dir():
@@ -277,7 +293,38 @@ def build_submission_archive(output_dir: Path = REPO_ROOT / "outputs" / "submiss
             else:
                 shutil.copy2(src_path, dest_path)
                 
-        # Clean any accidental junk in staging
+        # 2. In staging only, filter dynamic timeseries to permitted cases (Cases 86-100 excluded)
+        # Note: Original source datasets in REPO_ROOT remain completely untouched.
+        # Blind test case outcome values are never inspected or reported.
+        print("Staging permitted dynamic production datasets (Cases 86-100 excluded)...")
+        
+        sim_src = REPO_ROOT / "data" / "simulation_timeseries.parquet"
+        if not sim_src.exists():
+            raise FileNotFoundError(f"FATAL: Source simulation_timeseries missing: {sim_src}")
+        df_sim = pd.read_parquet(sim_src)
+        df_sim_filtered = df_sim[df_sim["case_id"] <= 85].copy()
+        assert int(df_sim_filtered["case_id"].max()) <= 85
+        assert not any(c in range(86, 101) for c in df_sim_filtered["case_id"].unique())
+        staging_sim = staging_root / "data" / "simulation_timeseries.parquet"
+        staging_sim.parent.mkdir(parents=True, exist_ok=True)
+        df_sim_filtered.to_parquet(staging_sim, index=False)
+        print(f"  [PERMITTED DATA] Filtered simulation_timeseries to Cases 1-{df_sim_filtered['case_id'].max()} "
+              f"({len(df_sim_filtered):,} rows; blind Cases 86-100 excluded).")
+        
+        prod_src = REPO_ROOT / "data" / "shared" / "production_timeseries.parquet"
+        if not prod_src.exists():
+            raise FileNotFoundError(f"FATAL: Source production_timeseries missing: {prod_src}")
+        df_prod = pd.read_parquet(prod_src)
+        df_prod_filtered = df_prod[df_prod["case_num"] <= 85].copy()
+        assert int(df_prod_filtered["case_num"].max()) <= 85
+        assert not any(c in range(86, 101) for c in df_prod_filtered["case_num"].unique())
+        staging_prod = staging_root / "data" / "shared" / "production_timeseries.parquet"
+        staging_prod.parent.mkdir(parents=True, exist_ok=True)
+        df_prod_filtered.to_parquet(staging_prod, index=False)
+        print(f"  [PERMITTED DATA] Filtered production_timeseries to Cases 0-{df_prod_filtered['case_num'].max()} "
+              f"({len(df_prod_filtered):,} rows; blind Cases 86-100 excluded).")
+        
+        # 3. Clean any accidental junk in staging
         for root, dirs, files in os.walk(staging_root):
             for d in list(dirs):
                 if d in ("__pycache__", ".pytest_cache"):
@@ -333,11 +380,58 @@ def verify_extracted_archive(zip_path: Path) -> bool:
             return False
         print("[PASS] Packaged deliverable SHA-256 equals authoritative checksum.")
         
-        # Run test suite from inside package
+        # Describe environment verification accurately
+        print(f"\nEnvironment Verification Mode:")
+        print(f"  Extraction tested in isolated sandbox using existing pinned production runtime:")
+        print(f"  Python Runtime: {sys.version.split()[0]} ({sys.executable})")
+        print(f"  Bytecode Generation: DISABLED (PYTHONDONTWRITEBYTECODE=1, -B)")
+        print(f"  Pytest Caching: DISABLED (-p no:cacheprovider)")
+        
+        # Check case isolation in extracted data
+        print("\nVerifying Case Isolation in Extracted Data (Cases 86-100 Exclusion)...")
+        ext_sim = pkg_root / "data" / "simulation_timeseries.parquet"
+        ext_prod = pkg_root / "data" / "shared" / "production_timeseries.parquet"
+        
+        import pandas as pd
+        if not ext_sim.exists() or not ext_prod.exists():
+            print(f"[FAIL] Required packaged parquet files missing: sim={ext_sim.exists()}, prod={ext_prod.exists()}")
+            return False
+            
+        df_sim = pd.read_parquet(ext_sim)
+        sim_cases = set(df_sim["case_id"].unique())
+        blind_sim_leak = sim_cases.intersection(set(range(86, 101)))
+        if blind_sim_leak:
+            print(f"[FAIL] Blind cases found in packaged simulation_timeseries: {blind_sim_leak}")
+            return False
+        assert max(sim_cases) <= 85
+        print(f"  simulation_timeseries: Cases 1-{max(sim_cases)} present ({len(sim_cases)} cases). Cases 86-100 excluded [PASS]")
+        
+        df_prod = pd.read_parquet(ext_prod)
+        prod_cases = set(df_prod["case_num"].unique())
+        blind_prod_leak = prod_cases.intersection(set(range(86, 101)))
+        if blind_prod_leak:
+            print(f"[FAIL] Blind cases found in packaged production_timeseries: {blind_prod_leak}")
+            return False
+        assert max(prod_cases) <= 85
+        print(f"  production_timeseries: Cases 0-{max(prod_cases)} present ({len(prod_cases)} cases). Cases 86-100 excluded [PASS]")
+        print("  Disambiguation: Scenario Candidate IDs (e.g. 440, 242, 461) are MCMC parameter draws, distinct from reservoir case IDs [PASS]")
+        
+        # Run test suite from inside package (no cache, no bytecode)
         print("\nExecuting test_submission_readiness inside extracted package...")
+        env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
         res = subprocess.run(
-            [sys.executable, "-m", "pytest", "Anas-exp/tests/test_submission_readiness.py", "-q"],
+            [
+                sys.executable,
+                "-B",
+                "-m",
+                "pytest",
+                "Anas-exp/tests/test_submission_readiness.py",
+                "-p",
+                "no:cacheprovider",
+                "-q",
+            ],
             cwd=pkg_root,
+            env=env,
             capture_output=True,
             text=True,
         )
@@ -354,6 +448,7 @@ def verify_extracted_archive(zip_path: Path) -> bool:
         print(f"\nTesting regeneration inside package to: {regen_path}...")
         regen_cmd = [
             sys.executable,
+            "-B",
             "run_submission.py",
             "--regenerate",
             "--output",
@@ -362,6 +457,7 @@ def verify_extracted_archive(zip_path: Path) -> bool:
         res_regen = subprocess.run(
             regen_cmd,
             cwd=pkg_root,
+            env=env,
             capture_output=True,
             text=True,
         )

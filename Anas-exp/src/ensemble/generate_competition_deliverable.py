@@ -304,9 +304,11 @@ def run_pipeline(
         r_rec_err_o = audit_rate_reconciliation(aud["qo_rate"], aud["cum_oil"], field_anchor["Qo"])
         r_rec_err_w = audit_rate_reconciliation(aud["qw_rate"], aud["cum_water"], field_anchor["Qw"])
         r_rec_err_g = audit_rate_reconciliation(aud["qg_rate"], aud["cum_gas"], field_anchor["Qg"])
-        assert max(r_rec_err_o, r_rec_err_w, r_rec_err_g) < 1e-6, (
+        case_recon_err = float(max(r_rec_err_o, r_rec_err_w, r_rec_err_g))
+        assert case_recon_err < 1e-6, (
             f"Rate reconciliation failed for {case_sheet}!"
         )
+        aud["recon_error"] = case_recon_err
         
         print(f"  {case_sheet:8s} | Cand {sc.candidate_id:3d} ({sc.target_role:<22s}) | Qtrs: {sc.horizon_quarters:2d} | "
               f"Oil Final: {df_pred['cum_oil_stb'].iloc[-1]:>12,.0f} STB | "
@@ -386,6 +388,12 @@ def run_pipeline(
     print(f"  Late-Horizon Tail Difference:         {tail_divergence_pct:>15.2f}%")
     print(f"  Tail Stabilization: Preserved (Exponential DCA anchoring prevents hyperbolic runaway).")
     
+    # Calculate actual maximum physical and reconciliation residuals
+    actual_rate_recon_max = float(max(aud["recon_error"] for aud in official_audit_data.values()))
+    actual_gor_residual_max = float(max(s["max_gor_residual"] for s in official_audit_summary["sheets"].values()))
+    print(f"  Rate Reconciliation Max Absolute Error: {actual_rate_recon_max:>15.2e}")
+    print(f"  Solution GOR Max Absolute Residual:     {actual_gor_residual_max:>15.2e}")
+    
     # Generate complete audit report
     audit_report = {
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
@@ -410,8 +418,8 @@ def run_pipeline(
             }
             for sc in scenarios
         ],
-        "rate_reconciliation_max_error": 0.0,
-        "solution_gor_residual_max": 0.0,
+        "rate_reconciliation_max_error": actual_rate_recon_max,
+        "solution_gor_residual_max": actual_gor_residual_max,
         "official_audit": official_audit_summary,
         "smoke_test_audit": smoke_audit_summary,
         "tail_stabilization_audit": {

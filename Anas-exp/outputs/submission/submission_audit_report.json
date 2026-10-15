@@ -254,8 +254,8 @@
       }
     }
   ],
-  "rate_reconciliation_max_error": 0.0,
-  "solution_gor_residual_max": 0.0,
+  "rate_reconciliation_max_error": 1.4733814168721437e-10,
+  "solution_gor_residual_max": 1.423207512951663e-07,
   "official_audit": {
     "file_path": "outputs/submission/09_Template_Deliverable_Submission.xlsx",
     "total_sheets": 10,
