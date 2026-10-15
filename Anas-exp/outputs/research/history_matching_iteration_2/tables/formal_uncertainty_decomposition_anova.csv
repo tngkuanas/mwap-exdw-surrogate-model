@@ -1,0 +1,4 @@
+uncertainty_component,p10_eur_stb,p50_eur_stb,p90_eur_stb,spread_stb,p10_p90_spread_stb,variance_share_pct,description
+Geological Parameter Uncertainty (Simplex Stack Full Posterior),51191299.5927155,51168685.363147914,51135299.19243672,198994.995500803,56000.400278784335,0.0033158331837017593,Uncertainty in EUR across all MCMC parameter samples under the frozen Simplex blend.
+Structural Forecasting Model Uncertainty (Across 5 Architectures),62162390.0967482,51823103.35242128,47514359.45274199,14648030.644006215,14648030.644006215,99.98943838558674,"Uncertainty in EUR across Exponential DCA, Hyperbolic DCA, ExtraTrees, Hybrid, and Simplex."
+Parameter-Model Interaction,,,,,,0.007245781229556519,Differential sensitivity of specific decline models to geological parameters.

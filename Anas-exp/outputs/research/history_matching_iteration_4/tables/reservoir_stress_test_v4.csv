@@ -1,0 +1,7 @@
+test_number,test_name,physical_requirement,candidates_evaluated,candidates_passing,pass_rate_pct,key_metric_value,verdict
+1,Water Cut Monotonicity & Bounds,"fw(t) in [0, 1], non-decreasing/plateau, fw(term) <= 0.98",600,600,100.0,Terminal fw mean: 0.945 (max: 0.946),PASS
+2,Oil Production Rate Decline Monotonicity,dqo/dt <= 0 after peak (no unphysical spontaneous surges),600,600,100.0,Max surge rate: -3.619 STBD,PASS
+3,Aquifer & Waterflood Influx Balance,"Water injection (~9,326 STBD) + net aquifer voidage <= 15% AqPV",600,540,90.0,Net aquifer depletion: mean=10.76% (max: 26.93%),WARN
+4,ExtraTrees Rate Feature Bounds & Ensemble Safeguard,"Forecast rates within training rate envelope, DCA stabilizes extrapolation",600,0,0.0,Terminal Qo mean: 807.7 STBD (train max: 15567.2),WARN
+5,Volumetric OOIP & Recovery Factor Bounds,30-Year Recovery Factor strictly within 25% - 35% of OOIP (153.5 MMSTB),600,600,100.0,RF mean: 33.33% (range: 33.23% - 33.38%),PASS
+6,DCA Hyperbolic Decline Tail Sensitivity,Terminal exponential switch sensitivity < 2.5% total EUR,600,600,100.0,"Mean tail sensitivity: 443,178 STB (0.87%)",PASS

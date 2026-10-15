@@ -1,0 +1,5 @@
+parameter,physical_bounds,inference_bounds,observed_cases_1_85,inference_within_physical,observed_within_inference
+Fault_Transmissibility,"[0.0001, 1.0]","[0.04, 0.15]","[0.0501, 0.1500]",True,True
+Porosity_Multiplier,"[0.7, 1.5]","[0.8, 1.5]","[0.8012, 1.4940]",True,True
+Permeability_Multiplier,"[0.2, 10.0]","[0.5, 10.0]","[0.5375, 9.7845]",True,True
+Aquifer_Pore_Volume,"[10.0, 250.0]","[50.0, 200.0]","[53.9529, 199.8352]",True,True

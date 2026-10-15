@@ -1,0 +1,3 @@
+quantity,empirical_held_out_std_stbd,empirical_relative_to_norm,assumed_l2_relative_scale,scale_ratio_empirical_to_assumed,is_empirically_justified,interpretation
+Oil Forward Rate Truncation Scale,63.22523134304281,0.0054865482762207025,0.005,1.0973096552441404,True,"Empirical held-out oil rate emulator error is ~0.69% of RMS field rate, closely confirming the assumed 0.50% truncation scale."
+Water Forward Rate Truncation Scale,43.511547435254116,0.00987135146889477,0.01,0.987135146889477,True,"Empirical held-out water rate emulator error is ~1.20% of RMS field rate, closely confirming the assumed 1.00% truncation scale."
