@@ -36,6 +36,7 @@ from ensemble.data import (
     VAL_CASES,
     PARAMS,
 )
+from ensemble.scenario_loader import load_production_scenarios
 from ensemble.run_horizon_adaptive_stacking_experiment import (
     load_clean_simulation_quarterly,
     build_case_quarterly_trajectories,
@@ -245,145 +246,23 @@ def run_pipeline(
     # -------------------------------------------------------------------------
     print("\n[Pipeline Step 1] Generating Official Deliverable (Probabilistic Scenarios)...")
     
-    # Posterior parameter representations from history matching
-    # Case 1: P10 (Optimistic, 40Q)
-    # Case 2: P50 (Base Case, 80Q)
-    # Case 3: P90 (Pessimistic, 80Q)
-    # Cases 4-10: 7 representative posterior realization samples across uncertainty space (80Q)
-    scenario_specs = {
-        "Case 1": {
-            "name": "P10 (Optimistic Scenario)",
-            "horizon": 40,
-            "dates": dates_40q,
-            "params": pd.Series({
-                "Fault Transmissibility": 0.1420,
-                "Porosity Multiplier": 1.3477,
-                "Permeability Multiplier": 8.7500,
-                "Aquifer Pore Volume": 165.000,
-            }),
-            "sensitivity": 0.85,  # Slower decline rate -> higher recovery
-        },
-        "Case 2": {
-            "name": "P50 (Base Case Scenario)",
-            "horizon": 80,
-            "dates": dates_80q,
-            "params": pd.Series({
-                "Fault Transmissibility": 0.1078,
-                "Porosity Multiplier": 1.3242,
-                "Permeability Multiplier": 6.8400,
-                "Aquifer Pore Volume": 138.200,
-            }),
-            "sensitivity": 1.00,  # Base decline rate
-        },
-        "Case 3": {
-            "name": "P90 (Pessimistic Scenario)",
-            "horizon": 80,
-            "dates": dates_80q,
-            "params": pd.Series({
-                "Fault Transmissibility": 0.0678,
-                "Porosity Multiplier": 1.2920,
-                "Permeability Multiplier": 4.8200,
-                "Aquifer Pore Volume": 105.000,
-            }),
-            "sensitivity": 1.18,  # Faster decline rate -> lower recovery
-        },
-        "Case 4": {
-            "name": "Posterior Sample 1 (P20)",
-            "horizon": 80,
-            "dates": dates_80q,
-            "params": pd.Series({
-                "Fault Transmissibility": 0.1291,
-                "Porosity Multiplier": 1.3390,
-                "Permeability Multiplier": 7.9500,
-                "Aquifer Pore Volume": 155.000,
-            }),
-            "sensitivity": 0.90,
-        },
-        "Case 5": {
-            "name": "Posterior Sample 2 (P30)",
-            "horizon": 80,
-            "dates": dates_80q,
-            "params": pd.Series({
-                "Fault Transmissibility": 0.1205,
-                "Porosity Multiplier": 1.3320,
-                "Permeability Multiplier": 7.4200,
-                "Aquifer Pore Volume": 148.000,
-            }),
-            "sensitivity": 0.94,
-        },
-        "Case 6": {
-            "name": "Posterior Sample 3 (P40)",
-            "horizon": 80,
-            "dates": dates_80q,
-            "params": pd.Series({
-                "Fault Transmissibility": 0.1140,
-                "Porosity Multiplier": 1.3280,
-                "Permeability Multiplier": 7.1000,
-                "Aquifer Pore Volume": 142.000,
-            }),
-            "sensitivity": 0.97,
-        },
-        "Case 7": {
-            "name": "Posterior Sample 4 (P60)",
-            "horizon": 80,
-            "dates": dates_80q,
-            "params": pd.Series({
-                "Fault Transmissibility": 0.1010,
-                "Porosity Multiplier": 1.3190,
-                "Permeability Multiplier": 6.4500,
-                "Aquifer Pore Volume": 132.000,
-            }),
-            "sensitivity": 1.03,
-        },
-        "Case 8": {
-            "name": "Posterior Sample 5 (P70)",
-            "horizon": 80,
-            "dates": dates_80q,
-            "params": pd.Series({
-                "Fault Transmissibility": 0.0930,
-                "Porosity Multiplier": 1.3110,
-                "Permeability Multiplier": 5.9200,
-                "Aquifer Pore Volume": 124.000,
-            }),
-            "sensitivity": 1.07,
-        },
-        "Case 9": {
-            "name": "Posterior Sample 6 (P80)",
-            "horizon": 80,
-            "dates": dates_80q,
-            "params": pd.Series({
-                "Fault Transmissibility": 0.0820,
-                "Porosity Multiplier": 1.3030,
-                "Permeability Multiplier": 5.3800,
-                "Aquifer Pore Volume": 115.000,
-            }),
-            "sensitivity": 1.12,
-        },
-        "Case 10": {
-            "name": "Posterior Sample 7 (P85)",
-            "horizon": 80,
-            "dates": dates_80q,
-            "params": pd.Series({
-                "Fault Transmissibility": 0.0750,
-                "Porosity Multiplier": 1.2980,
-                "Permeability Multiplier": 5.0500,
-                "Aquifer Pore Volume": 110.000,
-            }),
-            "sensitivity": 1.15,
-        },
-    }
+    # Load validated production scenarios from research iteration 4 acceptance gate
+    scenarios = load_production_scenarios()
+    print(f"Loaded {len(scenarios)} validated production scenarios from research gate.")
     
     official_predictions = {}
     official_audit_data = {}
     
-    for case_sheet, spec in scenario_specs.items():
+    for sc in scenarios:
+        case_sheet = sc.case_id
+        dates = dates_40q if sc.horizon_quarters == 40 else dates_80q
         df_pred, aud = generate_scenario_predictions(
             models=models,
             weights=weights,
             init_state=field_anchor,
-            params=spec["params"],
-            forecast_dates=spec["dates"],
-            decline_sensitivity=spec["sensitivity"],
+            params=sc.params,
+            forecast_dates=dates,
+            decline_sensitivity=sc.decline_sensitivity,  # strictly 1.0 un-skewed physics
         )
         official_predictions[case_sheet] = df_pred
         official_audit_data[case_sheet] = aud
@@ -396,7 +275,7 @@ def run_pipeline(
             f"Rate reconciliation failed for {case_sheet}!"
         )
         
-        print(f"  {case_sheet:8s} | {spec['name']:<28s} | Qtrs: {spec['horizon']:2d} | "
+        print(f"  {case_sheet:8s} | Cand {sc.candidate_id:3d} ({sc.target_role:<22s}) | Qtrs: {sc.horizon_quarters:2d} | "
               f"Oil Final: {df_pred['cum_oil_stb'].iloc[-1]:>12,.0f} STB | "
               f"Gas Final: {df_pred['cum_gas_mscf'].iloc[-1]:>12,.0f} MSCF | "
               f"Water Final: {df_pred['cum_water_stb'].iloc[-1]:>12,.0f} STB")
@@ -486,6 +365,18 @@ def run_pipeline(
             "average_quarter_days": 91.3125,
         },
         "locked_weights": weights,
+        "scenarios": [
+            {
+                "case_id": sc.case_id,
+                "candidate_id": sc.candidate_id,
+                "target_role": sc.target_role,
+                "horizon_quarters": sc.horizon_quarters,
+                "decline_sensitivity": sc.decline_sensitivity,
+                "parameters": sc.params.to_dict(),
+                "history_match_metrics": sc.history_match_metrics,
+            }
+            for sc in scenarios
+        ],
         "rate_reconciliation_max_error": 0.0,
         "solution_gor_residual_max": 0.0,
         "official_audit": official_audit_summary,
