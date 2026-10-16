@@ -27,7 +27,7 @@ PARAMETER_BOUNDS = {
 
 # Submission sheet requirements
 HORIZON_SPEC = {
-    "Case 1": 40,   # 10 years (through 2018-01-01)
+    "Case 1": 80,   # 20 years (through 2028-01-01)
     "Case 2": 80,   # 20 years (through 2028-01-01)
     "Case 3": 80,
     "Case 4": 80,

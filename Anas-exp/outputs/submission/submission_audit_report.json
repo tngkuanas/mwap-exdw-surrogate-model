@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-11 15:34:06",
+  "timestamp": "2026-10-16 11:53:50",
   "model_architecture": "Blend_Phase_Specific_Simplex",
   "status": "VERIFIED_SUBMISSION_READY",
   "official_deliverable": "outputs/submission/09_Template_Deliverable_Submission.xlsx",
@@ -27,7 +27,7 @@
       "case_id": "Case 1",
       "candidate_id": 56,
       "target_role": "Best Match Rank 1",
-      "horizon_quarters": 40,
+      "horizon_quarters": 80,
       "decline_sensitivity": 1.0,
       "parameters": {
         "Fault Transmissibility": 0.0894419003854032,
@@ -254,12 +254,12 @@
       }
     }
   ],
-  "rate_reconciliation_max_error": 1.4733814168721437e-10,
+  "rate_reconciliation_max_error": 1.4915713109076023e-10,
   "solution_gor_residual_max": 1.423207512951663e-07,
   "official_audit": {
     "file_path": "outputs/submission/09_Template_Deliverable_Submission.xlsx",
     "total_sheets": 10,
-    "total_cells_checked": 2280,
+    "total_cells_checked": 2400,
     "nan_count": 0,
     "negative_values_count": 0,
     "monotonicity_violations": 0,
@@ -267,19 +267,19 @@
     "all_checks_passed": true,
     "sheets": {
       "Case 1": {
-        "num_quarters": 40,
+        "num_quarters": 80,
         "start_date": "04/01/2008",
-        "end_date": "01/01/2018",
+        "end_date": "2028-01-01 00:00:00",
         "oil_cum_start": 38822789.07,
-        "oil_cum_final": 47650697.75,
+        "oil_cum_final": 51182471.05,
         "gas_cum_start": 14104014.04,
-        "gas_cum_final": 17311193.26,
+        "gas_cum_final": 18594286.5,
         "water_cum_start": 13550964.16,
-        "water_cum_final": 49486258.51,
+        "water_cum_final": 96155393.69,
         "oil_monotonic": true,
         "gas_monotonic": true,
         "water_monotonic": true,
-        "max_gor_residual": 7.234385235310725e-08
+        "max_gor_residual": 1.2464585613658485e-07
       },
       "Case 2": {
         "num_quarters": 80,
@@ -421,7 +421,7 @@
   "smoke_test_audit": {
     "file_path": "outputs/submission/smoke_test_dev_cases_1_to_10.xlsx",
     "total_sheets": 10,
-    "total_cells_checked": 2280,
+    "total_cells_checked": 2400,
     "nan_count": 0,
     "negative_values_count": 0,
     "monotonicity_violations": 0,
@@ -429,19 +429,19 @@
     "all_checks_passed": true,
     "sheets": {
       "Case 1": {
-        "num_quarters": 40,
+        "num_quarters": 80,
         "start_date": "04/01/2008",
-        "end_date": "01/01/2018",
+        "end_date": "2028-01-01 00:00:00",
         "oil_cum_start": 35556849.31,
-        "oil_cum_final": 43707248.2,
+        "oil_cum_final": 47135224.47,
         "gas_cum_start": 12914064.96,
-        "gas_cum_final": 15875104.87,
+        "gas_cum_final": 17120488.65,
         "water_cum_start": 15627772.47,
-        "water_cum_final": 50207593.73,
+        "water_cum_final": 95202624.28,
         "oil_monotonic": true,
         "gas_monotonic": true,
         "water_monotonic": true,
-        "max_gor_residual": 5.501054961554175e-08
+        "max_gor_residual": 1.2222441414522223e-07
       },
       "Case 2": {
         "num_quarters": 80,

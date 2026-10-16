@@ -61,10 +61,11 @@ def test_locked_config_integrity():
     # Physics constants
     assert config["physics"]["solution_gas_oil_ratio_rs_mscf_per_stb"] == RS_SOLUTION
     
-    # Horizons
-    assert config["forecast_horizons"]["Case 1"]["num_quarters"] == 40
-    for i in range(2, 11):
+    # Horizons: All 10 cases require 80 quarters (20 years through 2028-01-01)
+    for i in range(1, 11):
         assert config["forecast_horizons"][f"Case {i}"]["num_quarters"] == 80
+        assert config["forecast_horizons"][f"Case {i}"]["start_date"] == "2008-04-01"
+        assert config["forecast_horizons"][f"Case {i}"]["end_date"] == "2028-01-01"
 
 
 def test_official_deliverable_workbook_verification():
@@ -74,19 +75,14 @@ def test_official_deliverable_workbook_verification():
     audit = validate_deliverable_workbook(file_path)
     assert audit["all_checks_passed"] is True
     assert audit["total_sheets"] == 10
+    assert audit["total_cells_checked"] == 2400
     assert audit["nan_count"] == 0
     assert audit["negative_values_count"] == 0
     assert audit["monotonicity_violations"] == 0
     assert audit["gor_discrepancies"] == 0
     
-    # Check Case 1 horizon
-    assert audit["sheets"]["Case 1"]["num_quarters"] == 40
-    assert audit["sheets"]["Case 1"]["oil_monotonic"] is True
-    assert audit["sheets"]["Case 1"]["water_monotonic"] is True
-    assert audit["sheets"]["Case 1"]["gas_monotonic"] is True
-    
-    # Check Cases 2-10 horizons
-    for i in range(2, 11):
+    # Check Cases 1-10 horizons (all 80 quarters)
+    for i in range(1, 11):
         sheet_key = f"Case {i}"
         assert audit["sheets"][sheet_key]["num_quarters"] == 80
         assert audit["sheets"][sheet_key]["oil_monotonic"] is True
@@ -102,6 +98,7 @@ def test_smoke_test_deliverable_verification():
     audit = validate_deliverable_workbook(file_path)
     assert audit["all_checks_passed"] is True
     assert audit["total_sheets"] == 10
+    assert audit["total_cells_checked"] == 2400
     assert audit["nan_count"] == 0
     assert audit["negative_values_count"] == 0
     assert audit["monotonicity_violations"] == 0
@@ -134,6 +131,7 @@ def test_submission_audit_report_contents():
     assert len(report["scenarios"]) == 10
     for sc_info in report["scenarios"]:
         assert sc_info["decline_sensitivity"] == 1.0
+        assert sc_info["horizon_quarters"] == 80
 
 
 def test_scenario_loader_contract():
@@ -152,10 +150,7 @@ def test_scenario_loader_contract():
         assert sc.case_id == f"Case {idx + 1}"
         assert sc.candidate_id == expected_cands[idx]
         assert sc.decline_sensitivity == 1.0
-        if idx == 0:
-            assert sc.horizon_quarters == 40
-        else:
-            assert sc.horizon_quarters == 80
+        assert sc.horizon_quarters == 80
             
         for p_name, (low, high) in PARAMETER_BOUNDS.items():
             val = float(sc.params[p_name])
@@ -175,13 +170,28 @@ def test_scenario_loader_contract():
             case_id="Case 1",
             candidate_id=999,
             params=valid_params,
-            horizon_quarters=40,
+            horizon_quarters=80,
             selection_strategy="Test",
             target_role="Test",
             history_match_metrics={},
             research_source_artifact="test",
             provenance_commit="test",
             decline_sensitivity=0.85,
+        )
+        
+    # Must reject horizon != 80 quarters
+    with pytest.raises(ValueError, match="requires 80 quarters"):
+        ProductionScenarioConfig(
+            case_id="Case 1",
+            candidate_id=999,
+            params=valid_params,
+            horizon_quarters=40,
+            selection_strategy="Test",
+            target_role="Test",
+            history_match_metrics={},
+            research_source_artifact="test",
+            provenance_commit="test",
+            decline_sensitivity=1.0,
         )
         
     # Must reject out-of-bounds parameters
@@ -192,7 +202,7 @@ def test_scenario_loader_contract():
             case_id="Case 1",
             candidate_id=999,
             params=bad_params,
-            horizon_quarters=40,
+            horizon_quarters=80,
             selection_strategy="Test",
             target_role="Test",
             history_match_metrics={},
@@ -206,15 +216,18 @@ def test_submission_deliverable_consistency_with_research():
     deliverable_path = _resolve_test_file("outputs/submission/09_Template_Deliverable_Submission.xlsx")
     wb = openpyxl.load_workbook(deliverable_path, data_only=True)
     
-    # Case 1 should have 40 rows of forecast
+    # Case 1 should have 80 rows of forecast
     ws1 = wb["Case 1"]
     row_count_1 = sum(1 for row in ws1.iter_rows(min_row=2, max_col=1, values_only=True) if row[0] is not None)
-    assert row_count_1 == 40
-    # Terminal oil should be ~47.65 MMSTB (un-skewed physics, not 45.989 which was with 0.85 boost or cut)
-    final_oil_1 = ws1.cell(row=41, column=3).value
-    assert abs(final_oil_1 - 47650698.0) < 1000.0, f"Expected ~47.65 MMSTB, got {final_oil_1}"
+    assert row_count_1 == 80
+    # Quarter 40 oil must preserve exact legacy production value (~47.65 MMSTB)
+    q40_oil_1 = ws1.cell(row=41, column=3).value
+    assert abs(q40_oil_1 - 47650698.0) < 1000.0, f"Expected ~47.65 MMSTB at Q40, got {q40_oil_1}"
+    # Quarter 80 terminal oil forecast (~51.18 MMSTB)
+    final_oil_1 = ws1.cell(row=81, column=3).value
+    assert abs(final_oil_1 - 51182471.0) < 1000.0, f"Expected ~51.18 MMSTB at Q80, got {final_oil_1}"
     
-    # Case 2 should have 80 rows of forecast
+    # Case 2 should have 80 rows of forecast matching legacy (~51.17 MMSTB)
     ws2 = wb["Case 2"]
     row_count_2 = sum(1 for row in ws2.iter_rows(min_row=2, max_col=1, values_only=True) if row[0] is not None)
     assert row_count_2 == 80
@@ -225,7 +238,7 @@ def test_submission_deliverable_consistency_with_research():
 def test_deliverable_exact_forecast_dates_dimensions_and_finite_cells():
     """
     Validates exact sheet dimensions, column headers, forecast date sequences matching template,
-    and strict finiteness and non-negativity across all 2,280 numeric forecast cells.
+    and strict finiteness and non-negativity across all 2,400 numeric forecast cells.
     """
     from ensemble.submission_pipeline import resolve_template_path
     tmpl_path = resolve_template_path()
@@ -247,7 +260,7 @@ def test_deliverable_exact_forecast_dates_dimensions_and_finite_cells():
         rows_tmpl = list(ws_tmpl.iter_rows(values_only=True))
         rows_deliv = list(ws_deliv.iter_rows(values_only=True))
         
-        expected_rows = 41 if case_num == 1 else 81
+        expected_rows = 81
         assert len(rows_deliv) == expected_rows, f"{sheet_name} dimension error: {len(rows_deliv)} != {expected_rows}"
         assert len(rows_tmpl) == expected_rows, f"{sheet_name} template dimension error"
         
@@ -270,7 +283,7 @@ def test_deliverable_exact_forecast_dates_dimensions_and_finite_cells():
                 assert val >= 0.0, f"{sheet_name} row {r_idx} {c_name} is negative: {val}"
                 total_finite_numeric_cells += 1
                 
-    assert total_finite_numeric_cells == 2280, f"Expected 2280 finite cells, counted {total_finite_numeric_cells}"
+    assert total_finite_numeric_cells == 2400, f"Expected 2400 finite cells, counted {total_finite_numeric_cells}"
 
 
 def test_archive_case_isolation():
@@ -346,4 +359,64 @@ def test_archive_case_isolation():
         candidate_ids = [sc["candidate_id"] for sc in rep["scenarios"]]
         assert 440 in candidate_ids, "Candidate 440 must be recognized as valid MCMC scenario parameter draw"
         assert any(cid > 100 for cid in candidate_ids), "Candidate IDs > 100 must not be confused with reservoir case IDs"
+
+
+def test_saved_models_and_inference_equivalence():
+    """
+    Verifies that saved production model artifacts exist, load cleanly, conform to metadata
+    contract (Cases 1-85, cutoff 2008-01-01), and produce identical forecasts to the official deliverable.
+    """
+    from ensemble.model_artifacts import (
+        resolve_model_artifact_path,
+        resolve_model_metadata_path,
+        load_production_models,
+        run_inference_from_saved_models,
+    )
+    from ensemble.scenario_loader import load_production_scenarios
+    
+    model_pkl = resolve_model_artifact_path()
+    meta_json = resolve_model_metadata_path()
+    
+    assert model_pkl.exists(), f"Saved model artifact missing at {model_pkl}"
+    assert meta_json.exists(), f"Model metadata missing at {meta_json}"
+    
+    with open(meta_json) as f:
+        meta = json.load(f)
+        
+    assert meta["status"] == "FROZEN_TRAINED_PRODUCTION"
+    assert meta["model_architecture"] == "Blend_Phase_Specific_Simplex"
+    assert meta["training_configuration"]["num_training_cases"] <= 85
+    assert "2008-01-01" in str(meta["training_configuration"]["cutoff_date"])
+    assert "Cases 86-100" in meta["training_configuration"]["blind_cases_excluded"]
+    
+    loaded_models = load_production_models(model_pkl)
+    assert "Recursive_ExtraTrees" in loaded_models
+    assert "Learned_Exponential_DCA" in loaded_models
+    assert "Learned_Hyperbolic_DCA" in loaded_models
+    assert "Hybrid_Dynamic" in loaded_models
+    
+    scenarios = load_production_scenarios()
+    deliv_path = _resolve_test_file("outputs/submission/09_Template_Deliverable_Submission.xlsx")
+    assert deliv_path.exists(), f"Official deliverable missing at {deliv_path}"
+    
+    wb_deliv = openpyxl.load_workbook(deliv_path, data_only=True)
+    
+    for sc in scenarios:
+        inferred = run_inference_from_saved_models(loaded_models, sc)
+        ws = wb_deliv[sc.case_id]
+        
+        # Check Q40 and Q80 oil cumulatives (Excel stores values rounded to 2 decimal places)
+        q40_oil_expected = ws.cell(row=41, column=3).value
+        q80_oil_expected = ws.cell(row=81, column=3).value
+        
+        q40_oil_inferred = round(float(inferred["oil_cum"][39]), 2)
+        q80_oil_inferred = round(float(inferred["oil_cum"][79]), 2)
+        
+        assert abs(q40_oil_inferred - q40_oil_expected) < 1e-4, (
+            f"{sc.case_id} Q40 oil mismatch: {q40_oil_inferred} vs {q40_oil_expected}"
+        )
+        assert abs(q80_oil_inferred - q80_oil_expected) < 1e-4, (
+            f"{sc.case_id} Q80 oil mismatch: {q80_oil_inferred} vs {q80_oil_expected}"
+        )
+
 

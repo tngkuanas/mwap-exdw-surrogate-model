@@ -1,0 +1,203 @@
+{
+  "model_architecture": "Blend_Phase_Specific_Simplex",
+  "status": "FROZEN_TRAINED_PRODUCTION",
+  "description": "Fitted base models for 80-quarter (20-year) production forecasting across all 10 scenarios",
+  "artifact_file": "production_models.pkl",
+  "artifact_sha256": "81d3847ade1648da41471471165411b33ee5cf9af7203975cf877ae4f0782bf8",
+  "artifact_size_bytes": 2563603,
+  "training_configuration": {
+    "training_cases": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70
+    ],
+    "num_training_cases": 70,
+    "cutoff_date": "2008-01-01 00:00:00",
+    "temporal_boundary": "Strictly as-of 2008-01-01 (zero future leak)",
+    "blind_cases_excluded": "Cases 86-100 strictly excluded from all training and tuning"
+  },
+  "forecast_horizons": {
+    "all_cases": "Cases 1 through 10",
+    "num_quarters": 80,
+    "duration_years": 20.0,
+    "start_date": "2008-04-01",
+    "end_date": "2028-01-01",
+    "total_forecast_cells": 2400,
+    "total_forecast_dates": 800
+  },
+  "base_models": {
+    "Recursive_ExtraTrees": {
+      "class": "RecursiveTransitionForecaster",
+      "estimator": "ExtraTreesRegressor",
+      "features": [
+        "log_qo_k",
+        "log_qw_k",
+        "res_age",
+        "wor_k",
+        "fault",
+        "poro",
+        "perm",
+        "aq"
+      ],
+      "feature_ordering": [
+        "log_qo_k",
+        "log_qw_k",
+        "res_age",
+        "wor_k",
+        "fault",
+        "poro",
+        "perm",
+        "aq"
+      ],
+      "targets": [
+        "target_d_log_qo",
+        "target_d_qw"
+      ],
+      "hyperparameters": {
+        "n_estimators": 100,
+        "max_depth": 6,
+        "random_state": 42,
+        "n_jobs": -1
+      },
+      "random_state": 42
+    },
+    "Learned_Exponential_DCA": {
+      "class": "LearnedDCARateForecaster",
+      "decline_type": "exponential",
+      "features": [
+        "fault",
+        "poro",
+        "perm",
+        "aq",
+        "qo_0",
+        "qw_0",
+        "wor_0",
+        "res_age"
+      ],
+      "alpha_selection": "RidgeCV(alphas=np.logspace(-3, 3, 10))",
+      "target_D": "D_obs (-polyfit log oil rate)",
+      "target_water": "w_growth_obs (polyfit water rate)"
+    },
+    "Learned_Hyperbolic_DCA": {
+      "class": "LearnedDCARateForecaster",
+      "decline_type": "hyperbolic",
+      "b_hyperbolic": 0.35,
+      "features": [
+        "fault",
+        "poro",
+        "perm",
+        "aq",
+        "qo_0",
+        "qw_0",
+        "wor_0",
+        "res_age"
+      ],
+      "alpha_selection": "RidgeCV(alphas=np.logspace(-3, 3, 10))"
+    },
+    "Hybrid_Dynamic": {
+      "class": "HybridDynamicForecaster",
+      "switch_quarters": 12,
+      "components": [
+        "RecursiveTransitionForecaster(extratrees)",
+        "LearnedDCARateForecaster(exponential)"
+      ]
+    }
+  },
+  "locked_simplex_weights": {
+    "oil": {
+      "Recursive_ExtraTrees": 0.24046649121524644,
+      "Learned_Exponential_DCA": 0.6179022920123803,
+      "Learned_Hyperbolic_DCA": 0.0,
+      "Hybrid_Dynamic": 0.14163121677237328
+    },
+    "water": {
+      "Recursive_ExtraTrees": 0.49716965081213516,
+      "Learned_Exponential_DCA": 0.2514151745939324,
+      "Learned_Hyperbolic_DCA": 0.2514151745939323,
+      "Hybrid_Dynamic": 0.0
+    }
+  },
+  "physics_constraints": {
+    "solution_gas_oil_ratio_rs": 0.3633,
+    "average_quarter_days": 91.3125,
+    "non_negative_rates": true,
+    "monotonic_cumulatives": true,
+    "historical_anchor_preserved": true
+  },
+  "runtime_environment": {
+    "python_version": "3.14.6",
+    "dependencies": {
+      "scikit-learn": "1.9.1",
+      "numpy": "2.5.3",
+      "pandas": "3.0.6"
+    }
+  },
+  "saved_timestamp": "2026-10-16 03:53:03 UTC"
+}

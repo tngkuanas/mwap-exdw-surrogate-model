@@ -5,6 +5,17 @@
 *.pptx
 *.zip
 outputs/regeneration/
+dwc26 2/
+
+# Unignore official submission deliverable and distribution archives
+!outputs/submission/09_Template_Deliverable_Submission.xlsx
+!outputs/submission/smoke_test_dev_cases_1_to_10.xlsx
+!outputs/submission/MWAP_Energy_Analytics.zip
+!Anas-exp/outputs/submission/09_Template_Deliverable_Submission.xlsx
+!Anas-exp/outputs/submission/smoke_test_dev_cases_1_to_10.xlsx
+!Anas-exp/outputs/submission/MWAP_Energy_Analytics.zip
+!Anas-exp/outputs/legacy_archive/09_Template_Deliverable_Submission_legacy_40q_ce30ec18.xlsx
+!TestCases/09 Template Deliverable.xlsx
 
 # Python
 __pycache__/
