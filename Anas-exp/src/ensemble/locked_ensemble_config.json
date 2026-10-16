@@ -45,10 +45,10 @@
   },
   "forecast_horizons": {
     "Case 1": {
-      "num_quarters": 40,
-      "years": 10.0,
+      "num_quarters": 80,
+      "years": 20.0,
       "start_date": "2008-04-01",
-      "end_date": "2018-01-01"
+      "end_date": "2028-01-01"
     },
     "Case 2": {
       "num_quarters": 80,

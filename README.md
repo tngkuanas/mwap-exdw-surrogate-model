@@ -13,7 +13,7 @@ The production forecasting engine implements the locked **`Blend_Phase_Specific_
 ### Key Architectural Pillars:
 1. **Bayesian History Matching (Research Iteration 4):**
    - 10 representative reservoir realization scenarios selected from posterior parameter space using strict Likelihood-Ratio-Test and Simulation-Based Calibration (SBC) criteria.
-   - Candidate realizations: `[56, 440, 242, 461, 95, 286, 392, 119, 290, 144]` representing Case 1 (10-year, 40 quarters) and Cases 2–10 (20-year, 80 quarters).
+   - Candidate realizations: `[56, 440, 242, 461, 95, 286, 392, 119, 290, 144]` representing all 10 Cases across 80 quarterly forecast horizons (20-year duration from 2008-04-01 through 2028-01-01).
 2. **Phase-Specific Simplex Blending:**
    - **Oil Forecast:** 70% Recursive ExtraTrees + 30% Learned Exponential DCA (prevents unconstrained hyperbolic runaway on late-horizon tails).
    - **Water Forecast:** 50% Learned DCA + 50% Random Forest Regressor.
@@ -22,7 +22,7 @@ The production forecasting engine implements the locked **`Blend_Phase_Specific_
    - Non-negative rates ($q \ge 0$).
    - Strictly monotonic cumulative volumes ($Q_{k+1} \ge Q_k$).
    - Zero-deviation anchor preservation at January 1, 2008.
-   - Rate-to-cumulative reconciliation error $< 10^{-10}$.
+   - Rate-to-cumulative reconciliation error $< 10^{-10}\text{ STB}$.
 
 ---
 
@@ -37,19 +37,26 @@ pip install -r requirements.txt
 ```
 
 ### 1. Read-Only Verification (Fast, Non-Destructive)
-Verifies the official deliverable workbook, audits all 10 sheets and 2,280 numeric cells, confirms SHA-256 integrity, and runs the submission test suite:
+Verifies the official deliverable workbook, audits all 10 sheets and 2,400 numeric cells (800 forecast dates), confirms SHA-256 integrity, and runs the submission test suite:
 ```bash
 python run_submission.py --verify
 ```
 *Expected Output:* `VERIFICATION RESULT: ALL CHECKS PASSED (STATUS: VERIFIED_SUBMISSION_READY)`.
 
-### 2. Standalone Deliverable Regeneration
-Fits base models on permitted training cases ($t \le \text{2008-01-01}$) and regenerates the full forecast workbook into an isolated output directory without overwriting the protected baseline:
+### 2. Standalone Deliverable Fast Inference & Regeneration
+Runs fast inference directly from serialized production model artifacts ([`models/production_models.pkl`](models/production_models.pkl)) and regenerates the full forecast workbook into an isolated output directory without overwriting the protected baseline:
 ```bash
 python run_submission.py --regenerate
+# or equivalently:
+python run_submission.py --inference
 ```
 - Output location: `outputs/regeneration/09_Template_Deliverable_Regenerated.xlsx`
-- Verifies cell-by-cell numerical equivalence with the protected workbook (Maximum absolute difference across all 2,280 cells = `0.000000000000`).
+- Verifies cell-by-cell numerical equivalence with the protected workbook (Maximum absolute difference across all 2,400 cells = `0.000000000000`).
+
+To force full model retraining from scratch on permitted training data (Cases 1–70, $t \le \text{2008-01-01}$):
+```bash
+python run_submission.py --regenerate --retrain
+```
 
 ### 3. Run Automated Test Suite
 Pytest is pre-configured via `pyproject.toml` to automatically discover and path all production packages:
@@ -80,6 +87,10 @@ mwap-exdw-surrogate-model/
 ├── pyproject.toml                           # Package specification & pytest path configuration
 ├── run_submission.py                        # Authoritative single-command CLI interface
 │
+├── models/                                  # SERIALIZED PRODUCTION MODEL ARTIFACTS
+│   ├── production_models.pkl                # Trained base models (ExtraTrees, DCA Exp/Hyp, Hybrid)
+│   └── model_metadata.json                  # Training configuration, cutoff, hashes & feature contract
+│
 ├── Anas-exp/                                # PRODUCTION PIPELINE & VERIFIED RESEARCH
 │   ├── src/
 │   │   ├── ensemble/                        # Production forecasting pipeline & locked models
@@ -87,20 +98,22 @@ mwap-exdw-surrogate-model/
 │   │   │   ├── scenario_loader.py           # Loads validated Iteration 4 history-match scenarios
 │   │   │   ├── generate_competition_deliverable.py # End-to-end deliverable generation engine
 │   │   │   ├── submission_pipeline.py       # Template formatting & cell validation logic
+│   │   │   ├── model_artifacts.py           # Model serialization, loading, and fast inference
 │   │   │   └── data.py                      # Leak-free cross-validation & data loaders
 │   │   ├── history_matching_v4/             # Final Bayesian Acceptance Gate MCMC engine
 │   │   └── history_matching/                # Foundational inverse optimization & emulation
 │   ├── tests/                               # 33 unit test suites (readiness, physics, leakage)
-│   │   ├── test_submission_readiness.py     # 7 core submission delivery verification tests
+│   │   ├── test_submission_readiness.py     # Core submission delivery verification tests (80Q, 2400 cells)
 │   │   ├── test_constraints_and_physics.py  # GOR, monotonicity, and anchor invariance tests
 │   │   └── test_outer_reservoir_isolation.py# Leak-free cross-validation tracer tests
 │   └── outputs/
 │       ├── submission/
-│       │   ├── 09_Template_Deliverable_Submission.xlsx  # OFFICIAL DELIVERABLE WORKBOOK
+│       │   ├── 09_Template_Deliverable_Submission.xlsx  # OFFICIAL DELIVERABLE WORKBOOK (80Q, 2400 cells)
 │       │   ├── submission_audit_report.json # Complete programmatic audit report
 │       │   ├── methodology_presentation_outline.md # Documentation (Item 2) slide outline
 │       │   ├── power_bi_integration_guide.md # Dashboard (Item 3) data model & DAX guide
 │       │   └── seven_minute_video_link.txt  # Video link (Item 4) upload text template
+│       ├── legacy_archive/                  # Provenance archive of 40Q Case 1 deliverable (ce30ec18...)
 │       └── research/                        # Benchmark tables & scientific figures
 │
 ├── data/                                    # Clean processed Parquet datasets
@@ -112,7 +125,7 @@ mwap-exdw-surrogate-model/
 ├── TestCases/                               # Official challenge spreadsheets
 │   ├── 01 Introduction.xlsx                 # Parameter bounds & case definitions
 │   ├── 02 Field Production.xlsx             # Historical field production anchor data
-│   ├── 09 Template Deliverable.xlsx         # Empty submission template
+│   ├── 09 Template Deliverable.xlsx         # Empty submission template (80Q, revised)
 │   └── [03-08 Raw Spreadsheets]             # Raw training & test sets (Cases 86-100 strictly blind)
 │
 └── Exploratory & Historical Workspaces:
@@ -129,11 +142,11 @@ mwap-exdw-surrogate-model/
 
 | Submission Requirement | Specified Format | Current Status | Notes & Instructions |
 | :--- | :--- | :---: | :--- |
-| **1. Source Code & Models** | `{team_name}.zip`<br>(`MWAP_Energy_Analytics.zip`) | **READY** | Built via `python run_submission.py --build-archive`. Verified bit-for-bit identical from clean extraction (6.35 MB). |
+| **1. Source Code & Models** | `{team_name}.zip`<br>(`MWAP_Energy_Analytics.zip`) | **READY** | Built via `python run_submission.py --build-archive`. Verified bit-for-bit identical from clean extraction (~8.5 MB, includes saved models). |
 | **2. Documentation** | PowerPoint (`.pptx`) | **OUTLINE READY** | Complete slide-by-slide script and structure prepared in [`methodology_presentation_outline.md`](Anas-exp/outputs/submission/methodology_presentation_outline.md). Export to PowerPoint `.pptx` prior to submission. |
 | **3. Power BI Dashboard** | Power BI (`.pbix`) | **GUIDE READY** | Complete DAX measure library, data model schema, and visualization guide prepared in [`power_bi_integration_guide.md`](Anas-exp/outputs/submission/power_bi_integration_guide.md). Connect Power BI ($\le$ May 2026) to `09_Template_Deliverable_Submission.xlsx`. |
 | **4. Seven-Minute Video** | YouTube unlisted URL in `.txt` | **ACTION REQUIRED** | Text file template ready at [`seven_minute_video_link.txt`](Anas-exp/outputs/submission/seven_minute_video_link.txt). **Must paste final YouTube unlisted URL before portal submission.** |
-| **Official Deliverable** | `09 Template Deliverable.xlsx` | **READY** | Final populated workbook at [`09_Template_Deliverable_Submission.xlsx`](Anas-exp/outputs/submission/09_Template_Deliverable_Submission.xlsx). Verified SHA-256: `ce30ec18c5c22c842c8319803c89dcc6011b9e95ccb97be30caf2dd08dbfce7e`. |
+| **Official Deliverable** | `09 Template Deliverable.xlsx` | **READY** | Final populated workbook at [`09_Template_Deliverable_Submission.xlsx`](Anas-exp/outputs/submission/09_Template_Deliverable_Submission.xlsx). Verified SHA-256: `e413f3caad576bd215cda0a83dc6cfa79f64ad05664a030b1806716097562c97`. |
 
 ---
 
@@ -141,15 +154,16 @@ mwap-exdw-surrogate-model/
 
 The official deliverable workbook has been audited and locked:
 - **File:** `Anas-exp/outputs/submission/09_Template_Deliverable_Submission.xlsx`
-- **SHA-256 Checksum:** `ce30ec18c5c22c842c8319803c89dcc6011b9e95ccb97be30caf2dd08dbfce7e`
+- **SHA-256 Checksum:** `e413f3caad576bd215cda0a83dc6cfa79f64ad05664a030b1806716097562c97`
 - **Total Forecast Sheets:** 10 (Case 1 through Case 10)
-- **Total Forecast Horizons:** Case 1 = 40 quarters (10-year); Cases 2–10 = 80 quarters (20-year)
-- **Total Numeric Cells:** Exactly 2,280 numeric cells
+- **Total Forecast Horizons:** All 10 cases = 80 quarters (20-year, 2008-04-01 through 2028-01-01)
+- **Total Numeric Cells:** Exactly 2,400 numeric cells (800 forecast dates)
 - **Monotonicity Violations:** 0
 - **Negative Values:** 0
 - **NaN / Missing Cells:** 0
 - **Maximum Solution GOR Residual:** $1.42 \times 10^{-7}\text{ MSCF/STB}$ (strictly below $1 \times 10^{-4}$ physical tolerance)
-- **Rate Reconciliation Maximum Error:** $1.47 \times 10^{-10}\text{ STB}$ (measured discrete rate-to-cumulative residual, strictly $< 10^{-6}$)
+- **Rate Reconciliation Maximum Error:** $1.49 \times 10^{-10}\text{ STB}$ (measured discrete rate-to-cumulative residual, strictly $< 10^{-6}$)
+- **Legacy Provenance Checksum:** `ce30ec18c5c22c842c8319803c89dcc6011b9e95ccb97be30caf2dd08dbfce7e` (archived at `Anas-exp/outputs/legacy_archive/`)
 
 ---
 

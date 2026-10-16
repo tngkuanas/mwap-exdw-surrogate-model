@@ -127,7 +127,7 @@ def validate_deliverable_workbook(file_path: Path) -> Dict[str, Any]:
         header = [c for c in rows[0] if c is not None]
         assert header[:4] == EXPECTED_COLUMNS, f"Header mismatch in {sheet_name}: {header[:4]}"
         
-        expected_rows = 41 if sheet_name == "Case 1" else 81
+        expected_rows = 81
         assert len(rows) == expected_rows, (
             f"Row count mismatch in {sheet_name}: expected {expected_rows}, got {len(rows)}"
         )

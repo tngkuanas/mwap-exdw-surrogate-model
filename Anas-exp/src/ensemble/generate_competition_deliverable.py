@@ -21,10 +21,18 @@ Executes:
 """
 import argparse
 import json
+import os
 import shutil
+import sys
 import time
 from pathlib import Path
 from typing import Dict, List, Any, Tuple
+
+# Ensure Anas-exp/src is on sys.path
+_src_dir = Path(__file__).resolve().parents[1]
+if str(_src_dir) not in sys.path:
+    sys.path.insert(0, str(_src_dir))
+
 import numpy as np
 import pandas as pd
 import openpyxl
@@ -55,6 +63,12 @@ from ensemble.submission_pipeline import (
     resolve_template_path,
     TEMPLATE_PATH,
 )
+from ensemble.model_artifacts import (
+    load_production_models,
+    save_production_models,
+    resolve_model_artifact_path,
+    resolve_model_metadata_path,
+)
 
 def resolve_locked_config_path() -> Path:
     """Finds the locked ensemble configuration dynamically and CWD-independently."""
@@ -77,9 +91,24 @@ def resolve_locked_config_path() -> Path:
     return Path("src/ensemble/locked_ensemble_config.json")
 
 
+def resolve_official_deliverable_path() -> Path:
+    """Finds the official deliverable workbook path dynamically and CWD-independently."""
+    search_dirs = [Path.cwd(), Path.cwd() / "Anas-exp"]
+    try:
+        repo_root = Path(__file__).resolve().parents[3]
+        search_dirs.extend([repo_root, repo_root / "Anas-exp"])
+    except Exception:
+        pass
+    for root in search_dirs:
+        candidate = root / "Anas-exp" / "outputs" / "submission" / "09_Template_Deliverable_Submission.xlsx"
+        if candidate.parent.exists():
+            return candidate
+    return Path("Anas-exp/outputs/submission/09_Template_Deliverable_Submission.xlsx")
+
+
 CONFIG_PATH_DEFAULT = resolve_locked_config_path()
-OUTPUT_PATH_DEFAULT = Path("outputs/submission/09_Template_Deliverable_Submission.xlsx")
-SMOKE_TEST_PATH_DEFAULT = Path("outputs/submission/smoke_test_dev_cases_1_to_10.xlsx")
+OUTPUT_PATH_DEFAULT = resolve_official_deliverable_path()
+SMOKE_TEST_PATH_DEFAULT = OUTPUT_PATH_DEFAULT.parent / "smoke_test_dev_cases_1_to_10.xlsx"
 
 
 def load_locked_config(config_path: Optional[Path] = None) -> Dict[str, Any]:
@@ -213,9 +242,12 @@ def run_pipeline(
     output_path: Optional[Path] = None,
     smoke_test_path: Optional[Path] = None,
     template_path: Optional[Path] = None,
+    retrain: bool = False,
+    model_path: Optional[Path] = None,
 ) -> Dict[str, Any]:
     """
     Executes the entire end-to-end competition generation and validation pipeline.
+    Supports fast inference from saved models or retraining from scratch.
     """
     if config_path is None or not Path(config_path).exists():
         config_path = resolve_locked_config_path()
@@ -265,13 +297,24 @@ def run_pipeline(
     print(f"  Gas Rate:         {field_anchor['qg']:>16,.2f} MSCF/d")
     print("-" * 80)
     
-    # Fit base models on permitted training cases (Cases 1-70)
-    models = fit_locked_base_models(case_dict, unc_df, TRAIN_CASES, inference_origin)
+    # Load saved models or fit on permitted training cases (Cases 1-70)
+    saved_model_file = model_path if model_path is not None else resolve_model_artifact_path()
+    if not retrain and saved_model_file.exists():
+        print(f"Loading verified production model artifacts from: {saved_model_file}...")
+        models = load_production_models(saved_model_file)
+        print("  All 4 base models loaded successfully (inference mode without retraining).")
+    else:
+        if retrain:
+            print("Retraining requested: fitting base models on permitted training cases...")
+        else:
+            print(f"Model artifact not found at {saved_model_file}; fitting base models...")
+        models = fit_locked_base_models(case_dict, unc_df, TRAIN_CASES, inference_origin)
+        art_path, meta_path = save_production_models(models, TRAIN_CASES, str(inference_origin))
+        print(f"  Fitted models saved to: {art_path}")
+        print(f"  Model metadata saved to: {meta_path}")
     
-    # Date grids
-    dates_40q = pd.date_range("2008-04-01", "2018-01-01", freq="QS")
+    # Authoritative 80-quarter date grid (2008-04-01 through 2028-01-01) for all 10 cases
     dates_80q = pd.date_range("2008-04-01", "2028-01-01", freq="QS")
-    assert len(dates_40q) == 40, f"Expected 40 quarters, got {len(dates_40q)}"
     assert len(dates_80q) == 80, f"Expected 80 quarters, got {len(dates_80q)}"
     
     # -------------------------------------------------------------------------
@@ -288,7 +331,8 @@ def run_pipeline(
     
     for sc in scenarios:
         case_sheet = sc.case_id
-        dates = dates_40q if sc.horizon_quarters == 40 else dates_80q
+        # All 10 cases now require full 80-quarter horizons (through 2028-01-01)
+        dates = dates_80q
         df_pred, aud = generate_scenario_predictions(
             models=models,
             weights=weights,
@@ -336,7 +380,7 @@ def run_pipeline(
         df_c = case_dict[case_id]
         last_row = df_c.iloc[-1]
         u_c = unc_df.loc[case_id]
-        h_dates = dates_40q if case_id == 1 else dates_80q
+        h_dates = dates_80q
         
         init_case = {
             "qo": float(last_row["oil_rate_stbd"]),
@@ -450,6 +494,8 @@ if __name__ == "__main__":
     parser.add_argument("--mode", type=str, default="history_matched")
     parser.add_argument("--output", type=Path, default=OUTPUT_PATH_DEFAULT)
     parser.add_argument("--smoke-output", type=Path, default=SMOKE_TEST_PATH_DEFAULT)
+    parser.add_argument("--retrain", action="store_true", help="Force retraining base models from scratch")
+    parser.add_argument("--model-path", type=Path, default=None, help="Explicit path to saved model artifact")
     args = parser.parse_args()
     
     run_pipeline(
@@ -457,4 +503,6 @@ if __name__ == "__main__":
         mode=args.mode,
         output_path=args.output,
         smoke_test_path=args.smoke_output,
+        retrain=args.retrain,
+        model_path=args.model_path,
     )

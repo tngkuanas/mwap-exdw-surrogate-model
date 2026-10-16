@@ -39,7 +39,8 @@ ANAS_EXP_SRC = REPO_ROOT / "Anas-exp" / "src"
 if str(ANAS_EXP_SRC) not in sys.path:
     sys.path.insert(0, str(ANAS_EXP_SRC))
 
-PROTECTED_SHA256 = "ce30ec18c5c22c842c8319803c89dcc6011b9e95ccb97be30caf2dd08dbfce7e"
+PROTECTED_SHA256 = "e413f3caad576bd215cda0a83dc6cfa79f64ad05664a030b1806716097562c97"
+LEGACY_SHA256 = "ce30ec18c5c22c842c8319803c89dcc6011b9e95ccb97be30caf2dd08dbfce7e"
 OFFICIAL_DELIVERABLE_REL = Path("Anas-exp/outputs/submission/09_Template_Deliverable_Submission.xlsx")
 OFFICIAL_DELIVERABLE_PATH = REPO_ROOT / OFFICIAL_DELIVERABLE_REL
 DEFAULT_REGEN_OUTPUT = REPO_ROOT / "outputs" / "regeneration" / "09_Template_Deliverable_Regenerated.xlsx"
@@ -90,7 +91,7 @@ def run_readonly_verification(deliverable_path: Path = OFFICIAL_DELIVERABLE_PATH
         
     print(f"\n[Audit Summary]")
     print(f"  Total Sheets Audited:       {audit['total_sheets']}")
-    print(f"  Total Cells Audited:        {audit['total_cells_checked']} (2,280 numeric + 800 dates)")
+    print(f"  Total Cells Audited:        {audit['total_cells_checked']} (2,400 numeric + 800 dates)")
     print(f"  NaN / Non-numeric Count:    {audit['nan_count']}")
     print(f"  Negative Values Count:      {audit['negative_values_count']}")
     print(f"  Monotonicity Violations:    {audit['monotonicity_violations']}")
@@ -131,13 +132,19 @@ def run_readonly_verification(deliverable_path: Path = OFFICIAL_DELIVERABLE_PATH
     return True
 
 
-def run_regeneration(output_path: Path = DEFAULT_REGEN_OUTPUT, force_overwrite: bool = False) -> bool:
+def run_regeneration(
+    output_path: Path = DEFAULT_REGEN_OUTPUT,
+    force_overwrite: bool = False,
+    retrain: bool = False,
+) -> bool:
     """
-    Executes model fitting and scenario forecasting to regenerate deliverable workbook.
+    Executes model inference (or retraining) and scenario forecasting to regenerate deliverable workbook.
     Writes strictly to a separate output path to preserve protected official deliverable.
     """
     print("=" * 80)
     print("EXXONMOBIL DATAWORKS CHALLENGE 2026 — DELIVERABLE REGENERATION")
+    mode_desc = "Retraining from permitted data (Cases 1-70)" if retrain else "Fast inference from saved models (models/production_models.pkl)"
+    print(f"Mode: {mode_desc}")
     print("=" * 80)
     
     # Safety guard: prevent accidental overwrite of protected workbook
@@ -160,6 +167,7 @@ def run_regeneration(output_path: Path = DEFAULT_REGEN_OUTPUT, force_overwrite: 
             output_path=output_path,
             smoke_test_path=smoke_regen,
             template_path=None,
+            retrain=retrain,
         )
     except Exception as e:
         print(f"[FAIL] Pipeline execution failed: {e}")
@@ -202,12 +210,12 @@ def run_regeneration(output_path: Path = DEFAULT_REGEN_OUTPUT, force_overwrite: 
                     mismatch_count += 1
                     print(f"[MISMATCH] {sheet} Row {r_idx} Col {col_idx}: orig={vo}, regen={vr}, diff={diff}")
                     
-    print(f"Total Numeric Cells Compared: {total_cells} / 2280")
+    print(f"Total Numeric Cells Compared: {total_cells} / 2400")
     print(f"Max Absolute Cell Difference: {max_abs_diff:.12f}")
     print(f"Cells with Difference > 1e-4: {mismatch_count}")
     
     if mismatch_count == 0 and max_abs_diff < 1e-4:
-        print("\n[SUCCESS] Exact mathematical equivalence confirmed across all 2,280 cells!")
+        print("\n[SUCCESS] Exact mathematical equivalence confirmed across all 2,400 cells!")
         return True
     else:
         print("\n[FAIL] Cell discrepancy detected between regenerated and official workbook!")
@@ -266,6 +274,9 @@ def build_submission_archive(output_dir: Path = REPO_ROOT / "outputs" / "submiss
          "Anas-exp/outputs/submission/power_bi_integration_guide.md"),
         ("Anas-exp/outputs/submission/seven_minute_video_link.txt",
          "Anas-exp/outputs/submission/seven_minute_video_link.txt"),
+        # Serialized production models and metadata
+        ("models/production_models.pkl", "models/production_models.pkl"),
+        ("models/model_metadata.json", "models/model_metadata.json"),
     ]
     
     with tempfile.TemporaryDirectory() as staging_dir:
@@ -443,6 +454,16 @@ def verify_extracted_archive(zip_path: Path) -> bool:
         print(res.stdout.strip())
         print("[PASS] Tests passed inside extracted package.")
         
+        # Check packaged model artifacts
+        print("\nVerifying Packaged Production Model Artifacts...")
+        ext_model = pkg_root / "models" / "production_models.pkl"
+        ext_meta = pkg_root / "models" / "model_metadata.json"
+        if not ext_model.exists() or not ext_meta.exists():
+            print(f"[FAIL] Required packaged model artifacts missing: model={ext_model.exists()}, meta={ext_meta.exists()}")
+            return False
+        model_size_mb = ext_model.stat().st_size / (1024 * 1024)
+        print(f"  production_models.pkl ({model_size_mb:.2f} MB) and model_metadata.json verified [PASS]")
+        
         # Test regeneration inside package to a separate file
         regen_path = pkg_root / "outputs" / "regeneration" / "test_fresh_extract_regen.xlsx"
         print(f"\nTesting regeneration inside package to: {regen_path}...")
@@ -491,6 +512,11 @@ def main():
         help="Safely regenerate deliverable workbook into an isolated output location.",
     )
     group.add_argument(
+        "--inference",
+        action="store_true",
+        help="Run fast inference from saved model artifacts to regenerate deliverable workbook.",
+    )
+    group.add_argument(
         "--build-archive",
         action="store_true",
         help="Build clean, self-contained MWAP_Energy_Analytics.zip submission archive.",
@@ -502,6 +528,11 @@ def main():
         help="Extract and verify a submission archive end-to-end in an isolated sandbox.",
     )
     
+    parser.add_argument(
+        "--retrain",
+        action="store_true",
+        help="Force retraining base models from permitted training data (Cases 1-70) during regeneration.",
+    )
     parser.add_argument(
         "--output",
         type=Path,
@@ -519,8 +550,12 @@ def main():
     if args.verify:
         success = run_readonly_verification()
         sys.exit(0 if success else 1)
-    elif args.regenerate:
-        success = run_regeneration(output_path=args.output, force_overwrite=args.force_overwrite_protected)
+    elif args.regenerate or args.inference:
+        success = run_regeneration(
+            output_path=args.output,
+            force_overwrite=args.force_overwrite_protected,
+            retrain=args.retrain,
+        )
         sys.exit(0 if success else 1)
     elif args.build_archive:
         zip_path = build_submission_archive()
