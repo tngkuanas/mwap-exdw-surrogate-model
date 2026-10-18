@@ -20,7 +20,7 @@ flowchart TD
     S5 --> S6["Stage 6: Reliability Challenges & Phase-Specific Gating<br><i>(Commits d121963 -> c74e3ac)</i>"]
     S6 --> S7["Stage 7: Geological Info-Value & Sensitivity<br><i>(Commits 3ba8912 -> 098899e)</i>"]
     S7 --> S8["Stage 8: Long-Horizon Science & Constrained Tails<br><i>(Commits 8354402 -> aca1717)</i>"]
-    S8 --> S9["Stage 9: Validation Repair & Protocol Resolution<br><i>(Commits fa425d7 -> 87d4a17)</i>"]
+    S8 --> S9["Stage 9: Validation Repair & Protocol Resolution<br><i>(Commits fa425d7 -> 87d4a17 / d6b9479)</i>"]
     S9 --> S10["Stage 10: Submission Packaging & 80Q Deliverable<br><i>(Commits 84535a5 -> 29caeec)</i>"]
 ```
 
@@ -98,7 +98,7 @@ The development trajectory of the MWAP forecasting engine spans ten distinct pha
     - **Oil Production:** ExtraTrees alone = `0.0482`, Exponential DCA alone = `0.0512`. Blended Oil Simplex = **`0.0369`** (a **$23.4\%$ error reduction** over ExtraTrees).
     - **Water Production:** ExtraTrees alone = `0.0412`, DCA alone = `0.0685`. Blended Water Simplex = **`0.0388`** (a **$5.8\%$ error reduction** over ExtraTrees).
 * **4. Corrections & Reversals:**
-  - Hyperbolic decline with $b = 0.35$ was assigned **$0.000000$ weight for oil** in the simplex regression. This was not because $b = 0.35$ diverges to infinite EUR—for any sub-unity exponent ($0 < b < 1$), the infinite integral converges ($Q_\infty = \frac{q_0}{(1-b)D_i} < \infty$). Rather, Exponential DCA ($0.62$) and Hybrid ($0.14$) already spanned the empirical oil decline curvature with lower variance. For water, Hyperbolic DCA remained active with weight $0.251415$.
+  - In the constrained simplex optimization, `Learned_Hyperbolic_DCA` received an optimal weight of exactly **`0.000000` for oil**, while for water it received a weight of **`0.251415`**. Sub-unity hyperbolic decline ($b=0.35$) analytically converges to finite recovery ($Q_\infty = \frac{q_0}{(1-b)D_i} < \infty$), so the zero oil weight was simply the empirical mathematical solution of the non-negative least squares fit over the training pool rather than an ad-hoc divergence penalty.
 * **5. Influence on Final Solution:** Established and locked the authoritative production baseline [`Blend_Phase_Specific_Simplex`](file:///Users/tengkuanas/Projects/mwap-exdw-surrogate-model/production/models.py#L42-L68):
   - **Oil Rate Weights:** ExtraTrees = `0.240000`, Exp DCA = `0.620000`, Hybrid = `0.140000`, Hyperbolic DCA = `0.000000`.
   - **Water Rate Weights:** ExtraTrees = `0.500000`, Exp DCA = `0.250000`, Hyperbolic DCA = `0.250000`, Hybrid = `0.000000`.
@@ -127,11 +127,11 @@ The development trajectory of the MWAP forecasting engine spans ten distinct pha
 
 ### Stage 5: Calibration Diagnostics, SBC & Scenario Selection (Iterations 3–4)
 * **Git Commits & Dates:** Commits `c421bab` (Oct 11, 2026) $\to$ `3dc43f3` (Oct 12, 2026).
-* **Workspaces & Authors:** `Anas-exp/src/history_matching_v3/`, `Anas-exp/src/history_matching_v4/`, `Anas-exp/RESEARCH_ITERATION_3_REPORT.md`, `Anas-exp/RESEARCH_ITERATION_4_REPORT.md`.
-* **1. Motivating Problem:** High-dimensional Bayesian inversion can yield miscalibrated posterior distributions if likelihood scaling does not match data-generating dispersion. The team needed formal calibration diagnostics, Markov Chain Monte Carlo (MCMC) convergence testing, and an objective scenario selection policy to choose the 10 official submitted cases.
+* **Workspaces & Authors:** `Anas-exp/src/history_matching_v3/`, `Anas-exp/src/history_matching_v4/`, `Anas-exp/RESEARCH_ITERATION_3_REPORT.md`, `Anas-exp/RESEARCH_ITERATION_4_REPORT.md`, `Anas-exp/outputs/research/history_matching_iteration_4/tables/sbc_coverage_comparison_v4.csv`.
+* **1. Motivating Problem:** High-dimensional Bayesian inversion can yield miscalibrated posterior distributions if likelihood scaling does not match data-generating dispersion. The team evaluated calibration diagnostics, Markov Chain Monte Carlo (MCMC) convergence testing, and an objective scenario selection policy to choose the 10 official submitted cases.
 * **2. Implementation:**
   - Executed 4 independent MCMC chains with over-dispersed initializations across 16,000 samples (12,000 post-burn-in). Monitored Gelman-Rubin convergence ($\hat{R}$) and Bulk Effective Sample Size ($\text{ESS}$).
-  - Evaluated Simulation-Based Calibration (SBC; Talts et al., 2018) across $N=100$ synthetic ground-truth trials using the surrogate's generative model.
+  - Evaluated Simulation-Based Calibration (SBC; Talts et al., 2018) across $N=100$ synthetic trials using the surrogate's generative model (`sbc_coverage_comparison_v4.csv`).
   - Benchmarked candidate scenario pools ($N \in \{80, 300, 600\}$) with $B=1,000$ block-bootstrap resamples.
   - Benchmarked three candidate selection policies (`RESEARCH_ITERATION_4_REPORT.md#L96-L115`):
     - **Strategy A (Ten Best Matches):** Top 10 realizations maximizing historical likelihood (MAP cohort).
@@ -139,10 +139,10 @@ The development trajectory of the MWAP forecasting engine spans ten distinct pha
     - **Strategy C (Quality Quantiles):** Filtered quantile sampling across accepted posterior draws.
 * **3. Experimental Evidence:**
   - **MCMC Convergence:** Achieved $\hat{R} \in [1.0004, 1.0164] < 1.05$ and $\text{ESS} \in [580, 792] > 400$ across all 4 parameters (`RESEARCH_ITERATION_1_REPORT.md#L21`).
-  - **SBC Diagnostic Findings:**
-    - *Experiment 1A (Fixed-Scale Noise):* $90\%$ credible intervals covered the true parameters in $88.0\%\text{--}93.0\%$ of trials (Clopper-Pearson 95% CIs covering nominal 90%). However, $50\%$ and $80\%$ intervals showed systematic undercoverage (empirical coverage $77\%\text{--}79\%$ for 50% intervals, $87\%\text{--}90\%$ for 80% intervals; KS test $p \in [0.0018, 0.0038]$).
-    - *Experiment 1B (State-Dependent Noise):* Restored Kolmogorov-Smirnov rank uniformity ($p_{\text{KS}} \in [0.28, 0.81]$, well above $0.05$). However, empirical coverage for $80\%$ intervals remained at $70\%\text{--}75\%$, indicating lingering mild undercoverage.
-    - *Scope Limitation:* SBC was conducted using the empirical surrogate's own generative likelihood, not the full ECLIPSE reservoir simulator. It confirms surrogate consistency, but does not constitute an unconditional guarantee of real-world physical calibration.
+  - **SBC Diagnostic Findings (`sbc_coverage_comparison_v4.csv`):**
+    - *Fixed-Scale Intervals (Experiment 1A):* Systematically **overcovered**. Empirical coverage for $50\%$ nominal intervals was $77.0\%\text{--}79.0\%$ (all 4 parameters failed Clopper-Pearson 95% CIs); $80\%$ nominal intervals covered $87.0\%\text{--}90.0\%$ (Fault and Perm failed CIs); $90\%$ nominal intervals covered $88.0\%\text{--}93.0\%$ (nominal in CI). KS tests rejected rank uniformity across all parameters ($p_{\text{KS}} \in [0.0018, 0.0038] < 0.05$).
+    - *State-Dependent Intervals (Experiment 1B):* $50\%$ nominal intervals covered $41.0\%\text{--}51.0\%$; $80\%$ nominal intervals covered **$70.0\%\text{--}75.0\%$** (**undercoverage** across all 4 parameters: Fault 70.0%, Poro 75.0%, Perm 74.0%, AqPV 75.0%); $90\%$ nominal intervals covered $81.0\%\text{--}85.0\%$.
+    - *KS Uniformity Interpretation:* In Experiment 1B, Kolmogorov-Smirnov test $p$-values ($p_{\text{KS}} \in [0.28, 0.81]$: Fault 0.279, Poro 0.685, Perm 0.767, AqPV 0.806) represent a **failure to reject nonuniformity of rank statistics** under state-dependent scaling on the surrogate's generative model. This is a consistency check confirming lack of detected bias within the surrogate family, **not a mathematical proof of real-world posterior calibration**.
   - **Scenario Policy Selection:** Strategy A demonstrated superior historical fidelity, achieving a terminal cumulative oil error of **`0.178%`** and cumulative water error of **`2.15%`** on Case 0 history.
 * **4. Corrections & Reversals:**
   - Strategy C was originally considered to enforce broad parameter diversity. However, Strategy C increased historical error on Case 0 by $3.6\times$ compared to Strategy A, while widening 20-year EUR spread by only $0.050\%$ ($41.8\text{k STB}$ vs $16.4\text{k STB}$).
@@ -168,7 +168,7 @@ The development trajectory of the MWAP forecasting engine spans ten distinct pha
   - *Challenger D Divergence:* Under Protocol A, direct regression collapsed completely (Macro NRMSE = `1.1258`, +2,787% error) due to the absence of dynamic trajectory anchoring.
 * **4. Corrections & Reversals (The Phase-Gating Reversal):**
   - An early un-windowed evaluation had suggested that hard water-cut switching ($f_{w,0} > 0.30$) reduced forecasting error by $7.65\%$.
-  - **Audited Reversal:** Subsequent auditing in `DECISIVE_PHASE_SELECTION_RESEARCH_REPORT.md` revealed that the early evaluation suffered from **reservoir-fold contamination** (the evaluated reservoir was present in the static training pool).
+  - **Audited Reversal:** Subsequent auditing in `DECISIVE_PHASE_SELECTION_RESEARCH_REPORT.md#L24-L45` revealed that the early evaluation suffered from **reservoir-fold contamination** (the evaluated reservoir was present in the static training pool).
   - When re-tested under strict nested Leave-One-Reservoir-Out CV (**Protocol A** across 255 instances), hard phase-gating collapsed to a statistically significant **$+11.8\%$ error penalty** (`0.11750` vs Baseline `0.10507`, $p = 4.61 \times 10^{-5}$). Smooth sigmoid gating similarly regressed (`0.11439`, $p = 0.00037$).
 * **5. Influence on Final Solution:** Decisively rejected all residual learning and discrete phase-gating candidates, reaffirming the frozen `Blend_Phase_Specific_Simplex` as the production standard.
 
@@ -185,7 +185,7 @@ The development trajectory of the MWAP forecasting engine spans ten distinct pha
 * **3. Experimental Evidence:**
   - **Sobol Variance Decomposition (`EXACT_EQUIVALENCE_GEOLOGY_VALIDATION_REPORT.md#L143-L157`):**
     - For **Exponential DCA Incremental Oil ($\Delta Q_o$)**, Porosity Multiplier is overwhelmingly dominant:
-      $$S_{1,\text{poro}} = 0.9687 \pm 0.0014 \quad (96.9\% \text{ of variance}), \quad S_{Ti,\text{poro}} = 0.9686 \pm 0.0292$$
+      $$S_{1,\text{poro}} = 0.9687 \pm 0.0014 \quad (96.9\% \text{ of first-order variance}), \quad S_{Ti,\text{poro}} = 0.9686 \pm 0.0292$$
       Fault Transmissibility accounts for $2.6\%$ ($S_1 = 0.0265$), while Permeability ($S_1 = 0.0018$) and Aquifer PV ($S_1 = 0.0038$) have near-zero influence on oil decline.
     - For **ExtraTrees Incremental Oil ($\Delta Q_o$)**, Porosity Multiplier accounts for $S_1 = 0.8921$ ($89.2\%$) and $S_{Ti} = 0.9796$.
     - For **Incremental Water ($\Delta Q_w$)**, Permeability Multiplier is the primary driver:
@@ -202,32 +202,36 @@ The development trajectory of the MWAP forecasting engine spans ten distinct pha
 ---
 
 ### Stage 8: Long-Horizon Science, Model Disagreement & Constrained Tails
-* **Git Commits & Dates:** Commits `8354402` (Oct 13, 2026) $\to$ `aca1717` (Oct 13, 2026).
-* **Workspaces & Authors:** `Anas-exp/src/research/` (`run_long_horizon_science_experiment.py`, `LONG_HORIZON_RESERVOIR_FORECAST_SCIENCE_REPORT.md`, `PHASE_SPECIFIC_HORIZON_FORECAST_RESEARCH_REPORT.md`).
+* **Git Commits & Dates:** Commits `8354402` (Oct 13, 2026) $\to$ `aca1717` (Oct 13, 2026), audited in `0888bba` (Oct 14, 2026).
+* **Workspaces & Authors:** `Anas-exp/src/research/` (`run_long_horizon_science_experiment.py`, `LONG_HORIZON_RESERVOIR_FORECAST_SCIENCE_REPORT.md`, `PHASE_SPECIFIC_HORIZON_FORECAST_RESEARCH_REPORT.md`, `DECISIVE_PHASE_SELECTION_RESEARCH_REPORT.md`).
 * **1. Motivating Problem:** The competition required 20-year forward forecasts (80 quarters), whereas simulation records span at most 10 years (40 quarters). The team analyzed the mathematical extrapolation behavior of the base models when pushed into unsupported time domains ($t > 10\text{ yr}$).
 * **2. Implementation:**
   - Extrapolated individual base models to 20, 50, and 100 years.
   - Investigated the asymptotic rate behavior of tree-based partition boundaries versus analytical decline models.
   - Developed **Candidate H** (`ConstrainedTailHybridForecaster`), which introduced a smooth sigmoid taper $\eta(t) = [1 + \exp((t - 14)/2)]^{-1}$ transferring the ExtraTrees weight into Exponential DCA beyond historical data support ($t > 14\text{ yr}$).
 * **3. Experimental Evidence:**
-  - **Tree Asymptotic Floor:** Discovered that pure ExtraTrees exhibits an unphysical terminal rate plateau on Field Case 0 ($\approx 737.12\text{ STB/d}$), continually adding $\approx 269,235\text{ STB/yr}$ indefinitely ($Q_\infty \to \infty$).
-  - **Behavior of the Frozen Production Baseline:** In the frozen baseline, oil weights are: ExtraTrees $0.24$, Exp DCA $0.62$, Hybrid $0.14$. Because ExtraTrees has a $0.24$ weight, the frozen baseline maintains a late-life oil rate of **$822.32\text{ STB/d}$ at Year 20** on Case 0 (with a persistent floor of $\approx 177\text{ STB/d}$). Therefore, the frozen production baseline does *not* possess an asymptotic guarantee of finite EUR as $t \to \infty$. Over the finite 20-year window ($T=20\text{ yr}$), cumulative production is naturally bounded, but infinite-horizon recovery diverges.
-  - **Candidate H Behavior:** Candidate H successfully forced terminal rate to $0.40\text{ STB/d}$ at 50 yr and $0.000036\text{ STB/d}$ at 100 yr, achieving a finite recovery limit of **$48.44\text{ MMSTB}$**.
-  - **Structural Model Disagreement:** At Year 20, individual base models exhibited substantial divergence on Case 0:
+  - **Tree Asymptotic Floor & Weighted Ensemble Behavior:**
+    - Pure `Recursive_ExtraTrees` exhibits an unphysical terminal rate plateau of **$\approx 3,065\text{ STB/d}$** on Field Case 0, continually adding production indefinitely ($Q_\infty \to \infty$).
+    - In the frozen baseline, oil weights are: ExtraTrees $0.24$, Exp DCA $0.62$, Hybrid $0.14$. Because ExtraTrees has a $0.24$ weight, the frozen ensemble inherits a **weighted rate floor of $\approx 737\text{ STB/d}$ ($737.12\text{ STB/d}$)** on Case 0 ($0.24 \times 3,065 \approx 737$). At Year 20 (80Q), the baseline oil rate is **$822.32\text{ STB/d}$**. Therefore, the frozen production baseline does *not* possess an asymptotic guarantee of finite EUR as $t \to \infty$. Over the finite 20-year competition window ($T=20\text{ yr}$), cumulative production is naturally bounded, but infinite-horizon recovery diverges.
+  - **Candidate H Behavior:** Candidate H successfully forced terminal rate to $0.40\text{ STB/d}$ at 50 yr and $3.61 \times 10^{-5}\text{ STB/d}$ at 100 yr, achieving a finite recovery limit of **$48.44\text{ MMSTB}$**.
+  - **Deterministic Model Disagreement:** At Year 20, individual deterministic base models exhibited substantial divergence on Case 0:
     - ExtraTrees alone: $61.73\text{ MMSTB}$
     - Hybrid Dynamic alone: $50.04\text{ MMSTB}$
     - Exponential DCA alone: $47.88\text{ MMSTB}$
     - Baseline Simplex Blend: $51.17\text{ MMSTB}$
-    The **$13.85\text{ MMSTB}$ deterministic spread** between ExtraTrees and Exponential DCA provides a crucial diagnostic of structural sensitivity to model form, dwarfing parametric prior uncertainty ($0.895\text{ MMSTB}$).
-* **4. Corrections & Reversals:**
-  - In 15-reservoir $\times$ 17-condition cross-validation ($h \le 40$Q), Candidate H achieved a Macro NRMSE of `0.10518` vs Baseline `0.10512` ($\Delta = +0.00006$, cluster-robust $p = 0.3755$).
-  - **Governance Verdict:** Because Candidate H produced zero statistically detectable improvement within the competition evaluation window ($h \le 40$Q), governance preserved the frozen baseline unchanged for official submission. Candidate H remains an offline research benchmark for life-of-field asset abandonment studies.
-* **5. Influence on Final Solution:** Preserved the frozen baseline for official submission, while documenting model disagreement ($13.85\text{ MMSTB}$) as a diagnostic of epistemic model form uncertainty.
+    The **$13.85\text{ MMSTB}$ deterministic spread** between ExtraTrees and Exponential DCA provides a qualitative diagnostic of structural sensitivity across model classes, dwarfing parametric prior uncertainty ($0.895\text{ MMSTB}$).
+* **4. Corrections & Reversals (Audited in Commit `0888bba`):**
+  - In the repaired nested Leave-One-Reservoir-Out cross-validation across 15 outer pseudo-fields and 17 operational conditions (origins 2002–2005, horizons **4–20 quarters**, 255 evaluation instances in `DECISIVE_PHASE_SELECTION_RESEARCH_REPORT.md#L120`):
+    - Frozen Baseline Macro NRMSE: **`0.10507`** (Oil: `0.07109`, Water: `0.13904`).
+    - Candidate H Macro NRMSE: **`0.10513`** (Oil: `0.07121`, Water: `0.13904`).
+    - Mean Difference $\bar{D}$: **`+0.00006`** (Cluster SE = `0.00006`, 95% CI: `[-0.00008, +0.00020]`, Raw $p = 0.3697$, Holm $p = 0.6402$, Bonferroni $p = 1.0000$).
+  - **Governance Verdict:** Because Candidate H produced zero statistically detectable improvement within the competition evaluation window ($h \in [4, 20]\text{ quarters}$), governance preserved the frozen baseline unchanged for official submission. Candidate H remains an offline research benchmark for life-of-field asset abandonment studies.
+* **5. Influence on Final Solution:** Preserved the frozen baseline for official submission, while documenting model disagreement ($13.85\text{ MMSTB}$) as a diagnostic of epistemic model form sensitivity.
 
 ---
 
 ### Stage 9: Validation Repair & Protocol Resolution
-* **Git Commits & Dates:** Commits `fa425d7` (Oct 13, 2026) $\to$ `87d4a17` (Oct 14, 2026).
+* **Git Commits & Dates:** Commits `fa425d7` (Oct 13, 2026) $\to$ `87d4a17` / `d6b9479` (Oct 14, 2026).
 * **Workspaces & Authors:** `Anas-exp/src/research/` (`run_phase_specific_corrected_validation.py`, `TAPERED_B_PROTOCOL_RESOLUTION_REPORT.md`, `CONSERVATIVE_WATER_BLEND_RESEARCH_REPORT.md`).
 * **1. Motivating Problem:** Apparent performance discrepancies between retrospective backtests and secondary validation cases (Cases 71–85) raised questions regarding evaluation methodology and whether candidate models could displace the baseline.
 * **2. Implementation:**
@@ -235,15 +239,21 @@ The development trajectory of the MWAP forecasting engine spans ten distinct pha
   - Formally differentiated two evaluation settings:
     - **Protocol A (Strict Historical As-Of):** Restricts all model fitting, feature scalers, and DCA slope calibrations to pre-origin data (`date <= origin`). Zero future simulation records are accessed. This is the sole deployment-faithful representation of the January 2008 forecast origin.
     - **Protocol B (Forward Simulator Supervised):** Allows DCA or direct models to regress decline parameters against post-origin forward simulation trajectories. This is a legitimate supervisory research setting for backtesting, but cannot be executed at January 2008 because post-2008 simulation records do not exist.
-  - Benchmarked `Candidate_B_Tapered_Exp` and `Candidate_Shrinkage_Blend` (conservative water blending across $\gamma \in \{0, 0.10, 0.25, 0.50\}$) across all 255 evaluation instances under Protocol A.
+  - Benchmarked `Candidate_B_Tapered_Exp` and `Candidate_Corrected_Water_Blend` across all 255 evaluation instances under Protocol A.
 * **3. Experimental Evidence:**
   - Under Protocol B, Candidate B appeared to win on Cases 71–85 (Macro NRMSE = `0.01819` vs `0.02756`).
   - However, under deployment-faithful **Protocol A**, Candidate B systematically lost to the baseline on mature decline, scoring **`0.04152` vs Baseline `0.03878`** on Cases 71–85 at Origin 2005 12Q (+7.1% error degradation, $p = 0.0083$).
-  - Under Protocol A nested LOO CV, conservative water blending failed to beat the baseline, selecting $\gamma = 0$ (abstention) across most instances.
-* **4. Corrections & Reversals:**
+  - **Corrected Water Blending in Commit `d6b9479` (`conservative_water_summary_benchmark.csv`):**
+    - Evaluated across 15 outer reservoirs $\times$ 17 conditions ($h \in [4, 20]$Q, 255 evaluation instances):
+      - Frozen Baseline Macro NRMSE: **`0.1050665005`** (Oil: `0.0710920136`, Water: `0.1390409874`).
+      - Corrected Water Blend Macro NRMSE: **`0.1037328703`** (Oil: `0.0710920136`, Water: `0.1363737270`).
+      - Difference $\bar{D}$: **`-0.0013336302`** (Cluster SE = `0.0001837438`, 95% Clustered CI: `[-0.0017277214, -0.0009395390]`, $t(14) = -7.24$, $p = 4.17 \times 10^{-6}$).
+      - Win Rate: **`39.6%`** (101 wins, 154 ties where $\gamma^* = 0.0$, **0 degradations**, worst-case $\Delta = 0.000000$).
+      - Cases 71–85 (Origin 2005, 12Q): Macro NRMSE **`0.036767`** vs Baseline **`0.038780`** ($-5.19\%$).
+* **4. Corrections & Governance Determination:**
   - Protocol B's apparent gains were confirmed to be an artifact of forward simulation supervision that cannot exist at deployment.
-  - Governance formally closed the Protocol B research line, reaffirming Protocol A as the sole authoritative referee standard.
-* **5. Influence on Final Solution:** Protected the frozen production baseline against premature modification, ensuring all reported metrics adhere to deployment-faithful Protocol A.
+  - For conservative water blending, although retrospective accuracy gains were statistically verified over historical 4Q–20Q horizons, **retrospective performance on short windows cannot guarantee physical fidelity across an unverified 20-year (80Q) forward simulation horizon**. Because official deliverable `09_Template_Deliverable_Submission.xlsx` was already locked and verified (SHA-256 intact), governance rejected production promotion and permanently closed the water-blending research line.
+* **5. Influence on Final Solution:** Protected the frozen production baseline against modification, ensuring all reported metrics adhere to deployment-faithful Protocol A.
 
 ---
 
@@ -328,8 +338,8 @@ The following ledger documents every substantive numerical benchmark across the 
 | Jensen Discrepancy f(E[u]) vs E[f(u)] | Full Prior Box (N=100)   | Monte Carlo Eval     | Macro NRMSE Discrepancy   | 0.0000   | 0.00018   | 100 / 1   | Reprod. |
 |   Provenance: EXACT_EQUIVALENCE_GEOLOGY_VALIDATION_REPORT.md#L164-L171; Commit 098899e                                                                           |
 +---------------------------------------+--------------------------+----------------------+---------------------------+----------+-----------+-----------+---------+
-| Candidate H (Asymptotic Safeguard)    | Cases 1-70, 17 Regimes   | Protocol A, LOO CV   | Macro NRMSE (255 inst.)   | 0.10512  | 0.10518   | 255 / 15  | Neg. V. |
-|   Provenance: PHASE_SPECIFIC_HORIZON_FORECAST_RESEARCH_REPORT.md#L53-L65, L325; Commit aca1717; Delta = +0.00006, p = 0.3755                                    |
+| Candidate H (Repaired LOO CV)         | Cases 1-70, 17 Regimes   | Protocol A, LOO CV   | Macro NRMSE (255 inst.)   | 0.10507  | 0.10513   | 255 / 15  | Neg. V. |
+|   Provenance: DECISIVE_PHASE_SELECTION_RESEARCH_REPORT.md#L109-L142, Table 2.2; Commit 0888bba; 4-20Q horizons; Delta = +0.00006, p = 0.3697                  |
 +---------------------------------------+--------------------------+----------------------+---------------------------+----------+-----------+-----------+---------+
 | Candidate Hard Water-Cut (Contam.)    | Cases 1-70 (Contaminated)| Static Training Pool | Apparent Macro NRMSE      | 0.10507  | 0.09703*  | 255 / 15  | Inval.* |
 |   Provenance: PHASE_SPECIFIC_HORIZON_FORECAST_RESEARCH_REPORT.md#L295; Commit aca1717; *Invalidated by fold contamination                                        |
@@ -346,8 +356,8 @@ The following ledger documents every substantive numerical benchmark across the 
 | Candidate B Tapered Exp (Prot. A)     | Cases 71-85, Origin 2005 | Protocol A, LOO CV   | 12Q Macro NRMSE           | 0.03878  | 0.04152   | 15 / 1    | Neg. V. |
 |   Provenance: TAPERED_B_PROTOCOL_RESOLUTION_REPORT.md#L19, L120-L140; Commit 87d4a17 parent; Delta = +0.00274, p = 0.0083                                       |
 +---------------------------------------+--------------------------+----------------------+---------------------------+----------+-----------+-----------+---------+
-| Corrected Water Blend (Gamma=0.25)    | Cases 1-70, 17 Regimes   | Protocol A, LOO CV   | Macro NRMSE (255 inst.)   | 0.105067 | 0.105067  | 255 / 15  | Neg. V. |
-|   Provenance: CONSERVATIVE_WATER_BLEND_RESEARCH_REPORT.md#L15-L40; Commit 87d4a17; Abstention gamma=0 selected across evaluation instances                     |
+| Corrected Water Blend (Gamma in {0..})| Cases 1-70, 17 Regimes   | Protocol A, LOO CV   | Macro NRMSE (255 inst.)   | 0.105067 | 0.103733  | 255 / 15  | Reprod. |
+|   Provenance: CONSERVATIVE_WATER_BLEND_RESEARCH_REPORT.md#L20-L45; conservative_water_summary_benchmark.csv; Commit d6b9479; p = 4.17e-6; Zero Degradations     |
 +---------------------------------------+--------------------------+----------------------+---------------------------+----------+-----------+-----------+---------+
 | Production Deliverable Regeneration   | Field Case 0 (10 Scen.)  | Protocol A (80Q)     | Numeric Cell Difference   | 0.000000 | 0.000000  | 2,400 cls | FROZEN  |
 |   Provenance: SUBMISSION_REFACTORING_VERIFICATION_REPORT.md#L20-L50; test_submission_archive.py; Commit 29caeec; SHA-256 e413f3ca...                          |
@@ -356,7 +366,7 @@ The following ledger documents every substantive numerical benchmark across the 
 
 ### Ledger Status Definitions:
 - **`FROZEN`**: Authoritative production standard integrated into official competition deliverables.
-- **`Reprod.`**: Valid, independently verified, and bit-for-bit reproducible confirmation result.
+- **`Reprod.`**: Valid, independently verified, and bit-for-bit reproducible confirmation or research result.
 - **`Supers.`**: Methodologically valid early iteration superseded by a higher-fidelity technique.
 - **`Neg. V.`**: **Valid Negative Experiment**. Sound experimental protocol confirming that the proposed modification degrades or fails to improve generalization error on out-of-sample data.
 - **`Diag. B`**: **Diagnostic Setting (Protocol B)**. Legitimate machine learning experiment under forward simulation supervision; unachievable at January 2008 deployment.
@@ -452,11 +462,11 @@ The scientific maturity of the MWAP submission is evidenced by our rigorous iden
   1. *Sub-Unity Hyperbolic Convergence:* For Arps decline $q(t) = q_0 (1 + b D_i t)^{-1/b}$, whenever $0 < b < 1$, the infinite integral converges to a **strictly finite quantity**:
      $$Q_\infty = \int_0^\infty q_0 (1 + b D_i t)^{-1/b} dt = \frac{q_0}{(1 - b) D_i} < \infty$$
      For Case 0 parameters ($q_0 = 5,000\text{ STB/d}, D_i = 0.25\text{ /yr}, b = 0.35$), $Q_\infty = 11.24\text{ MMSTB}$. Hyperbolic recovery only diverges if $b \ge 1.0$.
-  2. *Asymptotic Behavior of the Frozen Baseline:* Because the frozen baseline retains a $0.24$ weight on ExtraTrees for oil, and ExtraTrees predicts a constant leaf floor ($\approx 737\text{ STB/d}$ on Case 0), the frozen ensemble rate plateaus at $\approx 177\text{ STB/d}$. Integrating a non-zero floor to $t \to \infty$ diverges.
+  2. *Asymptotic Behavior of the Frozen Baseline:* Pure `Recursive_ExtraTrees` predicts a constant leaf floor of **$\approx 3,065\text{ STB/d}$** on Case 0. Because the frozen baseline retains a $0.24$ weight on ExtraTrees for oil, the frozen ensemble rate plateaus at a weighted floor of **$\approx 737\text{ STB/d}$ ($737.12\text{ STB/d}$)** ($0.24 \times 3,065 \approx 737$). Integrating this constant non-zero floor to $t \to \infty$ diverges.
 * **Root Cause:** Conflating finite 20-year integration with infinite asymptotic mathematical bounds.
 * **Corrected Conclusion:**
   - The frozen production baseline heavily regularizes late-life decline ($76\%$ exponential decline weight), reducing Year 20 rate to $822\text{ STB/d}$ on Case 0, but does *not* provide an asymptotic guarantee of finite EUR as $t \to \infty$.
-  - **Candidate H** was developed to provide that structural guarantee ($48.44\text{ MMSTB}$ finite EUR, $q \to 0$), but was not deployed because it showed zero scoring gain on $h \le 40$Q ($\Delta = +0.00006$, $p = 0.3755$).
+  - **Candidate H** was developed to provide that structural guarantee ($48.44\text{ MMSTB}$ finite EUR, $q \to 0$ via a $t > 14\text{ yr}$ sigmoid taper), but in 4–20Q historical validation (`DECISIVE_PHASE_SELECTION_RESEARCH_REPORT.md#L120`, commit `0888bba`), Candidate H scored `0.10513` vs Baseline `0.10507` ($\bar{D} = +0.00006$, $p = 0.3697$). Showing statistical parity and zero scoring gain on historical horizons, it was retained as an offline research safeguard rather than deployed.
 
 ---
 
@@ -496,11 +506,11 @@ A central question for technical judges is why the 20-year cumulative oil EUR sp
 ### Epistemic Model Disagreement as a Diagnostic
 
 While parametric uncertainty within Strategy A is narrow ($16.4\text{k STB}$), **structural uncertainty across model architectures is large**:
-- Pure `Recursive_ExtraTrees` projects 20-year EUR at **$61.73$ MMSTB** (due to its persistent late-life leaf plateau).
+- Pure `Recursive_ExtraTrees` projects 20-year EUR at **$61.73$ MMSTB** (due to its persistent late-life leaf plateau of $\approx 3,065\text{ STB/d}$).
 - Pure `Learned_Exponential_DCA` projects 20-year EUR at **$47.88$ MMSTB** (steep exponential decline).
 - **Base-Model Disagreement:** **$13.85$ MMSTB** ($26.6\%$ of EUR).
 
-This $13.85$ MMSTB discrepancy is **$15.5\times$ larger** than the 4D prior parameter uncertainty ($895\text{k STB}$) and **$843\times$ larger** than the selected scenario spread ($16.4\text{k STB}$). We present base-model disagreement as an essential **qualitative diagnostic of structural uncertainty**, cautioning against false precision from parameter tuning alone.
+This $13.85$ MMSTB discrepancy is **$15.5\times$ larger** than the 4D prior parameter uncertainty ($895\text{k STB}$) and **$843\times$ larger** than the selected scenario spread ($16.4\text{k STB}$). We present base-model disagreement as an essential **qualitative diagnostic of structural uncertainty across model forms**, cautioning against false precision from parameter tuning alone, without claiming it represents a formal calibrated total uncertainty distribution.
 
 ---
 
@@ -558,7 +568,7 @@ Slide 2: Problem Framing: 20-Year Forecasting from 10-Year History with Hidden G
 Slide 3: Physical Accounting & Thermodynamic Locks (Rs = 0.3633 MSCF/STB)
 Slide 4: Static Grid Decoding: Where the 4 Geological Parameters Actually Reside
 Slide 5: Historical Surrogate Emulation: From SVD-GP to GLS Inversion
-Slide 6: Bayesian Calibration Diagnostics: MCMC Convergence & SBC Uniformity Analysis
+Slide 6: Bayesian Calibration Diagnostics: MCMC Convergence & SBC Coverage Analysis
 Slide 7: Scenario Selection Policy: Why Strategy A (MAP Mode) Beats Strategy C
 Slide 8: Multi-Model Discovery: Why No Single Model Dominates All Phases
 Slide 9: The Production Ensemble: Phase-Specific Simplex Blending Formulation
@@ -575,8 +585,8 @@ Slide 18: Summary: Engineering Rigor, Methodological Transparency & Commercial R
 
 ### Technical Appendix Slides (6 Slides)
 * **Slide 19: Protocol A vs. Protocol B Tracing:** Mathematical code paths at January 2008 origin.
-* **Slide 20: Candidate H Formulation:** The $t > 14\text{ yr}$ sigmoid taper and why it was retained as an offline research safeguard.
-* **Slide 21: Conservative Water Blending:** Optimization across $\gamma \in \{0, 0.10, 0.25, 0.50\}$ and proof of baseline optimality.
+* **Slide 20: Candidate H Formulation:** The $t > 14\text{ yr}$ sigmoid taper, 4–20Q LOO CV parity, and why it was retained as an offline research safeguard.
+* **Slide 21: Conservative Water Blending (Commit d6b9479):** The 255-instance benchmark (0.103733 vs 0.105067) and rationale for governance freeze.
 * **Slide 22: Centered Jansen-Sobol Mathematics:** Derivations, bootstrap CIs, and analytical benchmark proofs.
 * **Slide 23: Discrete Rate-to-Cumulative Scorer Mathematics:** The RMS true increment normalization identity.
 * **Slide 24: Complete 10-Scenario Geological and Recovery Parameter Table:** Porosity, permeability, fault, and EUR values.
@@ -595,21 +605,21 @@ Slide 18: Summary: Engineering Rigor, Methodological Transparency & Commercial R
   - **Defensible Answer:** *"Cases 71–85 served as a secondary validation cohort during intermediate development. However, because we and other teams consulted Cases 71–85 multiple times during architecture search, describing them as a pristine holdout would be scientifically dishonest. Our definitive proof of generalization rests on our 15-reservoir leave-one-reservoir-out cross-validation across 17 distinct operational conditions (255 evaluation instances) with automated tracer mutation verification."*
 
 * **Q4: "Does your MCMC posterior provide an unconditional guarantee of unbiased calibration?"**
-  - **Defensible Answer:** *"No model can provide an unconditional guarantee of real-world calibration. In our Simulation-Based Calibration (SBC) across 100 trials, the surrogate's generative model achieved uniform rank statistics under state-dependent scaling ($p_{\text{KS}} \in [0.28, 0.81]$), but fixed-scale tests showed undercoverage in 50% and 80% credible intervals. Furthermore, SBC was conducted on the empirical surrogate, not the full ECLIPSE simulator. We present our posterior as a well-diagnosed, highly conditioned history match, while recognizing that true epistemic uncertainty is dominated by model form rather than parameter bounds."*
+  - **Defensible Answer:** *"No model can provide an unconditional guarantee of real-world calibration. In our Simulation-Based Calibration (SBC) across 100 trials (`sbc_coverage_comparison_v4.csv`), fixed-scale intervals overcovered, while state-dependent 80% intervals covered 70%–75%. The Kolmogorov-Smirnov test ($p_{\text{KS}} \in [0.28, 0.81]$) represents a failure to reject nonuniformity of rank statistics on the surrogate's generative model, which is an internal consistency check, not a proof of calibration for the real ECLIPSE reservoir physics. We present our posterior as a well-diagnosed, highly conditioned history match, while recognizing that epistemic uncertainty across model architectures ($13.85$ MMSTB) is the dominant source of forecasting spread."*
 
 * **Q5: "Does your production ensemble guarantee finite ultimate recovery as time approaches infinity?"**
-  - **Defensible Answer:** *"Within the 20-year competition horizon ($T = 20$ yr, 80 quarters), cumulative recovery is naturally bounded, and our $76\%$ exponential decline weight prevents the runaway growth typical of pure ML models ($822$ STB/d vs $3,000+$ STB/d at Year 20). However, because ExtraTrees retains a $0.24$ weight for oil and exhibits a constant leaf floor ($\approx 737$ STB/d on Case 0), the frozen baseline does not provide an asymptotic guarantee of finite EUR as $t \to \infty$. We researched Candidate H to enforce zero terminal rate via a $t > 14$ yr sigmoid taper ($48.44$ MMSTB finite EUR), but because Candidate H showed statistical parity on historical evaluation horizons ($\Delta = +0.00006$, $p = 0.3755$), we preserved the frozen baseline for official submission."*
+  - **Defensible Answer:** *"Within the 20-year competition horizon ($T = 20$ yr, 80 quarters), cumulative recovery is naturally bounded, and our $76\%$ exponential decline weight prevents the runaway growth typical of pure ML models ($822$ STB/d vs $3,000+$ STB/d at Year 20). However, because pure ExtraTrees exhibits a constant leaf floor of $\approx 3,065$ STB/d on Case 0 (yielding a weighted ensemble floor of $\approx 737$ STB/d at $0.24$ weight), the frozen baseline does not provide an asymptotic guarantee of finite EUR as $t \to \infty$. We researched Candidate H to enforce zero terminal rate via a $t > 14$ yr sigmoid taper ($48.44$ MMSTB finite EUR), but because Candidate H showed statistical parity in 4–20Q historical validation ($\Delta = +0.00006$, $p = 0.3697$), we preserved the frozen baseline for official submission."*
 
 ---
 
 ### Claims We Should Strictly Avoid
 
 1. **DO NOT claim that the 16,433 STB scenario spread is a "90% Bayesian Credible Interval" or "P10–P90 Reserves Range."**  
-   *Truth:* It is the dispersion across the ten best-matching realizations under Strategy A around the MAP mode. Total uncertainty is dominated by model architecture ($13.85$ MMSTB).
+   *Truth:* It is the dispersion across the ten best-matching realizations under Strategy A around the MAP mode. Structural uncertainty across model architectures is $13.85$ MMSTB.
 2. **DO NOT claim that the frozen production ensemble provides an asymptotic guarantee of finite EUR as $t \to \infty$.**  
-   *Truth:* The frozen baseline includes a $0.24$ weight on ExtraTrees, which plateaus at late life. Finite asymptotic recovery was achieved by Candidate H, which was an offline research candidate, not the submitted deliverable.
-3. **DO NOT claim that MCMC inversion or SBC provides an "unconditional proof of posterior unbiasedness."**  
-   *Truth:* SBC demonstrated rank uniformity under state-dependent scaling on the surrogate's own generative model, but exhibited undercoverage in fixed-scale tests and inherits surrogate approximation error.
+   *Truth:* The frozen baseline includes a $0.24$ weight on ExtraTrees, which plateaus at late life ($\approx 737\text{ STB/d}$ weighted floor). Finite asymptotic recovery was achieved by Candidate H, which was an offline research candidate, not the submitted deliverable.
+3. **DO NOT claim that MCMC inversion or SBC provides a "proof of posterior unbiasedness or calibration."**  
+   *Truth:* Fixed-scale SBC intervals overcovered, while state-dependent 80% intervals covered 70%–75%. The KS test represents a failure to reject nonuniformity on the surrogate's generative model, not proof of calibration for the true reservoir physics.
 4. **DO NOT claim that Cases 71–85 represent an "unseen, untouched blind test set."**  
    *Truth:* Cases 71–85 were consulted as secondary confirmation cases during model search. Only Cases 86–100 are truly blind.
 5. **DO NOT claim that phase-switching gates or water-cut thresholds improve production forecasting.**  
